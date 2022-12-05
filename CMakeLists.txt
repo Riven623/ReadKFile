@@ -21,6 +21,7 @@ SOURCE_GROUP("Headers" FILES ${Header_Files})
 SET(Source_Files
      InputFile.cpp
 	 Main.cpp
+	 InputDate.cpp
 )
 SOURCE_GROUP("Sources" FILES ${Source_Files})
 

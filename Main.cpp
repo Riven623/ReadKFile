@@ -11,15 +11,24 @@ int main()
 	InputFileProject* pInputFile = new InputFileProject;
 	InputAllDate* IAD = new InputAllDate;
 
-	IAD= pInputFile->inputFunction("D:\\Cfile\\OriginalInputFile\\1234.k");
+	IAD= pInputFile->inputFunction("D:\\Cfile\\OriginalInputFile\\car1127.txt");
 
-	//cout << IAD->InputAllContact[3].MasterContactNode[2] << endl;
+	//pInputFile->inputMBFunction("D:\\Cfile\\OriginalInputFile\\RenTi1205.txt", IAD);
 
-
-
-	/*auto pr = (*IAD).InputAllContact[4].MasterContactNode.find(2);
-	if (pr != std::end((*IAD).InputAllContact[4].MasterContactNode))
+	/*for (auto& it : IAD->InputAllFEMtoMBContact[5].MasterContactNode)
 	{
-	std:cout << pr->first << " is " << endl << pr->second << endl;
+
+		cout << it.second.transpose() << endl;
+	}
+	*/
+
+	/*for (auto& it : IAD->inputAllRigidBody[17].MeshCoor)
+	{
+		cout << it.first << endl;
 	}*/
+
+	delete IAD;
+	delete pInputFile;
+
+
 }

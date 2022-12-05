@@ -2,6 +2,28 @@
 #include "IClude.h"
 #include"InputDate.h"
 
+
+//void txt_to_vectordouble(vector<vector<double>>& res, const std::string pathname)
+//{
+//	ifstream infile;
+//	infile.open(pathname);   //将文件流对象与文件连接起来 
+//	//assert(infile.is_open());   //若失败,则输出错误消息,并终止程序运行 
+//	vector<double> suanz;
+//	string s;
+//	while (getline(infile, s)) {
+//		istringstream is(s); //将读出的一行转成数据流进行操作
+//		double d;
+//		while (!is.eof()) {
+//			is >> d;
+//			suanz.push_back(d);
+//		}
+//		res.push_back(suanz);
+//		suanz.clear();
+//		s.clear();
+//	}
+//	infile.close();             //关闭文件输入流 
+//};
+
 //写入数据函数(内联)
 inline void getdigit3(ofstream& ObjectiveFile, const string inputLine, const int lineID)
 {
@@ -145,7 +167,27 @@ public:
 	int SetNodeId7;
 	int SetNodeId8;
 	int SetNodeId9;
-	int SetNodeId10 ;
+	int SetNodeId10;
+	int SetNodeId11;
+	int SetNodeId12;
+	int SetNodeId13;
+	int SetNodeId14;
+	int SetNodeId15;
+	int SetNodeId16;
+	int SetNodeId17;
+	int SetNodeId18;
+	int SetNodeId19;
+	int SetNodeId20;
+	int SetNodeId21;
+	int SetNodeId22;
+	int SetNodeId23;
+	int SetNodeId24;
+	int SetNodeId25;
+	int SetNodeId26;
+	int SetNodeId27;
+	int SetNodeId28;
+	int SetNodeId29;
+	int SetNodeId30;
 
     int SegmentSetId1 ;
     int SegmentSetId2 ;
@@ -154,7 +196,29 @@ public:
 	int SegmentSetId5 ;
 	int SegmentSetId6 ;
 
-    InputAllDate* inputFunction(const std::string& fileToOpen);
+    
+	
+	
+	
+	
+	InputAllDate* inputFunction(const std::string& fileToOpen);
+
+	int inputMBFunction(const std::string& MBfileToOpen, InputAllDate*IADate);
+
+	
+
+	//FORCE
+	ifstream InForce;
+	string LineForce;
+	ofstream ForceFile;
+	ofstream ForceSetNodeFile;
+	ofstream ForceBOUNDARYFile;
+	string ForceFileString;
+	string ForceSetNodeFileString;
+	string ForceBOUNDARYFileString;
+
+	int PanduanForce;
+
 
 	//RIGIDWALL_PLANAR_FINITE_ID
 	ifstream InRigidwall;
@@ -205,6 +269,28 @@ public:
 	ofstream SetNodeFile8;
 	ofstream SetNodeFile9;
 	ofstream SetNodeFile10;
+	ofstream SetNodeFile11;
+	ofstream SetNodeFile12;
+	ofstream SetNodeFile13;
+	ofstream SetNodeFile14;
+	ofstream SetNodeFile15;
+	ofstream SetNodeFile16;
+	ofstream SetNodeFile17;
+	ofstream SetNodeFile18;
+	ofstream SetNodeFile19;
+	ofstream SetNodeFile20;
+	ofstream SetNodeFile21;
+	ofstream SetNodeFile22;
+	ofstream SetNodeFile23;
+	ofstream SetNodeFile24;
+	ofstream SetNodeFile25;
+	ofstream SetNodeFile26;
+	ofstream SetNodeFile27;
+	ofstream SetNodeFile28;
+	ofstream SetNodeFile29;
+	ofstream SetNodeFile30;
+	ofstream SetNodeFile31;
+
 
 	string SetNodeFile1String;
 	string SetNodeFile2String;
@@ -216,11 +302,59 @@ public:
 	string SetNodeFile8String;
 	string SetNodeFile9String;
 	string SetNodeFile10String;
+	string SetNodeFile11String;
+	string SetNodeFile12String;
+	string SetNodeFile13String;
+	string SetNodeFile14String;
+	string SetNodeFile15String;
+	string SetNodeFile16String;
+	string SetNodeFile17String;
+	string SetNodeFile18String;
+	string SetNodeFile19String;
+	string SetNodeFile20String;
+	string SetNodeFile21String;
+	string SetNodeFile22String;
+	string SetNodeFile23String;
+	string SetNodeFile24String;
+	string SetNodeFile25String;
+	string SetNodeFile26String;
+	string SetNodeFile27String;
+	string SetNodeFile28String;
+	string SetNodeFile29String;
+	string SetNodeFile30String;
 
     int PanduanSetNode ;
 	int PanduanSegmentSetNode ;
+	int PanduanSecondpart;
 
+	//人体模型
+	ifstream InMB;
+	string LineMB;
+	string Multibody = "MB";
 
+	ofstream RigidBodyFile;
+	ofstream ColumHingeFile;
+	ofstream BallJointFile;
+	ofstream MBNodeFile;
+	ofstream MBContactFile;
+
+	string MBContactFileString;
+	string MBNodeFileString;
+	string RigidBodyFileString;
+	string ColumHingeFileString;
+	string BallJointFileString;
+
+	//MBContact
+	ifstream MBInContact;
+	string MBLineContact;
+	ofstream MBContactFile2;
+	string MBContactFileString2;
+
+	string MBLineSegmentSet;
+
+	//ConnectNode
+	ofstream ConnectNodeFile;
+	string ConnectNodeFileString;
 };
 
 //汇总Part, Section，Velocity，SetNode，SetSegmentNode 信息
@@ -311,4 +445,37 @@ public:
 	map<int, LoadBodyZ > AllLoadBodyZ;
 	map<int, LoadBodyX > AllLoadBodyX;
 	map<int, LoadBodyY > AllLoadBodyY;
+};
+
+//汇总人体模型辅助信息
+class MBNode
+{
+public:
+	MBNode();
+	int NodeID;//节点编号
+	Matrix<double, 1, 3> NodeCoordinates;//坐标（x,y,z）的值
+};
+class MBSetNode
+{
+public:
+	MBSetNode();
+	int SetType;
+	int SetId; //set 集号
+	Matrix<int, Dynamic, Dynamic> SetNodeID;  //set 集节点号
+};
+class MBSetSegmentNode
+{
+public:
+	MBSetSegmentNode();
+	int SetType;
+	int SetSegmentId; //SetSegment集号
+	Matrix<int, Dynamic, Dynamic> SetSegmentNodeID;  //SetSegment集节点号
+};
+
+class MBlsmap   //所有临时信息汇总的类
+{
+public:
+	map<int, MBNode > AllMBNode;
+	map<int, MBSetNode>AllMBSetNode;
+	map<int, MBSetSegmentNode>AllMBSetSegmentNode;
 };
