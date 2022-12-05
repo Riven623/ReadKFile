@@ -160,35 +160,7 @@ public:
 
     int SetNodeId1 ;
     int SetNodeId2 ;
-    int SetNodeId3 ;
-    int SetNodeId4 ;
-	int SetNodeId5;
-	int SetNodeId6;
-	int SetNodeId7;
-	int SetNodeId8;
-	int SetNodeId9;
-	int SetNodeId10;
-	int SetNodeId11;
-	int SetNodeId12;
-	int SetNodeId13;
-	int SetNodeId14;
-	int SetNodeId15;
-	int SetNodeId16;
-	int SetNodeId17;
-	int SetNodeId18;
-	int SetNodeId19;
-	int SetNodeId20;
-	int SetNodeId21;
-	int SetNodeId22;
-	int SetNodeId23;
-	int SetNodeId24;
-	int SetNodeId25;
-	int SetNodeId26;
-	int SetNodeId27;
-	int SetNodeId28;
-	int SetNodeId29;
-	int SetNodeId30;
-
+  
     int SegmentSetId1 ;
     int SegmentSetId2 ;
 	int SegmentSetId3 ;
@@ -197,15 +169,9 @@ public:
 	int SegmentSetId6 ;
 
     
-	
-	
-	
-	
 	InputAllDate* inputFunction(const std::string& fileToOpen);
 
 	int inputMBFunction(const std::string& MBfileToOpen, InputAllDate*IADate);
-
-	
 
 	//FORCE
 	ifstream InForce;
@@ -261,68 +227,9 @@ public:
 
 	ofstream SetNodeFile1;
 	ofstream SetNodeFile2;
-	ofstream SetNodeFile3;
-	ofstream SetNodeFile4;
-	ofstream SetNodeFile5;
-	ofstream SetNodeFile6;
-	ofstream SetNodeFile7;
-	ofstream SetNodeFile8;
-	ofstream SetNodeFile9;
-	ofstream SetNodeFile10;
-	ofstream SetNodeFile11;
-	ofstream SetNodeFile12;
-	ofstream SetNodeFile13;
-	ofstream SetNodeFile14;
-	ofstream SetNodeFile15;
-	ofstream SetNodeFile16;
-	ofstream SetNodeFile17;
-	ofstream SetNodeFile18;
-	ofstream SetNodeFile19;
-	ofstream SetNodeFile20;
-	ofstream SetNodeFile21;
-	ofstream SetNodeFile22;
-	ofstream SetNodeFile23;
-	ofstream SetNodeFile24;
-	ofstream SetNodeFile25;
-	ofstream SetNodeFile26;
-	ofstream SetNodeFile27;
-	ofstream SetNodeFile28;
-	ofstream SetNodeFile29;
-	ofstream SetNodeFile30;
-	ofstream SetNodeFile31;
-
 
 	string SetNodeFile1String;
 	string SetNodeFile2String;
-	string SetNodeFile3String;
-	string SetNodeFile4String;
-	string SetNodeFile5String;
-	string SetNodeFile6String;
-	string SetNodeFile7String;
-	string SetNodeFile8String;
-	string SetNodeFile9String;
-	string SetNodeFile10String;
-	string SetNodeFile11String;
-	string SetNodeFile12String;
-	string SetNodeFile13String;
-	string SetNodeFile14String;
-	string SetNodeFile15String;
-	string SetNodeFile16String;
-	string SetNodeFile17String;
-	string SetNodeFile18String;
-	string SetNodeFile19String;
-	string SetNodeFile20String;
-	string SetNodeFile21String;
-	string SetNodeFile22String;
-	string SetNodeFile23String;
-	string SetNodeFile24String;
-	string SetNodeFile25String;
-	string SetNodeFile26String;
-	string SetNodeFile27String;
-	string SetNodeFile28String;
-	string SetNodeFile29String;
-	string SetNodeFile30String;
-
     int PanduanSetNode ;
 	int PanduanSegmentSetNode ;
 	int PanduanSecondpart;

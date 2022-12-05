@@ -15,12 +15,12 @@ int main()
 
 	//pInputFile->inputMBFunction("D:\\Cfile\\OriginalInputFile\\RenTi1205.txt", IAD);
 
-	/*for (auto& it : IAD->InputAllFEMtoMBContact[5].MasterContactNode)
+	for (auto& it : IAD->InputAllContact[3].MasterContactNode)
 	{
 
 		cout << it.second.transpose() << endl;
 	}
-	*/
+	
 
 	/*for (auto& it : IAD->inputAllRigidBody[17].MeshCoor)
 	{
