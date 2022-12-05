@@ -13,9 +13,9 @@ int main()
 
 	IAD= pInputFile->inputFunction("D:\\Cfile\\OriginalInputFile\\car1127.txt");
 
-	//pInputFile->inputMBFunction("D:\\Cfile\\OriginalInputFile\\RenTi1205.txt", IAD);
+	pInputFile->inputMBFunction("D:\\Cfile\\OriginalInputFile\\RenTi1205.txt", IAD);
 
-	for (auto& it : IAD->InputAllContact[3].MasterContactNode)
+	for (auto& it : IAD->InputAllFEMtoMBContact[8].MasterContactNode)
 	{
 
 		cout << it.second.transpose() << endl;

@@ -3,27 +3,6 @@
 #include"InputDate.h"
 
 
-//void txt_to_vectordouble(vector<vector<double>>& res, const std::string pathname)
-//{
-//	ifstream infile;
-//	infile.open(pathname);   //将文件流对象与文件连接起来 
-//	//assert(infile.is_open());   //若失败,则输出错误消息,并终止程序运行 
-//	vector<double> suanz;
-//	string s;
-//	while (getline(infile, s)) {
-//		istringstream is(s); //将读出的一行转成数据流进行操作
-//		double d;
-//		while (!is.eof()) {
-//			is >> d;
-//			suanz.push_back(d);
-//		}
-//		res.push_back(suanz);
-//		suanz.clear();
-//		s.clear();
-//	}
-//	infile.close();             //关闭文件输入流 
-//};
-
 //写入数据函数(内联)
 inline void getdigit3(ofstream& ObjectiveFile, const string inputLine, const int lineID)
 {
@@ -162,12 +141,6 @@ public:
     int SetNodeId2 ;
   
     int SegmentSetId1 ;
-    int SegmentSetId2 ;
-	int SegmentSetId3 ;
-	int SegmentSetId4 ;
-	int SegmentSetId5 ;
-	int SegmentSetId6 ;
-
     
 	InputAllDate* inputFunction(const std::string& fileToOpen);
 
@@ -207,18 +180,10 @@ public:
     string LineSegmentSet;
 	ofstream SegmentSetFile1;
 	ofstream SegmentSetFile2;
-	ofstream SegmentSetFile3;
-	ofstream SegmentSetFile4;
-	ofstream SegmentSetFile5;
-	ofstream SegmentSetFile6;
 
 	string SetSegment;
 	string SegmentSetFile1String;
 	string SegmentSetFile2String;
-	string SegmentSetFile3String;
-	string SegmentSetFile4String;
-	string SegmentSetFile5String;
-	string SegmentSetFile6String;
 
     //SetNode
 	string Setnodelist;

@@ -152,122 +152,64 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 	MBInContact.close();
 
 	//SegmentSet 文件
+	MBlsmap* mbls = new MBlsmap;
+	MBSetSegmentNode* pMBSetSegmentNode = new MBSetSegmentNode;
 	InSegmentSet.open(MBfileToOpen);
-	while (getline(InSegmentSet, MBLineSegmentSet))
+	while (getline(InSegmentSet, LineSegmentSet))
 	{
 		//主面节点
-		if ("*SET_SEGMENT" == MBLineSegmentSet)
+		if ("*SET_SEGMENT" == LineSegmentSet)
 		{
-			SetSegment = ("MB")+ (MBLineSegmentSet.erase(0, 1));
-			PanduanSegmentSetNode = 1;
-
-		}
-		if ((1 == PanduanSegmentSetNode) && ("         1                                        MECH      " == MBLineSegmentSet))
-		{
-			MBLineSegmentSet = MBLineSegmentSet.erase(0, 9);
-			MBLineSegmentSet = MBLineSegmentSet.erase(1, 50);
-			SegmentSetId1 = MBLineSegmentSet.at(0) - '0';
-			SegmentSetFile1String = getFileName2(SetSegment, MBLineSegmentSet);
+			LineSegmentSet = ("MB") + (LineSegmentSet.erase(0, 1));
+			SegmentSetFile1String = getFileName(LineSegmentSet);
 			SegmentSetFile1.open(SegmentSetFile1String);
+			SegmentSetFile1.clear();
+			SegmentSetFile1 << endl;
 		}
 		if (SegmentSetFile1.is_open())
 		{
-			getdigit3(SegmentSetFile1, MBLineSegmentSet, 19);
+			if (' ' == LineSegmentSet[0])
+			{
+				SegmentSetFile1 << LineSegmentSet << " ";
+			}
 		}
-		if ((1 == PanduanSegmentSetNode) && ("         2                                        MECH      " == MBLineSegmentSet))
+		if (("*CONTACT_AUTOMATIC_NODES_TO_SURFACE_ID" == LineSegmentSet) || ("*CONTACT_NODES_TO_SURFACE_ID" == LineSegmentSet) || ("*RIGIDWALL_PLANAR_FINITE_ID" == LineSegmentSet) || ("*ELEMENT_BEAM" == LineSegmentSet)
+			|| ("*ELEMENT_SHELL" == LineSegmentSet) || ("*ELEMENT_SOLID" == LineSegmentSet) || ("*SET_NODE_LIST" == LineSegmentSet) || ("*DEFINE_CURVE" == LineSegmentSet) || ("*SET_PART_LIST" == LineSegmentSet)
+			|| ("*END" == LineSegmentSet))
 		{
 			SegmentSetFile1.close();
-			MBLineSegmentSet = MBLineSegmentSet.erase(0, 9);
-			MBLineSegmentSet = MBLineSegmentSet.erase(1, 50);
-			SegmentSetId2 = MBLineSegmentSet.at(0) - '0';
-			SegmentSetFile2String = getFileName2(SetSegment, MBLineSegmentSet);
-			SegmentSetFile2.open(SegmentSetFile2String);
-		}
-		if (SegmentSetFile2.is_open())
-		{
-			getdigit3(SegmentSetFile2, MBLineSegmentSet, 19);
-		}
-		if ((1 == PanduanSegmentSetNode) && ("         3                                        MECH      " == MBLineSegmentSet))
-		{
-			SegmentSetFile1.close();
-			SegmentSetFile2.close();
-
-			MBLineSegmentSet = MBLineSegmentSet.erase(0, 9);
-			MBLineSegmentSet = MBLineSegmentSet.erase(1, 50);
-			SegmentSetId3 = MBLineSegmentSet.at(0) - '0';
-			SegmentSetFile3String = getFileName2(SetSegment, MBLineSegmentSet);
-			SegmentSetFile3.open(SegmentSetFile3String);
-		}
-		if (SegmentSetFile3.is_open())
-		{
-			getdigit3(SegmentSetFile3, MBLineSegmentSet, 19);
-		}
-		if ((1 == PanduanSegmentSetNode) && ("         4                                        MECH      " == MBLineSegmentSet))
-		{
-			SegmentSetFile1.close();
-			SegmentSetFile3.close();
-			SegmentSetFile2.close();
-			MBLineSegmentSet = MBLineSegmentSet.erase(0, 9);
-			MBLineSegmentSet = MBLineSegmentSet.erase(1, 50);
-			SegmentSetId4 = MBLineSegmentSet.at(0) - '0';
-			SegmentSetFile4String = getFileName2(SetSegment, MBLineSegmentSet);
-			SegmentSetFile4.open(SegmentSetFile4String);
-		}
-		if (SegmentSetFile4.is_open())
-		{
-			getdigit3(SegmentSetFile4, MBLineSegmentSet, 19);
-		}
-		if ((1 == PanduanSegmentSetNode) && ("         5                                        MECH      " == MBLineSegmentSet))
-		{
-			SegmentSetFile1.close();
-			SegmentSetFile3.close();
-			SegmentSetFile2.close();
-			SegmentSetFile4.close();
-			MBLineSegmentSet = MBLineSegmentSet.erase(0, 9);
-			MBLineSegmentSet = MBLineSegmentSet.erase(1, 50);
-			SegmentSetId5 = MBLineSegmentSet.at(0) - '0';
-			SegmentSetFile5String = getFileName2(SetSegment, MBLineSegmentSet);
-			SegmentSetFile5.open(SegmentSetFile5String);
-		}
-		if (SegmentSetFile5.is_open())
-		{
-			getdigit3(SegmentSetFile5, MBLineSegmentSet, 19);
-		}
-		if ((1 == PanduanSegmentSetNode) && ("         6                                        MECH      " == MBLineSegmentSet))
-		{
-			SegmentSetFile1.close();
-			SegmentSetFile3.close();
-			SegmentSetFile2.close();
-			SegmentSetFile4.close();
-			SegmentSetFile5.close();
-			MBLineSegmentSet = MBLineSegmentSet.erase(0, 9);
-			MBLineSegmentSet = MBLineSegmentSet.erase(1, 50);
-			SegmentSetId6 = MBLineSegmentSet.at(0) - '0';
-			SegmentSetFile6String = getFileName2(SetSegment, MBLineSegmentSet);
-			SegmentSetFile6.open(SegmentSetFile6String);
-		}
-		if (SegmentSetFile6.is_open())
-		{
-			getdigit3(SegmentSetFile6, MBLineSegmentSet, 19);
-		}
-		if ("*END" == MBLineSegmentSet)
-		{
-			SegmentSetFile1.close();
-			SegmentSetFile2.close();
-			SegmentSetFile3.close();
-			SegmentSetFile4.close();
-			SegmentSetFile6.close();
-			SegmentSetFile5.close();
-			
-			//MBLineSegmentSet = nullptr;
-			PanduanSegmentSetNode = 0;
 		}
 	}
 	InSegmentSet.close();
+	ifstream InSegmentSet2;
+	InSegmentSet2.open(SegmentSetFile1String);
+	SegmentSetFile2String = "MBSegmentSet.txt";
+	string LineSegmentSet2;
+	int panduanneirongSegmentSet = 0;
+	while (getline(InSegmentSet2, LineSegmentSet2))
+	{
+		ofstream SegmentSetFile2(SegmentSetFile2String);
+		if (' ' == LineSegmentSet2[0])
+		{
+			LineSegmentSet2.erase(50, 4);
+			SegmentSetFile2 << LineSegmentSet2 << flush;
+			panduanneirongSegmentSet = 1;
+		}
+		if ((panduanneirongSegmentSet == 1) && (1 == isFileExists(SegmentSetFile2String)))
+		{
+			Matrix<int, Dynamic, Dynamic>SegmentSet = LinearMSTMMSolver::openDataInt(SegmentSetFile2String);
+			pMBSetSegmentNode->SetSegmentId = SegmentSet(0, 0);
+			pMBSetSegmentNode->SetSegmentNodeID = SegmentSet;
+			(void)mbls->AllMBSetSegmentNode.insert(make_pair(pMBSetSegmentNode->SetSegmentId, (*pMBSetSegmentNode)));
+		};
+	}
+	InSegmentSet2.close();
+	delete pMBSetSegmentNode;
+	pMBSetSegmentNode = nullptr;
 
 	///分割结束
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	MBlsmap* mbls = new MBlsmap;
+	
 	MBSetNode* pMBSetNode = new MBSetNode;
 
 	//NODE
@@ -333,58 +275,10 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 			(void)mbls->AllMBSetNode.insert(make_pair(pMBSetNode->SetId, (*pMBSetNode)));
 		};
 	}
-	SetNodeFile2.close();
 	InSetNode2.close();
 	delete pMBSetNode;
 	pMBSetNode = nullptr;
 	
-	MBSetSegmentNode* pMBSetSegmentNode = new MBSetSegmentNode;
-	//SegmentSet信息
-	if (1 == isFileExists(SegmentSetFile1String))
-	{
-		Matrix<int, Dynamic, Dynamic>SegmentSet1 = LinearMSTMMSolver::openDataInt(SegmentSetFile1String);
-		pMBSetSegmentNode->SetSegmentId = SegmentSetId1;
-		pMBSetSegmentNode->SetSegmentNodeID = SegmentSet1;
-		(void)mbls->AllMBSetSegmentNode.insert(make_pair(pMBSetSegmentNode->SetSegmentId, (*pMBSetSegmentNode)));
-	};
-	if (1 == isFileExists(SegmentSetFile2String))
-	{
-		Matrix<int, Dynamic, Dynamic>SegmentSet2 = LinearMSTMMSolver::openDataInt(SegmentSetFile2String);
-		pMBSetSegmentNode->SetSegmentId = SegmentSetId2;
-		pMBSetSegmentNode->SetSegmentNodeID = SegmentSet2;
-		(void)mbls->AllMBSetSegmentNode.insert(make_pair(pMBSetSegmentNode->SetSegmentId, (*pMBSetSegmentNode)));
-	};
-	if (1 == isFileExists(SegmentSetFile3String))
-	{
-		Matrix<int, Dynamic, Dynamic>SegmentSet3 = LinearMSTMMSolver::openDataInt(SegmentSetFile3String);
-		pMBSetSegmentNode->SetSegmentId = SegmentSetId3;
-		pMBSetSegmentNode->SetSegmentNodeID = SegmentSet3;
-		(void)mbls->AllMBSetSegmentNode.insert(make_pair(pMBSetSegmentNode->SetSegmentId, (*pMBSetSegmentNode)));
-	};
-	if (1 == isFileExists(SegmentSetFile4String))
-	{
-		Matrix<int, Dynamic, Dynamic>SegmentSet4 = LinearMSTMMSolver::openDataInt(SegmentSetFile4String);
-		pMBSetSegmentNode->SetSegmentId = SegmentSetId4;
-		pMBSetSegmentNode->SetSegmentNodeID = SegmentSet4;
-		(void)mbls->AllMBSetSegmentNode.insert(make_pair(pMBSetSegmentNode->SetSegmentId, (*pMBSetSegmentNode)));
-	};
-	if (1 == isFileExists(SegmentSetFile5String))
-	{
-		Matrix<int, Dynamic, Dynamic>SegmentSet5 = LinearMSTMMSolver::openDataInt(SegmentSetFile5String);
-		pMBSetSegmentNode->SetSegmentId = SegmentSetId5;
-		pMBSetSegmentNode->SetSegmentNodeID = SegmentSet5;
-		(void)mbls->AllMBSetSegmentNode.insert(make_pair(pMBSetSegmentNode->SetSegmentId, (*pMBSetSegmentNode)));
-	};
-	if (1 == isFileExists(SegmentSetFile6String))
-	{
-		Matrix<int, Dynamic, Dynamic>SegmentSet6 = LinearMSTMMSolver::openDataInt(SegmentSetFile6String);
-		pMBSetSegmentNode->SetSegmentId = SegmentSetId6;
-		pMBSetSegmentNode->SetSegmentNodeID = SegmentSet6;
-		(void)mbls->AllMBSetSegmentNode.insert(make_pair(pMBSetSegmentNode->SetSegmentId, (*pMBSetSegmentNode)));
-	};
-	delete pMBSetSegmentNode;
-	pMBSetSegmentNode = nullptr;
-
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	// 刚体信息
@@ -532,10 +426,13 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 			//摩擦系数
 			MBInCta->StaticFrictionCoefficient = MBContactImformation(i, 5);
 			MBInCta->DynamicFrictionCoefficient = MBContactImformation(i, 6);
+			int k = 1;
 			//主从面节点号
-			for (int j = 0; j < mbls->AllMBSetSegmentNode[MBInCta->MasterNodeSetId].SetSegmentNodeID.rows(); j++)
+			for (int j = 0; j < (mbls->AllMBSetSegmentNode[MBInCta->MasterNodeSetId].SetSegmentNodeID.cols() - 1) / 4; j++)
 			{
-				(void)MBInCta->MasterContactNode.insert(make_pair((j + 1), mbls->AllMBSetSegmentNode[MBInCta->MasterNodeSetId].SetSegmentNodeID.row(j).adjoint()));
+				Matrix<int, 4, 1> SetSegmentRow = mbls->AllMBSetSegmentNode[MBInCta->MasterNodeSetId].SetSegmentNodeID.block<1, 4>(0, k).adjoint();
+				(void)MBInCta->MasterContactNode.insert(make_pair((j + 1), SetSegmentRow));
+				k += 4;
 			};
 			for (int k = 0; k < mbls->AllMBSetNode[MBInCta->SlaveNodeSetId].SetNodeID.rows(); k++)
 			{
@@ -565,65 +462,6 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 //读文件主函数
 InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 {
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//SegmentSet test
-	lsmap* ls = new lsmap;
-	SetSegmentNode* pSegment = new SetSegmentNode;
-	InSegmentSet.open(fileToOpen);
-	while (getline(InSegmentSet, LineSegmentSet))
-	{
-		//主面节点
-		if ("*SET_SEGMENT" == LineSegmentSet)
-		{
-			SetSegment = LineSegmentSet.erase(0, 1);
-			SegmentSetFile1String = getFileName(LineSegmentSet);
-			SegmentSetFile1.open(SegmentSetFile1String);
-			SegmentSetFile1.clear();
-			SegmentSetFile1 << endl;
-		}
-		if (SegmentSetFile1.is_open())
-		{
-			if (' ' == LineSegmentSet[0])
-			{
-				SegmentSetFile1 << LineSegmentSet << " ";
-			}
-		}
-		if (("*CONTACT_AUTOMATIC_NODES_TO_SURFACE_ID" == LineSegmentSet) || ("*CONTACT_NODES_TO_SURFACE_ID" == LineSegmentSet) || ("*RIGIDWALL_PLANAR_FINITE_ID" == LineSegmentSet) || ("*ELEMENT_BEAM" == LineSegmentSet)
-			|| ("*ELEMENT_SHELL" == LineSegmentSet) || ("*ELEMENT_SOLID" == LineSegmentSet) || ("*SET_NODE_LIST" == LineSegmentSet) || ("*DEFINE_CURVE" == LineSegmentSet) || ("*SET_PART_LIST" == LineSegmentSet)
-			|| ("*END" == LineSegmentSet))
-		{
-			SegmentSetFile1.close();
-		}
-	}
-
-	ifstream InSegmentSet2;
-	InSegmentSet2.open(SegmentSetFile1String);
-	SegmentSetFile2String = "SegmentSet.txt";
-	string LineSegmentSet2;
-	int panduanneirongSegmentSet = 0;
-	while (getline(InSegmentSet2, LineSegmentSet2))
-	{
-		ofstream SegmentSetFile2(SegmentSetFile2String);
-		if (' ' == LineSegmentSet2[0])
-		{
-			LineSegmentSet2.erase(50, 4);
-			SegmentSetFile2 << LineSegmentSet2 << flush;
-			panduanneirongSegmentSet = 1;
-		}
-		if ((panduanneirongSegmentSet == 1) && (1 == isFileExists(SegmentSetFile2String)))
-		{
-			Matrix<int, Dynamic, Dynamic>SegmentSet = LinearMSTMMSolver::openDataInt(SegmentSetFile2String);
-			pSegment->SetSegmentId = SegmentSet(0,0);
-			pSegment->SetSegmentNodeID = SegmentSet;
-			(void)ls->AllSetSegment.insert(make_pair(pSegment->SetSegmentId, (*pSegment)));
-		};
-	}
-	SegmentSetFile2.close();
-	InSegmentSet2.close();
-	delete pSegment;
-	pSegment = nullptr;
-	//cout << ls->AllSetSegment[2].SetSegmentNodeID << endl;
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     In.open(fileToOpen);
     while (getline(In, line))
@@ -1814,173 +1652,63 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     RigidWallFile2.close();
     InRigidwall.close();
 
+    //SegmentSet test
+	lsmap* ls = new lsmap;
+	SetSegmentNode* pSegment = new SetSegmentNode;
+	InSegmentSet.open(fileToOpen);
+	while (getline(InSegmentSet, LineSegmentSet))
+	{
+		//主面节点
+		if ("*SET_SEGMENT" == LineSegmentSet)
+		{
+			SetSegment = LineSegmentSet.erase(0, 1);
+			SegmentSetFile1String = getFileName(LineSegmentSet);
+			SegmentSetFile1.open(SegmentSetFile1String);
+			SegmentSetFile1.clear();
+			SegmentSetFile1 << endl;
+		}
+		if (SegmentSetFile1.is_open())
+		{
+			if (' ' == LineSegmentSet[0])
+			{
+				SegmentSetFile1 << LineSegmentSet << " ";
+			}
+		}
+		if (("*CONTACT_AUTOMATIC_NODES_TO_SURFACE_ID" == LineSegmentSet) || ("*CONTACT_NODES_TO_SURFACE_ID" == LineSegmentSet) || ("*RIGIDWALL_PLANAR_FINITE_ID" == LineSegmentSet) || ("*ELEMENT_BEAM" == LineSegmentSet)
+			|| ("*ELEMENT_SHELL" == LineSegmentSet) || ("*ELEMENT_SOLID" == LineSegmentSet) || ("*SET_NODE_LIST" == LineSegmentSet) || ("*DEFINE_CURVE" == LineSegmentSet) || ("*SET_PART_LIST" == LineSegmentSet)
+			|| ("*END" == LineSegmentSet))
+		{
+			SegmentSetFile1.close();
+		}
+	}
+	InSegmentSet.close();
+	ifstream InSegmentSet2;
+	InSegmentSet2.open(SegmentSetFile1String);
+	SegmentSetFile2String = "SegmentSet.txt";
+	string LineSegmentSet2;
+	int panduanneirongSegmentSet = 0;
+	while (getline(InSegmentSet2, LineSegmentSet2))
+	{
+		ofstream SegmentSetFile2(SegmentSetFile2String);
+		if (' ' == LineSegmentSet2[0])
+		{
+			LineSegmentSet2.erase(50, 4);
+			SegmentSetFile2 << LineSegmentSet2 << flush;
+			panduanneirongSegmentSet = 1;
+		}
+		if ((panduanneirongSegmentSet == 1) && (1 == isFileExists(SegmentSetFile2String)))
+		{
+			Matrix<int, Dynamic, Dynamic>SegmentSet = LinearMSTMMSolver::openDataInt(SegmentSetFile2String);
+			pSegment->SetSegmentId = SegmentSet(0, 0);
+			pSegment->SetSegmentNodeID = SegmentSet;
+			(void)ls->AllSetSegment.insert(make_pair(pSegment->SetSegmentId, (*pSegment)));
+		};
+	}
+	InSegmentSet2.close();
+	delete pSegment;
+	pSegment = nullptr;
 
 	SetNode* pSetNode = new SetNode;
-	
-
-    //SegmentSet 文件 信息
- //   InSegmentSet.open(fileToOpen);
- //   while (getline(InSegmentSet, LineSegmentSet))
- //   {
- //       //主面节点
- //       if ( "*SET_SEGMENT"==LineSegmentSet )
- //       {
- //           SetSegment = LineSegmentSet.erase(0, 1);
-	//		PanduanSegmentSetNode = 1;
-
- //       }
- //       if ( (1==PanduanSegmentSetNode)&& ("         1                                        MECH      "==LineSegmentSet) )
- //       {
-	//		LineSegmentSet=LineSegmentSet.erase(0, 9);
-	//		LineSegmentSet = LineSegmentSet.erase(1,50);
- //           SegmentSetId1 = LineSegmentSet.at(0) - '0';
- //           SegmentSetFile1String = getFileName2(SetSegment, LineSegmentSet);
- //           SegmentSetFile1.open(SegmentSetFile1String);
- //       }
- //       if (SegmentSetFile1.is_open())
- //       {
- //           getdigit3(SegmentSetFile1, LineSegmentSet, 19);
- //       }
- //       if ( (1 == PanduanSegmentSetNode )&&  ("         2                                        MECH      "==LineSegmentSet ))
- //       {
- //           SegmentSetFile1.close();
-	//		LineSegmentSet = LineSegmentSet.erase(0, 9);
-	//		LineSegmentSet = LineSegmentSet.erase(1,50);
- //           SegmentSetId2 = LineSegmentSet.at(0) - '0';
- //           SegmentSetFile2String = getFileName2(SetSegment, LineSegmentSet);
- //           SegmentSetFile2.open(SegmentSetFile2String);
- //       }
- //       if (SegmentSetFile2.is_open())
- //       {
- //           getdigit3(SegmentSetFile2, LineSegmentSet, 19);
- //       }
-	//	if ( (1==PanduanSegmentSetNode ) && ( "         3                                        MECH      "==LineSegmentSet) )
-	//	{
-	//		SegmentSetFile1.close();
-	//		SegmentSetFile2.close();
-
-	//		LineSegmentSet = LineSegmentSet.erase(0, 9);
-	//		LineSegmentSet = LineSegmentSet.erase(1, 50);
-	//		SegmentSetId3 = LineSegmentSet.at(0) - '0';
-	//		SegmentSetFile3String = getFileName2(SetSegment, LineSegmentSet);
-	//		SegmentSetFile3.open(SegmentSetFile3String);
-	//	}
-	//	if (SegmentSetFile3.is_open())
-	//	{
-	//		getdigit3(SegmentSetFile3, LineSegmentSet, 19);
-	//	}
-	//	if (( 1==PanduanSegmentSetNode  )&& ( "         4                                        MECH      "==LineSegmentSet) )
-	//	{
-	//		SegmentSetFile1.close();
-	//		SegmentSetFile3.close();
-	//		SegmentSetFile2.close();
-	//		LineSegmentSet = LineSegmentSet.erase(0, 9);
-	//		LineSegmentSet = LineSegmentSet.erase(1, 50);
-	//		SegmentSetId4 = LineSegmentSet.at(0) - '0';
-	//		SegmentSetFile4String = getFileName2(SetSegment, LineSegmentSet);
-	//		SegmentSetFile4.open(SegmentSetFile4String);
-	//	}
-	//	if (SegmentSetFile4.is_open())
-	//	{
-	//		getdigit3(SegmentSetFile4, LineSegmentSet, 19);
-	//	}
-	//	if (( 1== PanduanSegmentSetNode) &&  ("         5                                        MECH      " ==LineSegmentSet))
-	//	{
-	//		SegmentSetFile1.close();
-	//		SegmentSetFile3.close();
-	//		SegmentSetFile2.close();
-	//		SegmentSetFile4.close();
-
-	//		LineSegmentSet = LineSegmentSet.erase(0, 9);
-	//		LineSegmentSet = LineSegmentSet.erase(1, 50);
-	//		SegmentSetId5 = LineSegmentSet.at(0) - '0';
-	//		SegmentSetFile5String = getFileName2(SetSegment, LineSegmentSet);
-	//		SegmentSetFile5.open(SegmentSetFile5String);
-	//	}
-	//	if (SegmentSetFile5.is_open())
-	//	{
-	//		getdigit3(SegmentSetFile5, LineSegmentSet, 19);
-	//	}
- //       if (( 1==PanduanSegmentSetNode)  &&  ("         6                                        MECH      "== LineSegmentSet))
-	//	{
-	//		SegmentSetFile1.close();
-	//		SegmentSetFile3.close();
-	//		SegmentSetFile2.close();
-	//		SegmentSetFile4.close();
-	//		SegmentSetFile5.close();
-	//		LineSegmentSet = LineSegmentSet.erase(0, 9);
-	//		LineSegmentSet = LineSegmentSet.erase(1, 50);
-	//		SegmentSetId6 = LineSegmentSet.at(0) - '0';
-	//		SegmentSetFile6String = getFileName2(SetSegment, LineSegmentSet);
-	//		SegmentSetFile6.open(SegmentSetFile6String);
-	//	}
-	//	if (SegmentSetFile6.is_open())
-	//	{
-	//		getdigit3(SegmentSetFile6, LineSegmentSet, 19);
-	//	}
- //       if (("*CONTACT_AUTOMATIC_NODES_TO_SURFACE_ID" ==LineSegmentSet) ||( "*CONTACT_NODES_TO_SURFACE_ID"==LineSegmentSet ) || ("*RIGIDWALL_PLANAR_FINITE_ID" == LineSegmentSet) || ("*ELEMENT_BEAM" == LineSegmentSet)
-	//		|| ("*ELEMENT_SHELL" == LineSegmentSet) || ("*ELEMENT_SOLID" == LineSegmentSet) || ("*SET_NODE_LIST" == LineSegmentSet) || ("*DEFINE_CURVE" == LineSegmentSet) || ("*SET_PART_LIST" == LineSegmentSet)
-	//		|| ("*END" == LineSegmentSet))
- //       {
-	//		SegmentSetFile1.close();
-	//		SegmentSetFile2.close();
-	//		SegmentSetFile3.close();
-	//		SegmentSetFile4.close();
-	//		SegmentSetFile6.close();
-	//		SegmentSetFile5.close();
- //           
-	//		//LineSegmentSet = nullptr;
-	//		PanduanSegmentSetNode = 0;
- //       }
- //   }
-	//InSegmentSet.close();
-	//
-
-	//if (1 == isFileExists(SegmentSetFile1String))
-	//{
-	//	Matrix<int, Dynamic, Dynamic>SegmentSet1 = LinearMSTMMSolver::openDataInt(SegmentSetFile1String);
-	//	pSegment->SetSegmentId = SegmentSetId1;
-	//	pSegment->SetSegmentNodeID = SegmentSet1;
-	//	(void)ls->AllSetSegment.insert(make_pair(pSegment->SetSegmentId, (*pSegment)));
-	//};
-	//if (1 == isFileExists(SegmentSetFile2String))
-	//{
-	//	Matrix<int, Dynamic, Dynamic>SegmentSet2 = LinearMSTMMSolver::openDataInt(SegmentSetFile2String);
-	//	pSegment->SetSegmentId = SegmentSetId2;
-	//	pSegment->SetSegmentNodeID = SegmentSet2;
-	//	(void)ls->AllSetSegment.insert(make_pair(pSegment->SetSegmentId, (*pSegment)));
-	//};
-	//if (1 == isFileExists(SegmentSetFile3String))
-	//{
-	//	Matrix<int, Dynamic, Dynamic>SegmentSet3 = LinearMSTMMSolver::openDataInt(SegmentSetFile3String);
-	//	pSegment->SetSegmentId = SegmentSetId3;
-	//	pSegment->SetSegmentNodeID = SegmentSet3;
-	//	(void)ls->AllSetSegment.insert(make_pair(pSegment->SetSegmentId, (*pSegment)));
-	//};
-	//if (1 == isFileExists(SegmentSetFile4String))
-	//{
-	//	Matrix<int, Dynamic, Dynamic>SegmentSet4 = LinearMSTMMSolver::openDataInt(SegmentSetFile4String);
-	//	pSegment->SetSegmentId = SegmentSetId4;
-	//	pSegment->SetSegmentNodeID = SegmentSet4;
-	//	(void)ls->AllSetSegment.insert(make_pair(pSegment->SetSegmentId, (*pSegment)));
-	//};
-	//if (1 == isFileExists(SegmentSetFile5String))
-	//{
-	//	Matrix<int, Dynamic, Dynamic>SegmentSet5 = LinearMSTMMSolver::openDataInt(SegmentSetFile5String);
-	//	pSegment->SetSegmentId = SegmentSetId5;
-	//	pSegment->SetSegmentNodeID = SegmentSet5;
-	//	(void)ls->AllSetSegment.insert(make_pair(pSegment->SetSegmentId, (*pSegment)));
-	//};
-	//if (1 == isFileExists(SegmentSetFile6String))
-	//{
-	//	Matrix<int, Dynamic, Dynamic>SegmentSet6 = LinearMSTMMSolver::openDataInt(SegmentSetFile6String);
-	//	pSegment->SetSegmentId = SegmentSetId6;
-	//	pSegment->SetSegmentNodeID = SegmentSet6;
-	//	(void)ls->AllSetSegment.insert(make_pair(pSegment->SetSegmentId, (*pSegment)));
-	//};
-	//delete pSegment;
-	//pSegment = nullptr;
-
 	//SetNode信息  
 	InSetNode.open(fileToOpen);
 	while (getline(InSetNode, LineSetNode))
@@ -2035,6 +1763,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	delete pSetNode;
 	pSetNode = nullptr;
 	//cout << ls->AllSetNode[4].SetNodeID << endl;
+	
 	//FORCE
 	InForce.open(fileToOpen);
 	while (getline(InForce, LineForce))
@@ -3666,11 +3395,6 @@ InputFileProject::InputFileProject()
 	 SetNodeId1 = 0;
 	 SetNodeId2 = 0;
 	 SegmentSetId1 = 0;
-	 SegmentSetId2 = 0;
-	 SegmentSetId3 = 0;
-	 SegmentSetId4 = 0;
-	 SegmentSetId5 = 0;
-	 SegmentSetId6 = 0;
 	 PanduanSetNode=0;
 	 PanduanSegmentSetNode=0;
 	 AdditionalDigit = "1";
