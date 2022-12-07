@@ -1,7 +1,6 @@
 #include "InputFile.h"
 #include"csv_MatrixXd_IO.h"
-using namespace Eigen;
-using namespace std;
+
 
 //读人体模型文件函数
 int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllDate* IADate)
@@ -206,12 +205,8 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 	InSegmentSet2.close();
 	delete pMBSetSegmentNode;
 	pMBSetSegmentNode = nullptr;
-
-	///分割结束
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	MBSetNode* pMBSetNode = new MBSetNode;
-
 	//NODE
 	if (1 == isFileExists(MBNodeFileString))
 	{
@@ -279,6 +274,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 	delete pMBSetNode;
 	pMBSetNode = nullptr;
 	
+	//开始读入数据
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	// 刚体信息
@@ -456,6 +452,20 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 
 	delete mbls;
 	mbls = nullptr;
+
+	//删除文件
+	//remove(MBContactFileString.c_str());
+	//remove(MBNodeFileString.c_str());
+	//remove(RigidBodyFileString.c_str());
+	//remove(ColumHingeFileString.c_str());
+	//remove(BallJointFileString.c_str());
+	//remove(MBContactFileString2.c_str());
+	//remove(ConnectNodeFileString.c_str());
+	//remove(SegmentSetFile2String.c_str());
+	//remove(SetNodeFile2String.c_str());
+	//remove(SegmentSetFile1String.c_str());
+	//remove(SetNodeFile1String.c_str());
+
 	return 1;
 };
 
@@ -466,6 +476,12 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     In.open(fileToOpen);
     while (getline(In, line))
     {
+		//跳过注释行
+		if (line[0] == '$')
+		{
+			continue;
+		}
+
         //*LOAD_BODY_PARTS
         if ("*LOAD_BODY_PARTS" ==line )
         {
@@ -526,7 +542,6 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
         if ( "*LOAD_BODY_Y"== line)
         {
             LoadBodyZFile.close();
-
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
             HourglassFile.close();
@@ -551,17 +566,17 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			line = line.erase(0, 1);
             LoadBodyYFileString = getFileName(line);
             LoadBodyYFile.open(LoadBodyYFileString);
+			continue;
         }
-        if (LoadBodyYFile.is_open())
+        if (LoadBodyYFile.is_open() && (line[0] != '*'))
         {
-            getdigit2(LoadBodyYFile, line);
+			LoadBodyYFile << line << endl;
         };
 
         //*LOAD_BODY_Z
 		if ( "*LOAD_BODY_Z"==line )
 		{
 			LoadBodyYFile.close();
-
 			WallSlaveNodeFile.close();
 			BoundarySetFile.close();
 			HourglassFile.close();
@@ -586,17 +601,17 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			line=line.erase(0, 1);
             LoadBodyZFileString = getFileName(line);
             LoadBodyZFile.open(LoadBodyZFileString);
+			continue;
 		}
-		if (LoadBodyZFile.is_open())
+		if (LoadBodyZFile.is_open() && (line[0] != '*'))
 		{
-			getdigit2(LoadBodyZFile, line);
+			LoadBodyZFile << line << endl;
 		};
 
         //*DEFINE_CURVE
         if ( "*DEFINE_CURVE"==line )
 		{
 			LoadBodyYFile.close();
-
             LoadBodyZFile.close();
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
@@ -622,19 +637,18 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			line = line.erase(0, 1);
             DefineCurveFileString = getFileName(line);
             DefineCurveFile.open(DefineCurveFileString);
+			continue;
         }
-        if (DefineCurveFile.is_open())
+        if (DefineCurveFile.is_open() && (line[0] != '*'))
         {
-            getdigit2(DefineCurveFile, line);
+			DefineCurveFile << line << endl;
         };
 
         //*LOAD_NODE_SET
         if ( "*LOAD_NODE_SET"==line )
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
             HourglassFile.close();
@@ -659,19 +673,18 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			line = line.erase(0, 1);
             LoadNodeFileString = getFileName(line);
             LoadNodeFile.open(LoadNodeFileString);
+			continue;
         }
-        if (LoadNodeFile.is_open())
+        if (LoadNodeFile.is_open() && (line[0] != '*'))
         {
-            getdigit2(LoadNodeFile, line);
+			LoadNodeFile << line << endl;
         };
 
         //计算时长
         if ( "*CONTROL_TERMINATION"==line )
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
             HourglassFile.close();
@@ -696,19 +709,18 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			line = line.erase(0, 1);
             ComputingTimeFileString = getFileName(line);
             ComputingTimeFile.open(ComputingTimeFileString);
+			continue;
         }
-        if (ComputingTimeFile.is_open())
+        if (ComputingTimeFile.is_open() && (line[0] != '*'))
         {
-            getdigit2(ComputingTimeFile, line);
+			ComputingTimeFile << line << endl;
         };
 
         //步长
         if (  "*CONTROL_TIMESTEP"== line)
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
             HourglassFile.close();
@@ -733,18 +745,17 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			line = line.erase(0, 1);
             TimeIncrementFileString = getFileName(line);
             TimeIncrementFile.open(getFileName(line));
+			continue;
         }
-        if (TimeIncrementFile.is_open())
+        if (TimeIncrementFile.is_open() && (line[0] != '*'))
         {
-            getdigit2(TimeIncrementFile, line);
+			TimeIncrementFile<< line << endl;
         };
 
 		if ( "*DATABASE_BINARY_D3PLOT"==line )
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
 			WallSlaveNodeFile.close();
 			BoundarySetFile.close();
 			HourglassFile.close();
@@ -833,9 +844,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
         if ( "*NODE"==line )
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
             HourglassFile.close();
@@ -862,20 +871,18 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             NodeFileString = getFileName(line);
             NodeFile.open(NodeFileString);
             NodeFile.clear();
-            // continue;
+            continue;
         }
-        if (NodeFile.is_open())
+        if (NodeFile.is_open() && (line[0] != '*'))
         {
-            getdigit2(NodeFile, line);
+			NodeFile << line << endl;
         }
 
         //材料部分最终输出文件见最下方，InputElaFile，InputPlaFile。
         if ( "*MAT_ELASTIC"==line )
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
             HourglassFile.close();
@@ -903,24 +910,19 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             ElaFileString = getFileName(line);
             ElaFile.open(getFileName(line));
             ElaFile.clear();
-            //continue;
+            continue;
         }
-        if (ElaFile.is_open())
+        if (ElaFile.is_open() && (line[0] != '*'))
         {
-            if (  (' '==line[0] )&& (isdigit(line[9])))
-            {
                 line = line.insert(10, " ");
 				line = line.insert(21, " ");
                 ElaFile << line << endl;
-            }
         }
 
         if ( "*MAT_PLASTIC_KINEMATIC"==line )
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
             HourglassFile.close();
@@ -947,24 +949,19 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             PlaFileString = getFileName(line);
             PlaFile.open(getFileName(line));
             PlaFile.clear();
-            //continue;
+            continue;
         }
-        if (PlaFile.is_open())
+        if (PlaFile.is_open() && (line[0] != '*'))
         {
-            if ( (' '==line[0] ) && (isdigit(line[9])))
-            {
                 line = line.insert(10, " ");
                 PlaFile << line << endl;
-            }
         }
 
         //Part
         if ( "*PART"==line )
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
             HourglassFile.close();
@@ -991,24 +988,19 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			line = line.erase(0, 1);
             PartFileString = getFileName(line);
             PartFile.open(getFileName(line));
-            //continue;
+            continue;
         }
-        if (PartFile.is_open())
+        if (PartFile.is_open()&&(' ' == line[0]))
         {
-            if (' ' ==line[0] )
-            {
 				line = line.erase(49, 2);
                 PartFile << line << endl;
-            }
         };
 
         //沙漏
         if ( "*HOURGLASS"==line )
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
             WallSlaveNodeFile.close();
             SecSolidFile.close();
             BoundarySetFile.close();
@@ -1035,20 +1027,18 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			line = line.erase(0, 1);
             HourglassFileString = getFileName(line);
             HourglassFile.open(getFileName(line));
-            //continue;
+            continue;
         }
-        if (HourglassFile.is_open())
+        if (HourglassFile.is_open() && (line[0] != '*'))
         {
-            getdigit2(HourglassFile, line);
+			HourglassFile << line << endl;
         }
 
         //初始速度*INITIAL_VELOCITY_GENERATION
         if ( "*INITIAL_VELOCITY_GENERATION"== line)
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
             HourglassFile.close();
@@ -1075,22 +1065,18 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			line = line.erase(0, 1);
             NodeVelocityFileString = getFileName(line);
             NodeVelocityFile.open(getFileName(line));
+			continue;
         }
-        if (NodeVelocityFile.is_open())
+        if (NodeVelocityFile.is_open() && (line[0] != '*'))
         {
-            if (  ' '==line[0])
-            {
-                NodeVelocityFile << line << " ";
-            }
+             NodeVelocityFile << line << " ";
         }
 
         //*BOUNDARY_SPC_SET
         if ( "*BOUNDARY_SPC_SET"==line )
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
             WallSlaveNodeFile.close();
             RigidWallFile.close();
             ComputingTimeFile.close();
@@ -1115,19 +1101,17 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			line = line.erase(0, 1);
             BoundarySetFileString = getFileName(line);
             BoundarySetFile.open(getFileName(line));
-            //continue;
+            continue;
         }
-        if (BoundarySetFile.is_open())
+        if (BoundarySetFile.is_open() && (line[0] != '*'))
         {
-            getdigit2(BoundarySetFile, line);
+			BoundarySetFile << line << endl;
         }
 
         if ( "*SET_SEGMENT"==line )
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
 			WallSlaveNodeFile.close();
 			BoundarySetFile.close();
 			HourglassFile.close();
@@ -1158,9 +1142,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
         if ( "*CONTACT_AUTOMATIC_NODES_TO_SURFACE_ID"==line  ||  "*CONTACT_NODES_TO_SURFACE_ID"==line )
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
             HourglassFile.close();
@@ -1190,23 +1172,18 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             ContactFile.open(ContactFileString2);
             ContactFile.clear();
             ContactFile << endl;
-            //  continue;
+            continue;
         }
-        if (ContactFile.is_open())
+        if (ContactFile.is_open() && (line[0] != '*'))
         {
-            if ( ' ' ==line[0])
-            {
                 ContactFile << line << " ";
-            }
         }
 
         //实体单元   
         if ( "*ELEMENT_SOLID"==line )
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
             HourglassFile.close();
@@ -1234,20 +1211,18 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             EleSoFileString = getFileName(line);
             EleSoFile.open(getFileName(line));
 			EleSoFile.clear();
-            // continue;
+            continue;
         }
-        if (EleSoFile.is_open())
+        if (EleSoFile.is_open() && (line[0] != '*'))
         {
-            getdigit2(EleSoFile, line);
+			EleSoFile << line << endl;
         }
 
         //从面节点
         if ( "*SET_NODE_LIST"== line)
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
             BoundarySetFile.close();
             HourglassFile.close();
             ComputingTimeFile.close();
@@ -1275,9 +1250,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
         if (  "*BOUNDARY_SPC_NODE"==line)
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
             HourglassFile.close();
@@ -1304,18 +1277,17 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			line = line.erase(0, 1);
             BoundaryFileString = getFileName(line);
             BoundaryFile.open(getFileName(line));
-            // continue;
+            continue;
         }
-        if (BoundaryFile.is_open())
+        if (BoundaryFile.is_open() && (line[0] != '*'))
         {
-            getdigit2(BoundaryFile, line);
+			BoundaryFile << line << endl;
         }
 
         //刚性墙
         if ( "*RIGIDWALL_PLANAR_FINITE_ID"== line)
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
@@ -1346,24 +1318,20 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             RigidWallFile.open(RigidWallFileString2);
             RigidWallFile.clear();
             RigidWallFile << endl;
+			continue;
         }
-        if (RigidWallFile.is_open())
+        if (RigidWallFile.is_open() && (line[0] != '*'))
         {
-            if ( ' ' ==line[0])
-            {
                 line = line.insert(20, " ");
                 line = line.insert(51, " ");
                 RigidWallFile << line << " ";
-            }
         }
 
         //梁单元
         if ("*ELEMENT_BEAM" == line)
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
             HourglassFile.close();
@@ -1390,20 +1358,18 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			line = line.erase(0, 1);
             EleBFileString = getFileName(line);
             EleBFile.open(getFileName(line));
-            // continue;
+            continue;
         }
-        if (EleBFile.is_open())
+        if (EleBFile.is_open() && (line[0] != '*'))
         {
-            getdigit2(EleBFile, line);
+			EleBFile << line << endl;
         }
 
         //壳单元
         if ( "*ELEMENT_SHELL"==line )
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
             HourglassFile.close();
@@ -1431,20 +1397,18 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             EleShFileString = getFileName(line);
             EleShFile.open(getFileName(line));
             EleShFile.clear();
-            // continue;
+            continue;
         }
-        if (EleShFile.is_open())
+        if (EleShFile.is_open() && (line[0] != '*'))
         {
-            getdigit2(EleShFile, line);
+			EleShFile << line << endl;
         }
 
         //SECTION梁
         if ( "*SECTION_BEAM"==line )
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
             HourglassFile.close();
@@ -1473,22 +1437,17 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             SecBeamFile.open(getFileName(line));
             continue;
         }
-        if (SecBeamFile.is_open())
+        if (SecBeamFile.is_open() && (line[0] != '*'))
         {
-            if ( ' '==line[0]  || isalpha(line[0]) || isdigit(line[0]))
-            {
                 line = line.insert(0, AdditionalDigit);
                 SecBeamFile << line << " ";
-            }
         }
 
         //SECTION壳
         if ( "*SECTION_SHELL"==line )
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
-
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
             HourglassFile.close();
@@ -1518,21 +1477,17 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             SecShellFile.open(SecShellFileString2);
             SecShellFile.clear();
             SecShellFile << endl;
-            // continue;
+            continue;
         }
-        if (SecShellFile.is_open())
+        if (SecShellFile.is_open() && (line[0] != '*'))
         {
-            if ( ' '==line[0] )
-            {
                 SecShellFile << line << " ";
-            }
         }
 
         //SECTION实体
         if ( "*SECTION_SOLID"==line )
 		{
 			LoadBodyYFile.close();
-
 			LoadBodyZFile.close();
             WallSlaveNodeFile.close();
             BoundarySetFile.close();
@@ -1560,11 +1515,11 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			line = line.erase(0, 1);
             SecSolidFileString = getFileName(line);
             SecSolidFile.open(getFileName(line));
-            //continue;
+            continue;
         }
-        if (SecSolidFile.is_open())
+        if (SecSolidFile.is_open() && (line[0] != '*'))
         {
-            getdigit2(SecSolidFile, line);
+			SecSolidFile << line << endl;
         };
         if ( "*END"==line )
 		{
@@ -1594,11 +1549,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             SetFile.close();
             LoadNodeFile.close();
             DefineCurveFile.close();
-			PanduanSecondpart = 1;
         }
-
-
-
     }
     In.close();
 
@@ -1658,6 +1609,11 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	InSegmentSet.open(fileToOpen);
 	while (getline(InSegmentSet, LineSegmentSet))
 	{
+		//跳过注释行
+		if (LineSegmentSet[0] == '$')
+		{
+			continue;
+		}
 		//主面节点
 		if ("*SET_SEGMENT" == LineSegmentSet)
 		{
@@ -1666,13 +1622,11 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			SegmentSetFile1.open(SegmentSetFile1String);
 			SegmentSetFile1.clear();
 			SegmentSetFile1 << endl;
+			continue;
 		}
-		if (SegmentSetFile1.is_open())
+		if (SegmentSetFile1.is_open() && (LineSegmentSet[0] != '*'))
 		{
-			if (' ' == LineSegmentSet[0])
-			{
 				SegmentSetFile1 << LineSegmentSet << " ";
-			}
 		}
 		if (("*CONTACT_AUTOMATIC_NODES_TO_SURFACE_ID" == LineSegmentSet) || ("*CONTACT_NODES_TO_SURFACE_ID" == LineSegmentSet) || ("*RIGIDWALL_PLANAR_FINITE_ID" == LineSegmentSet) || ("*ELEMENT_BEAM" == LineSegmentSet)
 			|| ("*ELEMENT_SHELL" == LineSegmentSet) || ("*ELEMENT_SOLID" == LineSegmentSet) || ("*SET_NODE_LIST" == LineSegmentSet) || ("*DEFINE_CURVE" == LineSegmentSet) || ("*SET_PART_LIST" == LineSegmentSet)
@@ -1708,11 +1662,17 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	delete pSegment;
 	pSegment = nullptr;
 
-	SetNode* pSetNode = new SetNode;
+
 	//SetNode信息  
+	SetNode* pSetNode = new SetNode;
 	InSetNode.open(fileToOpen);
 	while (getline(InSetNode, LineSetNode))
 	{
+		//跳过注释行
+		if (LineSetNode[0] == '$')
+		{
+			continue;
+		}
 		if ("*SET_NODE_LIST" == LineSetNode)
 		{
 			Setnodelist = LineSetNode.erase(0, 1);
@@ -1721,13 +1681,11 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			SetNodeFile1.clear();
 			SetNodeFile1 << endl;
 			PanduanSetNode = 1;
+			continue;
 		}
-		if (SetNodeFile1.is_open())
+		if (SetNodeFile1.is_open() && (LineSetNode[0] != '*'))
 		{
-			if (' ' == LineSetNode[0])
-			{
 				SetNodeFile1 << LineSetNode << " ";
-			}
 		}
 		if (("*END" == LineSetNode) || ("*DEFINE_CURVE" == LineSetNode) || ("*BOUNDARY_SPC_NODE" == LineSetNode) || ("*SET_PART_LIST" == LineSetNode) || ("*CONTACT_NODES_TO_SURFACE_ID" == LineSetNode))
 		{
@@ -1819,9 +1777,6 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 		
 	}
 	InForce.close();
-
-     //分割结束，开始读写///////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
     
     //LoadBodyZ信息
 	if (1 ==isFileExists(LoadBodyZFileString) )
@@ -1947,7 +1902,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     }
     //cout << (*ls).AllVelocity[2].XVelocity << endl;
 
-    ////写入inputdate.h//////////////////////////////////////
+    ////开始写入inputdate.h//////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     InputAllDate* IAD = new InputAllDate;
 
@@ -2029,7 +1984,6 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 
     };
 
-
     // 梁单元信息
     if ( 1==isFileExists(EleBFileString) )
     {
@@ -2059,8 +2013,6 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
         InEB = nullptr;
 
     };
-
-
 
     //设置初始速度，节点集
     map<int, int> NodeNumber;
@@ -2205,7 +2157,6 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 
         //cout << (*IAD).InputAllMaterial[7].InitialYieldStress;
     }
-
 
     //contact 信息
 	if ( 1==isFileExists(ContactFileString) )
@@ -3334,58 +3285,40 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	delete ls;
     ls = nullptr;
 
-
     //删除文件
-  /*  remove(DefineCurveFileString.c_str());
-    remove(HourglassFileString.c_str());
-    remove(SecBeamFileString.c_str());
-    remove(EleShFileString.c_str());
-    remove(EleBFileString.c_str());
-    remove(BoundaryFileString.c_str());
-    remove(SetFileString.c_str());
-    remove(SlaveNodeFileString.c_str());
-    remove(EleSoFileString.c_str());
-    remove(MasterNodeFileString.c_str());
-    remove(NodeVelocityFileString.c_str());
-    remove(SecSolidFileString.c_str());
-    remove(PartFileString.c_str());
-    remove(NodeFileString.c_str());
-    remove(TimeIncrementFileString.c_str());
-    remove(ComputingTimeFileString.c_str());
-    remove(PlaFileString.c_str());
-    remove(ElaFileString.c_str());
-    remove(BoundarySetFileString.c_str());
-    remove(WallSlaveNodeFileString.c_str());
-    remove(LoadNodeFileString.c_str());
-
+   /* remove(DefineCurveFileString.c_str());
+	remove(HourglassFileString.c_str());
+	remove(SecBeamFileString.c_str());
+	remove(EleShFileString.c_str());
+	remove(EleBFileString.c_str());
+	remove(BoundaryFileString.c_str());
+	remove(SetFileString.c_str());
+	remove(SlaveNodeFileString.c_str());
+	remove(EleSoFileString.c_str());
+	remove(MasterNodeFileString.c_str());
+	remove(NodeVelocityFileString.c_str());
+	remove(SecSolidFileString.c_str());
+	remove(PartFileString.c_str());
+	remove(NodeFileString.c_str());
+	remove(TimeIncrementFileString.c_str());
+	remove(ComputingTimeFileString.c_str());
+	remove(PlaFileString.c_str());
+	remove(ElaFileString.c_str());
+	remove(BoundarySetFileString.c_str());
+	remove(WallSlaveNodeFileString.c_str());
+	remove(LoadNodeFileString.c_str());
 	remove(SetNodeFile1String.c_str());
 	remove(SetNodeFile2String.c_str());
-	remove(SetNodeFile3String.c_str());
-	remove(SetNodeFile4String.c_str());
-	remove(SetNodeFile5String.c_str());
-	remove(SetNodeFile6String.c_str());
-	remove(SetNodeFile7String.c_str());
-	remove(SetNodeFile8String.c_str());
-	remove(SetNodeFile9String.c_str());
-	remove(SetNodeFile10String.c_str());
 	remove(SegmentSetFile1String.c_str());
 	remove(SegmentSetFile2String.c_str());
-	remove(SegmentSetFile3String.c_str());
-	remove(SegmentSetFile4String.c_str());
-	remove(SegmentSetFile5String.c_str());
-	remove(SegmentSetFile6String.c_str());
 	remove(LoadBodyYFileString.c_str());
 	remove(LoadBodyZFileString.c_str());
-
-
-    remove(ContactFileString2.c_str());
-    remove(SecShellFileString2.c_str());
+	remove(ContactFileString2.c_str());
+	remove(SecShellFileString2.c_str());
 	remove(RigidWallFileString2.c_str());
 	remove(SecShellFileString.c_str());
 	remove(RigidWallFileString.c_str());
 	remove(ContactFileString.c_str());*/
-
-
 
     return IAD;
 }
@@ -3399,6 +3332,7 @@ InputFileProject::InputFileProject()
 	 PanduanSegmentSetNode=0;
 	 AdditionalDigit = "1";
 	 PanduanSecondpart = 0;
+	 Multibody = "MB";
 };
 
 Part::Part()

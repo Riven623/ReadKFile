@@ -1,6 +1,7 @@
 
 #pragma comment(lib,"Shlwapi.lib")
 #include "InputFile.h"
+#include "hdf.h"
 
 using namespace std;
 using namespace Eigen;
@@ -8,6 +9,8 @@ using namespace Eigen;
 
 int main() 
 {
+	 //hdfread("BIGcar_1.h5",157774,87);
+	
 	InputFileProject* pInputFile = new InputFileProject;
 	InputAllDate* IAD = new InputAllDate;
 
@@ -15,12 +18,12 @@ int main()
 
 	pInputFile->inputMBFunction("D:\\Cfile\\OriginalInputFile\\RenTi1205.txt", IAD);
 
-	for (auto& it : IAD->InputAllFEMtoMBContact[8].MasterContactNode)
-	{
+	//for (auto& it : IAD->InputAllContact[3].MasterContactNode)
+	//{
 
-		cout << it.second.transpose() << endl;
-	}
-	
+	//	cout << it.second.transpose() << endl;
+	//}
+
 
 	/*for (auto& it : IAD->inputAllRigidBody[17].MeshCoor)
 	{
@@ -29,6 +32,10 @@ int main()
 
 	delete IAD;
 	delete pInputFile;
+	IAD = nullptr;
+	pInputFile = nullptr;
 
-
+	return 1;
+	
 }
+

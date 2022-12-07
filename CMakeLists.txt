@@ -13,7 +13,7 @@ SET(Header_Files
 	 IClude.h
 	 InputDate.h
 	 InputFile.h
-	 
+	 hdf.h
 )
 SOURCE_GROUP("Headers" FILES ${Header_Files})
 

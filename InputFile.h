@@ -2,7 +2,6 @@
 #include "IClude.h"
 #include"InputDate.h"
 
-
 //写入数据函数(内联)
 inline void getdigit3(ofstream& ObjectiveFile, const string inputLine, const int lineID)
 {
@@ -202,7 +201,7 @@ public:
 	//人体模型
 	ifstream InMB;
 	string LineMB;
-	string Multibody = "MB";
+	string Multibody ;
 
 	ofstream RigidBodyFile;
 	ofstream ColumHingeFile;

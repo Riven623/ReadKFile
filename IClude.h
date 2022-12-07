@@ -13,7 +13,7 @@
 #include <string>
 #include <sstream>
 #include <set>
-
+#include <QString>
 
 using namespace Eigen;
 using namespace std;
