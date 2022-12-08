@@ -7,466 +7,477 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 {
 
 	 InMB.open(MBfileToOpen);
-	while (getline(InMB, LineMB))
-	{
-		//刚体
-		if (LineMB == "*RigidBody")
-		{
-			ColumHingeFile.close();
-			MBNodeFile.close();
-			BallJointFile.close();
-			MBContactFile.close();
-			LineMB.erase(0, 1);
-			RigidBodyFileString = getFileName(LineMB);
-			RigidBodyFile.open(getFileName(LineMB));
-		}
-		if (RigidBodyFile.is_open())
-		{
-			getdigit2(RigidBodyFile, LineMB);
-		};
-		//柱铰
-		if (LineMB == "*ColumHinge")
-		{
-			RigidBodyFile.close();
-			BallJointFile.close();
-			MBNodeFile.close();
-			MBContactFile.close();
-			LineMB.erase(0, 1);
-			ColumHingeFileString = getFileName(LineMB);
-			ColumHingeFile.open(getFileName(LineMB));
-		}
-		if (ColumHingeFile.is_open())
-		{
-			getdigit2(ColumHingeFile, LineMB);
-		};
-		//球铰
-		if (LineMB == "*BallJoint")
-		{
-			ColumHingeFile.close();
-			RigidBodyFile.close();
-			MBNodeFile.close();
-			MBContactFile.close();
-			LineMB.erase(0, 1);
-			BallJointFileString = getFileName(LineMB);
-			BallJointFile.open(getFileName(LineMB));
-		}
-		if (BallJointFile.is_open())
-		{
-			getdigit2(BallJointFile, LineMB);
-		};
+	 InMB.seekg(0, ios::end); //将文件指针指向文件末端
+	 streampos fp = InMB.tellg(); //fp 为文件指针的偏移量
+	 if (int(fp) <= 0) // 偏移量为0，证明文件为空，为首次进入系统
+	 {
+		 return 0;
+	 }
+	 else
+	 {
+		 InMB.seekg(0, ios::beg);
+		 while (getline(InMB, LineMB))
+		 {
+			 //刚体
+			 if (LineMB == "*RigidBody")
+			 {
+				 ColumHingeFile.close();
+				 MBNodeFile.close();
+				 BallJointFile.close();
+				 MBContactFile.close();
+				 LineMB.erase(0, 1);
+				 RigidBodyFileString = getFileName(LineMB);
+				 RigidBodyFile.open(getFileName(LineMB));
+			 }
+			 if (RigidBodyFile.is_open())
+			 {
+				 getdigit2(RigidBodyFile, LineMB);
+			 };
+			 //柱铰
+			 if (LineMB == "*ColumHinge")
+			 {
+				 RigidBodyFile.close();
+				 BallJointFile.close();
+				 MBNodeFile.close();
+				 MBContactFile.close();
+				 LineMB.erase(0, 1);
+				 ColumHingeFileString = getFileName(LineMB);
+				 ColumHingeFile.open(getFileName(LineMB));
+			 }
+			 if (ColumHingeFile.is_open())
+			 {
+				 getdigit2(ColumHingeFile, LineMB);
+			 };
+			 //球铰
+			 if (LineMB == "*BallJoint")
+			 {
+				 ColumHingeFile.close();
+				 RigidBodyFile.close();
+				 MBNodeFile.close();
+				 MBContactFile.close();
+				 LineMB.erase(0, 1);
+				 BallJointFileString = getFileName(LineMB);
+				 BallJointFile.open(getFileName(LineMB));
+			 }
+			 if (BallJointFile.is_open())
+			 {
+				 getdigit2(BallJointFile, LineMB);
+			 };
 
-		//NODE
-		if (LineMB == "*NODE")
-		{
-			ColumHingeFile.close();
-			RigidBodyFile.close();
-			BallJointFile.close();
-			MBContactFile.close();
-			LineMB.erase(0, 1);
-			MBNodeFileString = getFileName2(Multibody,LineMB);
-			MBNodeFile.open(MBNodeFileString);
-		}
-		if (MBNodeFile.is_open())
-		{
-			getdigit2(MBNodeFile, LineMB);
-		};
+			 //NODE
+			 if (LineMB == "*NODE")
+			 {
+				 ColumHingeFile.close();
+				 RigidBodyFile.close();
+				 BallJointFile.close();
+				 MBContactFile.close();
+				 LineMB.erase(0, 1);
+				 MBNodeFileString = getFileName2(Multibody, LineMB);
+				 MBNodeFile.open(MBNodeFileString);
+			 }
+			 if (MBNodeFile.is_open())
+			 {
+				 getdigit2(MBNodeFile, LineMB);
+			 };
 
-		//接触
-		if (LineMB == "*CONTACT_NODES_TO_SURFACE_ID")
-		{
-			ColumHingeFile.close();
-			RigidBodyFile.close();
-			BallJointFile.close();
-			MBNodeFile.close();
-			LineMB.erase(0, 1);
-			MBContactFileString = "MBContact.txt";
-			MBContactFileString2 = "MBContactTemp.txt";
-			MBContactFile.open(MBContactFileString2);
-			MBContactFile.clear();
-			MBContactFile << endl;
-		}
-		if (MBContactFile.is_open())
-		{
-			if (' ' == LineMB[0])
-			{
-				MBContactFile << LineMB << " ";
-			}
-		}
+			 //接触
+			 if (LineMB == "*CONTACT_NODES_TO_SURFACE_ID")
+			 {
+				 ColumHingeFile.close();
+				 RigidBodyFile.close();
+				 BallJointFile.close();
+				 MBNodeFile.close();
+				 LineMB.erase(0, 1);
+				 MBContactFileString = "MBContact.txt";
+				 MBContactFileString2 = "MBContactTemp.txt";
+				 MBContactFile.open(MBContactFileString2);
+				 MBContactFile.clear();
+				 MBContactFile << endl;
+			 }
+			 if (MBContactFile.is_open())
+			 {
+				 if (' ' == LineMB[0])
+				 {
+					 MBContactFile << LineMB << " ";
+				 }
+			 }
 
-		if (LineMB == "*SET_NODE_LIST")
-		{
-			ColumHingeFile.close();
-			RigidBodyFile.close();
-			BallJointFile.close();
-			MBNodeFile.close();
-			MBContactFile.close();
-		}
-		if (LineMB == "*SET_SEGMENT")
-		{
-			ColumHingeFile.close();
-			RigidBodyFile.close();
-			BallJointFile.close();
-			MBNodeFile.close();
-			MBContactFile.close();
-		}
-		if (LineMB == "*END")
-		{
-			ColumHingeFile.close();
-			RigidBodyFile.close();
-			BallJointFile.close();
-			MBNodeFile.close();
-			MBContactFile.close();
-		}
-		if ("*ConnectNode" == LineMB )
-		{
-			LineMB = LineMB.erase(0, 1);
-			ConnectNodeFileString = getFileName(LineMB);
-			ConnectNodeFile.open(ConnectNodeFileString);
-		}
-		if (ConnectNodeFile.is_open())
-		{
-			getdigit2(ConnectNodeFile, LineMB);
-		}
-		if (LineMB == "*END2")
-		{
-			ConnectNodeFile.close();
-		}
-	}
-	InMB.close();
+			 if (LineMB == "*SET_NODE_LIST")
+			 {
+				 ColumHingeFile.close();
+				 RigidBodyFile.close();
+				 BallJointFile.close();
+				 MBNodeFile.close();
+				 MBContactFile.close();
+			 }
+			 if (LineMB == "*SET_SEGMENT")
+			 {
+				 ColumHingeFile.close();
+				 RigidBodyFile.close();
+				 BallJointFile.close();
+				 MBNodeFile.close();
+				 MBContactFile.close();
+			 }
+			 if (LineMB == "*END")
+			 {
+				 ColumHingeFile.close();
+				 RigidBodyFile.close();
+				 BallJointFile.close();
+				 MBNodeFile.close();
+				 MBContactFile.close();
+			 }
+			 if ("*ConnectNode" == LineMB)
+			 {
+				 LineMB = LineMB.erase(0, 1);
+				 ConnectNodeFileString = getFileName(LineMB);
+				 ConnectNodeFile.open(ConnectNodeFileString);
+			 }
+			 if (ConnectNodeFile.is_open())
+			 {
+				 getdigit2(ConnectNodeFile, LineMB);
+			 }
+			 if (LineMB == "*END2")
+			 {
+				 ConnectNodeFile.close();
+			 }
+		 }
+		 InMB.close();
 
-	//Contact 文件
-	MBInContact.open(MBContactFileString2);
-	MBContactFile2.open(MBContactFileString);
-	while (getline(MBInContact, MBLineContact))
-	{
-		if (MBContactFile2.is_open())
-		{
-			if (' ' == MBLineContact[0])
-			{
-				MBContactFile2 << MBLineContact << endl;
-			}
-		}
-	}
-	MBContactFile2.close();
-	MBInContact.close();
+		 //Contact 文件
+		 MBInContact.open(MBContactFileString2);
+		 MBContactFile2.open(MBContactFileString);
+		 while (getline(MBInContact, MBLineContact))
+		 {
+			 if (MBContactFile2.is_open())
+			 {
+				 if (' ' == MBLineContact[0])
+				 {
+					 MBContactFile2 << MBLineContact << endl;
+				 }
+			 }
+		 }
+		 MBContactFile2.close();
+		 MBInContact.close();
 
-	//SegmentSet 文件
-	MBlsmap* mbls = new MBlsmap;
-	MBSetSegmentNode* pMBSetSegmentNode = new MBSetSegmentNode;
-	InSegmentSet.open(MBfileToOpen);
-	while (getline(InSegmentSet, LineSegmentSet))
-	{
-		//主面节点
-		if ("*SET_SEGMENT" == LineSegmentSet)
-		{
-			LineSegmentSet = ("MB") + (LineSegmentSet.erase(0, 1));
-			SegmentSetFile1String = getFileName(LineSegmentSet);
-			SegmentSetFile1.open(SegmentSetFile1String);
-			SegmentSetFile1.clear();
-			SegmentSetFile1 << endl;
-		}
-		if (SegmentSetFile1.is_open())
-		{
-			if (' ' == LineSegmentSet[0])
-			{
-				SegmentSetFile1 << LineSegmentSet << " ";
-			}
-		}
-		if (("*CONTACT_AUTOMATIC_NODES_TO_SURFACE_ID" == LineSegmentSet) || ("*CONTACT_NODES_TO_SURFACE_ID" == LineSegmentSet) || ("*RIGIDWALL_PLANAR_FINITE_ID" == LineSegmentSet) || ("*ELEMENT_BEAM" == LineSegmentSet)
-			|| ("*ELEMENT_SHELL" == LineSegmentSet) || ("*ELEMENT_SOLID" == LineSegmentSet) || ("*SET_NODE_LIST" == LineSegmentSet) || ("*DEFINE_CURVE" == LineSegmentSet) || ("*SET_PART_LIST" == LineSegmentSet)
-			|| ("*END" == LineSegmentSet))
-		{
-			SegmentSetFile1.close();
-		}
-	}
-	InSegmentSet.close();
-	ifstream InSegmentSet2;
-	InSegmentSet2.open(SegmentSetFile1String);
-	SegmentSetFile2String = "MBSegmentSet.txt";
-	string LineSegmentSet2;
-	int panduanneirongSegmentSet = 0;
-	while (getline(InSegmentSet2, LineSegmentSet2))
-	{
-		ofstream SegmentSetFile2(SegmentSetFile2String);
-		if (' ' == LineSegmentSet2[0])
-		{
-			LineSegmentSet2.erase(50, 4);
-			SegmentSetFile2 << LineSegmentSet2 << flush;
-			panduanneirongSegmentSet = 1;
-		}
-		if ((panduanneirongSegmentSet == 1) && (1 == isFileExists(SegmentSetFile2String)))
-		{
-			Matrix<int, Dynamic, Dynamic>SegmentSet = LinearMSTMMSolver::openDataInt(SegmentSetFile2String);
-			pMBSetSegmentNode->SetSegmentId = SegmentSet(0, 0);
-			pMBSetSegmentNode->SetSegmentNodeID = SegmentSet;
-			(void)mbls->AllMBSetSegmentNode.insert(make_pair(pMBSetSegmentNode->SetSegmentId, (*pMBSetSegmentNode)));
-		};
-	}
-	InSegmentSet2.close();
-	delete pMBSetSegmentNode;
-	pMBSetSegmentNode = nullptr;
-	
-	MBSetNode* pMBSetNode = new MBSetNode;
-	//NODE
-	if (1 == isFileExists(MBNodeFileString))
-	{
-		Matrix<int, Dynamic, Dynamic>MBNode1 = LinearMSTMMSolver::openDataInt(MBNodeFileString);
-		Matrix<double, Dynamic, Dynamic>MBNode2 = LinearMSTMMSolver::openData(MBNodeFileString);
-		MBNode* pMBNode = new MBNode;
-		for (int i = 0; i < MBNode1.rows(); i++)
-		{
-			pMBNode->NodeID = MBNode1(i,0);
-			pMBNode->NodeCoordinates = MBNode2.row(i).rightCols(3);
-			(void)mbls->AllMBNode.insert(make_pair(pMBNode->NodeID, (*pMBNode)));
-		};
-		delete pMBNode;
-		pMBNode = nullptr;
-	};
+		 //SegmentSet 文件
+		 MBlsmap* mbls = new MBlsmap;
+		 MBSetSegmentNode* pMBSetSegmentNode = new MBSetSegmentNode;
+		 InSegmentSet.open(MBfileToOpen);
+		 while (getline(InSegmentSet, LineSegmentSet))
+		 {
+			 //主面节点
+			 if ("*SET_SEGMENT" == LineSegmentSet)
+			 {
+				 LineSegmentSet = ("MB") + (LineSegmentSet.erase(0, 1));
+				 SegmentSetFile1String = getFileName(LineSegmentSet);
+				 SegmentSetFile1.open(SegmentSetFile1String);
+				 SegmentSetFile1.clear();
+				 SegmentSetFile1 << endl;
+			 }
+			 if (SegmentSetFile1.is_open())
+			 {
+				 if (' ' == LineSegmentSet[0])
+				 {
+					 SegmentSetFile1 << LineSegmentSet << " ";
+				 }
+			 }
+			 if (("*CONTACT_AUTOMATIC_NODES_TO_SURFACE_ID" == LineSegmentSet) || ("*CONTACT_NODES_TO_SURFACE_ID" == LineSegmentSet) || ("*RIGIDWALL_PLANAR_FINITE_ID" == LineSegmentSet) || ("*ELEMENT_BEAM" == LineSegmentSet)
+				 || ("*ELEMENT_SHELL" == LineSegmentSet) || ("*ELEMENT_SOLID" == LineSegmentSet) || ("*SET_NODE_LIST" == LineSegmentSet) || ("*DEFINE_CURVE" == LineSegmentSet) || ("*SET_PART_LIST" == LineSegmentSet)
+				 || ("*END" == LineSegmentSet))
+			 {
+				 SegmentSetFile1.close();
+			 }
+		 }
+		 InSegmentSet.close();
+		 ifstream InSegmentSet2;
+		 InSegmentSet2.open(SegmentSetFile1String);
+		 SegmentSetFile2String = "MBSegmentSet.txt";
+		 string LineSegmentSet2;
+		 int panduanneirongSegmentSet = 0;
+		 while (getline(InSegmentSet2, LineSegmentSet2))
+		 {
+			 ofstream SegmentSetFile2(SegmentSetFile2String);
+			 if (' ' == LineSegmentSet2[0])
+			 {
+				 LineSegmentSet2.erase(50, 4);
+				 SegmentSetFile2 << LineSegmentSet2 << flush;
+				 panduanneirongSegmentSet = 1;
+			 }
+			 if ((panduanneirongSegmentSet == 1) && (1 == isFileExists(SegmentSetFile2String)))
+			 {
+				 Matrix<int, Dynamic, Dynamic>SegmentSet = LinearMSTMMSolver::openDataInt(SegmentSetFile2String);
+				 pMBSetSegmentNode->SetSegmentId = SegmentSet(0, 0);
+				 pMBSetSegmentNode->SetSegmentNodeID = SegmentSet;
+				 (void)mbls->AllMBSetSegmentNode.insert(make_pair(pMBSetSegmentNode->SetSegmentId, (*pMBSetSegmentNode)));
+			 };
+		 }
+		 InSegmentSet2.close();
+		 delete pMBSetSegmentNode;
+		 pMBSetSegmentNode = nullptr;
 
-	//SetNode
-	InSetNode.open(MBfileToOpen);
-	while (getline(InSetNode, LineSetNode))
-	{
-		if ("*SET_NODE_LIST" == LineSetNode)
-		{
-			LineSetNode = ("MB") + (LineSetNode.erase(0, 1));
-			SetNodeFile1String = getFileName(LineSetNode);
-			SetNodeFile1.open(SetNodeFile1String);
-			SetNodeFile1.clear();
-			SetNodeFile1 << endl;
-		}
-		if (SetNodeFile1.is_open())
-		{
-			if (' ' == LineSetNode[0])
-			{
-				SetNodeFile1 << LineSetNode << " ";
-			}
-		}
-		if (("*END" == LineSetNode) || ("*DEFINE_CURVE" == LineSetNode) || ("*BOUNDARY_SPC_NODE" == LineSetNode) || ("*SET_PART_LIST" == LineSetNode) || ("*CONTACT_NODES_TO_SURFACE_ID" == LineSetNode))
-		{
-			SetNodeFile1.close();
-		}
-	}
-	InSetNode.close();
-	ifstream InSetNode2;
-	InSetNode2.open(SetNodeFile1String);
-	SetNodeFile2String = "MBSETNODELIST.txt";
-	string LineSetNode2;
-	int panduanneirong = 0;
-	while (getline(InSetNode2, LineSetNode2))
-	{
-		ofstream SetNodeFile2(SetNodeFile2String);
-		if (' ' == LineSetNode2[0])
-		{
-			LineSetNode2.erase(50, 4);
-			SetNodeFile2 << LineSetNode2 << flush;
-			panduanneirong = 1;
-		}
-		if ((panduanneirong == 1) && (1 == isFileExists(SetNodeFile2String)))
-		{
-			Matrix<int, Dynamic, Dynamic>SetNode = LinearMSTMMSolver::openDataInt(SetNodeFile2String);
-			pMBSetNode->SetId = SetNode(0, 0);
-			pMBSetNode->SetNodeID = SetNode.rightCols(SetNode.size() - 1);
-			(void)mbls->AllMBSetNode.insert(make_pair(pMBSetNode->SetId, (*pMBSetNode)));
-		};
-	}
-	InSetNode2.close();
-	delete pMBSetNode;
-	pMBSetNode = nullptr;
-	
-	//开始读入数据
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	// 刚体信息
-	if (isFileExists(RigidBodyFileString) == 1)
-	{
-		Matrix<int, Dynamic, Dynamic>RigidBodyImformation1 = LinearMSTMMSolver::openDataInt(RigidBodyFileString);
-		Matrix<double, Dynamic, Dynamic>RigidBodyImformation2 = LinearMSTMMSolver::openData(RigidBodyFileString);
-		for (int i = 0; i < RigidBodyImformation1.rows(); i++)
-		{
-			inputRigidBody* InRigidBody = new inputRigidBody;
-			(*InRigidBody).RigidBodyID = RigidBodyImformation1(i, 0);
-			(*InRigidBody).RI1(0, 0) = RigidBodyImformation2(i, 1);
-			(*InRigidBody).RI1(1, 0) = RigidBodyImformation2(i, 2);
-			(*InRigidBody).RI1(2, 0) = RigidBodyImformation2(i, 3);
-			(*InRigidBody).RI2(0, 0) = RigidBodyImformation2(i, 4);
-			(*InRigidBody).RI2(1, 0) = RigidBodyImformation2(i, 5);
-			(*InRigidBody).RI2(2, 0) = RigidBodyImformation2(i, 6);
-			(*InRigidBody).RI3(0, 0) = RigidBodyImformation2(i, 7);
-			(*InRigidBody).RI3(1, 0) = RigidBodyImformation2(i, 8);
-			(*InRigidBody).RI3(2, 0) = RigidBodyImformation2(i, 9);
-			(*InRigidBody).RO(0, 0) = RigidBodyImformation2(i, 10);
-			(*InRigidBody).RO(1, 0) = RigidBodyImformation2(i, 11);
-			(*InRigidBody).RO(2, 0) = RigidBodyImformation2(i, 12);
-			(*InRigidBody).RC(0, 0) = RigidBodyImformation2(i, 13);
-			(*InRigidBody).RC(1, 0) = RigidBodyImformation2(i, 14);
-			(*InRigidBody).RC(2, 0) = RigidBodyImformation2(i, 15);
-			(*InRigidBody).J.setZero(3, 3);
-			(*InRigidBody).J(0, 0) = RigidBodyImformation2(i, 16);
-			(*InRigidBody).J(1, 1) = RigidBodyImformation2(i, 17);
-			(*InRigidBody).J(2, 2) = RigidBodyImformation2(i, 18);
-			(*InRigidBody).OuO(0, 0) = RigidBodyImformation2(i, 19);
-			(*InRigidBody).OuO(1, 0) = RigidBodyImformation2(i, 20);
-			(*InRigidBody).OuO(2, 0) = RigidBodyImformation2(i, 21);
-			(*InRigidBody).VO(0, 0) = RigidBodyImformation2(i, 22);
-			(*InRigidBody).VO(1, 0) = RigidBodyImformation2(i, 23);
-			(*InRigidBody).VO(2, 0) = RigidBodyImformation2(i, 24);
-			(*InRigidBody).M = RigidBodyImformation2(i, 25);
-			(*InRigidBody).OuLa1 = RigidBodyImformation2(i, 26);
-			(*InRigidBody).OuLa2 = RigidBodyImformation2(i, 27);
-			(*InRigidBody).OuLa3 = RigidBodyImformation2(i, 28);
-			(*InRigidBody).OuLa4 = RigidBodyImformation2(i, 29);
-			(*InRigidBody).Fc(0, 0) = RigidBodyImformation2(i, 30);
-			(*InRigidBody).Fc(1, 0) = RigidBodyImformation2(i, 31);
-			(*InRigidBody).Fc(2, 0) = RigidBodyImformation2(i, 32);
-			(*InRigidBody).Mc(0, 0) = RigidBodyImformation2(i, 33);
-			(*InRigidBody).Mc(1, 0) = RigidBodyImformation2(i, 34);
-			(*InRigidBody).Mc(2, 0) = RigidBodyImformation2(i, 35);
-			(*InRigidBody).ZbO(0, 0) = RigidBodyImformation2(i, 36);
-			(*InRigidBody).ZbO(1, 0) = RigidBodyImformation2(i, 37);
-			(*InRigidBody).ZbO(2, 0) = RigidBodyImformation2(i, 38);
-			(*InRigidBody).ZbO(3, 0) = RigidBodyImformation2(i, 39);
-			(*InRigidBody).ZbO(4, 0) = RigidBodyImformation2(i, 40);
-			(*InRigidBody).ZbO(5, 0) = RigidBodyImformation2(i, 41);
-			InRigidBody->RigidBodySetID = RigidBodyImformation1(i, 42);
-			for (int j=0;j< mbls->AllMBSetNode[InRigidBody->RigidBodySetID].SetNodeID.cols();j++)
-			{
-				
-				InRigidBody->MeshCoor.insert(make_pair(mbls->AllMBSetNode[InRigidBody->RigidBodySetID].SetNodeID(0,j), mbls->AllMBNode[mbls->AllMBSetNode[InRigidBody->RigidBodySetID].SetNodeID(0, j)].NodeCoordinates));
-			}
-			(*IADate).inputAllRigidBody.insert(make_pair((*InRigidBody).RigidBodyID, (*InRigidBody)));
-			delete InRigidBody;
-		}
-	};
+		 MBSetNode* pMBSetNode = new MBSetNode;
+		 //NODE
+		 if (1 == isFileExists(MBNodeFileString))
+		 {
+			 Matrix<int, Dynamic, Dynamic>MBNode1 = LinearMSTMMSolver::openDataInt(MBNodeFileString);
+			 Matrix<double, Dynamic, Dynamic>MBNode2 = LinearMSTMMSolver::openData(MBNodeFileString);
+			 MBNode* pMBNode = new MBNode;
+			 for (int i = 0; i < MBNode1.rows(); i++)
+			 {
+				 pMBNode->NodeID = MBNode1(i, 0);
+				 pMBNode->NodeCoordinates = MBNode2.row(i).rightCols(3);
+				 (void)mbls->AllMBNode.insert(make_pair(pMBNode->NodeID, (*pMBNode)));
+			 };
+			 delete pMBNode;
+			 pMBNode = nullptr;
+		 };
 
-	// 柱铰信息
-	if (isFileExists(ColumHingeFileString) == 1)
-	{
-		Matrix<int, Dynamic, Dynamic>ColumHingeImformation1 = LinearMSTMMSolver::openDataInt(ColumHingeFileString);
-		Matrix<double, Dynamic, Dynamic>ColumHingeImformation2 = LinearMSTMMSolver::openData(ColumHingeFileString);
-		inputColumnHinge* InColumnHinge = new inputColumnHinge;
-		for (int i = 0; i < ColumHingeImformation1.rows(); i++)
-		{
-			InColumnHinge->ColumnHingeID = ColumHingeImformation1(i, 0);
-			(*InColumnHinge).SeiTa0(0, 0) = ColumHingeImformation2(i, 1);
-			(*InColumnHinge).SeiTa0(1, 0) = ColumHingeImformation2(i, 2);
-			(*InColumnHinge).SeiTa0(2, 0) = ColumHingeImformation2(i, 3);
-			(*InColumnHinge).WR(0, 0) = ColumHingeImformation2(i, 4);
-			(*InColumnHinge).WR(1, 0) = ColumHingeImformation2(i, 5);
-			(*InColumnHinge).WR(2, 0) = ColumHingeImformation2(i, 6);
-			(*InColumnHinge).K(0, 0) = ColumHingeImformation2(i, 7);
-			(*InColumnHinge).K(0, 1) = ColumHingeImformation2(i, 8);
-			(*InColumnHinge).K(0, 2) = ColumHingeImformation2(i, 9);
-			(*InColumnHinge).C(0, 0) = ColumHingeImformation2(i, 10);
-			(*InColumnHinge).C(0, 1) = ColumHingeImformation2(i, 11);
-			(*InColumnHinge).C(0, 2) = ColumHingeImformation2(i, 12);
-			(*IADate).inputAllColumnHinge.insert(make_pair((*InColumnHinge).ColumnHingeID, (*InColumnHinge)));
-		}
-		delete InColumnHinge;
-	};
+		 //SetNode
+		 InSetNode.open(MBfileToOpen);
+		 while (getline(InSetNode, LineSetNode))
+		 {
+			 if ("*SET_NODE_LIST" == LineSetNode)
+			 {
+				 LineSetNode = ("MB") + (LineSetNode.erase(0, 1));
+				 SetNodeFile1String = getFileName(LineSetNode);
+				 SetNodeFile1.open(SetNodeFile1String);
+				 SetNodeFile1.clear();
+				 SetNodeFile1 << endl;
+			 }
+			 if (SetNodeFile1.is_open())
+			 {
+				 if (' ' == LineSetNode[0])
+				 {
+					 SetNodeFile1 << LineSetNode << " ";
+				 }
+			 }
+			 if (("*END" == LineSetNode) || ("*DEFINE_CURVE" == LineSetNode) || ("*BOUNDARY_SPC_NODE" == LineSetNode) || ("*SET_PART_LIST" == LineSetNode) || ("*CONTACT_NODES_TO_SURFACE_ID" == LineSetNode))
+			 {
+				 SetNodeFile1.close();
+			 }
+		 }
+		 InSetNode.close();
+		 ifstream InSetNode2;
+		 InSetNode2.open(SetNodeFile1String);
+		 SetNodeFile2String = "MBSETNODELIST.txt";
+		 string LineSetNode2;
+		 int panduanneirong = 0;
+		 while (getline(InSetNode2, LineSetNode2))
+		 {
+			 ofstream SetNodeFile2(SetNodeFile2String);
+			 if (' ' == LineSetNode2[0])
+			 {
+				 LineSetNode2.erase(50, 4);
+				 SetNodeFile2 << LineSetNode2 << flush;
+				 panduanneirong = 1;
+			 }
+			 if ((panduanneirong == 1) && (1 == isFileExists(SetNodeFile2String)))
+			 {
+				 Matrix<int, Dynamic, Dynamic>SetNode = LinearMSTMMSolver::openDataInt(SetNodeFile2String);
+				 pMBSetNode->SetId = SetNode(0, 0);
+				 pMBSetNode->SetNodeID = SetNode.rightCols(SetNode.size() - 1);
+				 (void)mbls->AllMBSetNode.insert(make_pair(pMBSetNode->SetId, (*pMBSetNode)));
+			 };
+		 }
+		 InSetNode2.close();
+		 delete pMBSetNode;
+		 pMBSetNode = nullptr;
 
-	// 球铰信息
-	if (isFileExists(BallJointFileString) == 1)
-	{
-		Matrix<int, Dynamic, Dynamic>BallJointImformation1 = LinearMSTMMSolver::openDataInt(BallJointFileString);
-		Matrix<double, Dynamic, Dynamic>BallJointImformation2 = LinearMSTMMSolver::openData(BallJointFileString);
-		inputBallJoint* InBallJoint = new inputBallJoint;
-		for (int i = 0; i < BallJointImformation1.rows(); i++)
-		{
-			(*InBallJoint).BallJointID = BallJointImformation1(i, 0);
-			(*InBallJoint).SeiTa0(0, 0) = BallJointImformation2(i, 10);
-			(*InBallJoint).SeiTa0(1, 0) = BallJointImformation2(i, 11);
-			(*InBallJoint).SeiTa0(2, 0) = BallJointImformation2(i, 12);
-			(*InBallJoint).WR(0, 0) = BallJointImformation2(i, 13);
-			(*InBallJoint).WR(1, 0) = BallJointImformation2(i, 14);
-			(*InBallJoint).WR(2, 0) = BallJointImformation2(i, 15);
-			(*InBallJoint).K.setZero(3, 3);
-			(*InBallJoint).K(0, 0) = BallJointImformation2(i, 1);
-			(*InBallJoint).K(1, 1) = BallJointImformation2(i, 2);
-			(*InBallJoint).K(2, 2) = BallJointImformation2(i, 3);
-			(*InBallJoint).C.setZero(3, 3);
-			(*InBallJoint).C(0, 0) = BallJointImformation2(i, 4);
-			(*InBallJoint).C(1, 1) = BallJointImformation2(i, 5);
-			(*InBallJoint).C(2, 2) = BallJointImformation2(i, 6);
-			(*InBallJoint).Md(0, 0) = BallJointImformation2(i, 7);
-			(*InBallJoint).Md(1, 0) = BallJointImformation2(i, 8);
-			(*InBallJoint).Md(2, 0) = BallJointImformation2(i, 9);
-			(*IADate).inputAllBallJoint.insert(make_pair((*InBallJoint).BallJointID, (*InBallJoint)));
-		}
-		delete InBallJoint;
-	};
+		 //开始读入数据
+		 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-	//Contact
-	if (1 == isFileExists(MBContactFileString))
-	{
-		//Contact 关键字信息
-		Matrix<double, Dynamic, Dynamic>MBContactImformation = LinearMSTMMSolver::openData(MBContactFileString);
-		Matrix<int, Dynamic, Dynamic>MBContactImformation2 = LinearMSTMMSolver::openDataInt(MBContactFileString);
-		//cout << ContactImformation;
-		for (int i = 0; i < MBContactImformation.rows(); i++)
-		{
-			InputFEMtoMBContact* MBInCta = new InputFEMtoMBContact;
-			MBInCta->ContactNumber = MBContactImformation2(i, 0);
-			MBInCta->ContactType = 1;
-			if ((0 == MBContactImformation(i, 5)) && (0 == MBContactImformation(i, 6)))
-			{
-				MBInCta->FrictionJudgment = 1;
-			}
-			else
-			{
-				MBInCta->FrictionJudgment = 0;
-			};
-			//节点集号
-			MBInCta->SlaveNodeSetId = MBContactImformation2(i, 1);
-			MBInCta->MasterNodeSetId = MBContactImformation2(i, 2);
-			//摩擦系数
-			MBInCta->StaticFrictionCoefficient = MBContactImformation(i, 5);
-			MBInCta->DynamicFrictionCoefficient = MBContactImformation(i, 6);
-			int k = 1;
-			//主从面节点号
-			for (int j = 0; j < (mbls->AllMBSetSegmentNode[MBInCta->MasterNodeSetId].SetSegmentNodeID.cols() - 1) / 4; j++)
-			{
-				Matrix<int, 4, 1> SetSegmentRow = mbls->AllMBSetSegmentNode[MBInCta->MasterNodeSetId].SetSegmentNodeID.block<1, 4>(0, k).adjoint();
-				(void)MBInCta->MasterContactNode.insert(make_pair((j + 1), SetSegmentRow));
-				k += 4;
-			};
-			for (int k = 0; k < mbls->AllMBSetNode[MBInCta->SlaveNodeSetId].SetNodeID.rows(); k++)
-			{
-				(void)MBInCta->SlaveContactNode.insert(make_pair((k + 1), mbls->AllMBSetNode[MBInCta->SlaveNodeSetId].SetNodeID.row(k).adjoint()));
-			};
-			(void)IADate->InputAllFEMtoMBContact.insert(make_pair(MBInCta->ContactNumber, (*MBInCta)));
-			delete MBInCta;
-			MBInCta = nullptr;
+		 // 刚体信息
+		 if (isFileExists(RigidBodyFileString) == 1)
+		 {
+			 Matrix<int, Dynamic, Dynamic>RigidBodyImformation1 = LinearMSTMMSolver::openDataInt(RigidBodyFileString);
+			 Matrix<double, Dynamic, Dynamic>RigidBodyImformation2 = LinearMSTMMSolver::openData(RigidBodyFileString);
+			 for (int i = 0; i < RigidBodyImformation1.rows(); i++)
+			 {
+				 inputRigidBody* InRigidBody = new inputRigidBody;
+				 (*InRigidBody).RigidBodyID = RigidBodyImformation1(i, 0);
+				 (*InRigidBody).RI1(0, 0) = RigidBodyImformation2(i, 1);
+				 (*InRigidBody).RI1(1, 0) = RigidBodyImformation2(i, 2);
+				 (*InRigidBody).RI1(2, 0) = RigidBodyImformation2(i, 3);
+				 (*InRigidBody).RI2(0, 0) = RigidBodyImformation2(i, 4);
+				 (*InRigidBody).RI2(1, 0) = RigidBodyImformation2(i, 5);
+				 (*InRigidBody).RI2(2, 0) = RigidBodyImformation2(i, 6);
+				 (*InRigidBody).RI3(0, 0) = RigidBodyImformation2(i, 7);
+				 (*InRigidBody).RI3(1, 0) = RigidBodyImformation2(i, 8);
+				 (*InRigidBody).RI3(2, 0) = RigidBodyImformation2(i, 9);
+				 (*InRigidBody).RO(0, 0) = RigidBodyImformation2(i, 10);
+				 (*InRigidBody).RO(1, 0) = RigidBodyImformation2(i, 11);
+				 (*InRigidBody).RO(2, 0) = RigidBodyImformation2(i, 12);
+				 (*InRigidBody).RC(0, 0) = RigidBodyImformation2(i, 13);
+				 (*InRigidBody).RC(1, 0) = RigidBodyImformation2(i, 14);
+				 (*InRigidBody).RC(2, 0) = RigidBodyImformation2(i, 15);
+				 (*InRigidBody).J.setZero(3, 3);
+				 (*InRigidBody).J(0, 0) = RigidBodyImformation2(i, 16);
+				 (*InRigidBody).J(1, 1) = RigidBodyImformation2(i, 17);
+				 (*InRigidBody).J(2, 2) = RigidBodyImformation2(i, 18);
+				 (*InRigidBody).OuO(0, 0) = RigidBodyImformation2(i, 19);
+				 (*InRigidBody).OuO(1, 0) = RigidBodyImformation2(i, 20);
+				 (*InRigidBody).OuO(2, 0) = RigidBodyImformation2(i, 21);
+				 (*InRigidBody).VO(0, 0) = RigidBodyImformation2(i, 22);
+				 (*InRigidBody).VO(1, 0) = RigidBodyImformation2(i, 23);
+				 (*InRigidBody).VO(2, 0) = RigidBodyImformation2(i, 24);
+				 (*InRigidBody).M = RigidBodyImformation2(i, 25);
+				 (*InRigidBody).OuLa1 = RigidBodyImformation2(i, 26);
+				 (*InRigidBody).OuLa2 = RigidBodyImformation2(i, 27);
+				 (*InRigidBody).OuLa3 = RigidBodyImformation2(i, 28);
+				 (*InRigidBody).OuLa4 = RigidBodyImformation2(i, 29);
+				 (*InRigidBody).Fc(0, 0) = RigidBodyImformation2(i, 30);
+				 (*InRigidBody).Fc(1, 0) = RigidBodyImformation2(i, 31);
+				 (*InRigidBody).Fc(2, 0) = RigidBodyImformation2(i, 32);
+				 (*InRigidBody).Mc(0, 0) = RigidBodyImformation2(i, 33);
+				 (*InRigidBody).Mc(1, 0) = RigidBodyImformation2(i, 34);
+				 (*InRigidBody).Mc(2, 0) = RigidBodyImformation2(i, 35);
+				 (*InRigidBody).ZbO(0, 0) = RigidBodyImformation2(i, 36);
+				 (*InRigidBody).ZbO(1, 0) = RigidBodyImformation2(i, 37);
+				 (*InRigidBody).ZbO(2, 0) = RigidBodyImformation2(i, 38);
+				 (*InRigidBody).ZbO(3, 0) = RigidBodyImformation2(i, 39);
+				 (*InRigidBody).ZbO(4, 0) = RigidBodyImformation2(i, 40);
+				 (*InRigidBody).ZbO(5, 0) = RigidBodyImformation2(i, 41);
+				 InRigidBody->RigidBodySetID = RigidBodyImformation1(i, 42);
+				 for (int j = 0; j < mbls->AllMBSetNode[InRigidBody->RigidBodySetID].SetNodeID.cols(); j++)
+				 {
 
-		}
+					 InRigidBody->MeshCoor.insert(make_pair(mbls->AllMBSetNode[InRigidBody->RigidBodySetID].SetNodeID(0, j), mbls->AllMBNode[mbls->AllMBSetNode[InRigidBody->RigidBodySetID].SetNodeID(0, j)].NodeCoordinates));
+				 }
+				 (*IADate).inputAllRigidBody.insert(make_pair((*InRigidBody).RigidBodyID, (*InRigidBody)));
+				 delete InRigidBody;
+			 }
+		 };
 
-	}
+		 // 柱铰信息
+		 if (isFileExists(ColumHingeFileString) == 1)
+		 {
+			 Matrix<int, Dynamic, Dynamic>ColumHingeImformation1 = LinearMSTMMSolver::openDataInt(ColumHingeFileString);
+			 Matrix<double, Dynamic, Dynamic>ColumHingeImformation2 = LinearMSTMMSolver::openData(ColumHingeFileString);
+			 inputColumnHinge* InColumnHinge = new inputColumnHinge;
+			 for (int i = 0; i < ColumHingeImformation1.rows(); i++)
+			 {
+				 InColumnHinge->ColumnHingeID = ColumHingeImformation1(i, 0);
+				 (*InColumnHinge).SeiTa0(0, 0) = ColumHingeImformation2(i, 1);
+				 (*InColumnHinge).SeiTa0(1, 0) = ColumHingeImformation2(i, 2);
+				 (*InColumnHinge).SeiTa0(2, 0) = ColumHingeImformation2(i, 3);
+				 (*InColumnHinge).WR(0, 0) = ColumHingeImformation2(i, 4);
+				 (*InColumnHinge).WR(1, 0) = ColumHingeImformation2(i, 5);
+				 (*InColumnHinge).WR(2, 0) = ColumHingeImformation2(i, 6);
+				 (*InColumnHinge).K(0, 0) = ColumHingeImformation2(i, 7);
+				 (*InColumnHinge).K(0, 1) = ColumHingeImformation2(i, 8);
+				 (*InColumnHinge).K(0, 2) = ColumHingeImformation2(i, 9);
+				 (*InColumnHinge).C(0, 0) = ColumHingeImformation2(i, 10);
+				 (*InColumnHinge).C(0, 1) = ColumHingeImformation2(i, 11);
+				 (*InColumnHinge).C(0, 2) = ColumHingeImformation2(i, 12);
+				 (*IADate).inputAllColumnHinge.insert(make_pair((*InColumnHinge).ColumnHingeID, (*InColumnHinge)));
+			 }
+			 delete InColumnHinge;
+		 };
 
-	//ConnectNodeFileString
-	if (isFileExists(ConnectNodeFileString) == 1)
-	{
-		Matrix<int, Dynamic, Dynamic>ConnectNodeImformation = LinearMSTMMSolver::openDataInt(ConnectNodeFileString);
-		IADate->ConnectNode = ConnectNodeImformation(0, 0);
+		 // 球铰信息
+		 if (isFileExists(BallJointFileString) == 1)
+		 {
+			 Matrix<int, Dynamic, Dynamic>BallJointImformation1 = LinearMSTMMSolver::openDataInt(BallJointFileString);
+			 Matrix<double, Dynamic, Dynamic>BallJointImformation2 = LinearMSTMMSolver::openData(BallJointFileString);
+			 inputBallJoint* InBallJoint = new inputBallJoint;
+			 for (int i = 0; i < BallJointImformation1.rows(); i++)
+			 {
+				 (*InBallJoint).BallJointID = BallJointImformation1(i, 0);
+				 (*InBallJoint).SeiTa0(0, 0) = BallJointImformation2(i, 10);
+				 (*InBallJoint).SeiTa0(1, 0) = BallJointImformation2(i, 11);
+				 (*InBallJoint).SeiTa0(2, 0) = BallJointImformation2(i, 12);
+				 (*InBallJoint).WR(0, 0) = BallJointImformation2(i, 13);
+				 (*InBallJoint).WR(1, 0) = BallJointImformation2(i, 14);
+				 (*InBallJoint).WR(2, 0) = BallJointImformation2(i, 15);
+				 (*InBallJoint).K.setZero(3, 3);
+				 (*InBallJoint).K(0, 0) = BallJointImformation2(i, 1);
+				 (*InBallJoint).K(1, 1) = BallJointImformation2(i, 2);
+				 (*InBallJoint).K(2, 2) = BallJointImformation2(i, 3);
+				 (*InBallJoint).C.setZero(3, 3);
+				 (*InBallJoint).C(0, 0) = BallJointImformation2(i, 4);
+				 (*InBallJoint).C(1, 1) = BallJointImformation2(i, 5);
+				 (*InBallJoint).C(2, 2) = BallJointImformation2(i, 6);
+				 (*InBallJoint).Md(0, 0) = BallJointImformation2(i, 7);
+				 (*InBallJoint).Md(1, 0) = BallJointImformation2(i, 8);
+				 (*InBallJoint).Md(2, 0) = BallJointImformation2(i, 9);
+				 (*IADate).inputAllBallJoint.insert(make_pair((*InBallJoint).BallJointID, (*InBallJoint)));
+			 }
+			 delete InBallJoint;
+		 };
 
-	}
+		 //Contact
+		 if (1 == isFileExists(MBContactFileString))
+		 {
+			 //Contact 关键字信息
+			 Matrix<double, Dynamic, Dynamic>MBContactImformation = LinearMSTMMSolver::openData(MBContactFileString);
+			 Matrix<int, Dynamic, Dynamic>MBContactImformation2 = LinearMSTMMSolver::openDataInt(MBContactFileString);
+			 //cout << ContactImformation;
+			 for (int i = 0; i < MBContactImformation.rows(); i++)
+			 {
+				 InputFEMtoMBContact* MBInCta = new InputFEMtoMBContact;
+				 MBInCta->ContactNumber = MBContactImformation2(i, 0);
+				 MBInCta->ContactType = 1;
+				 if ((0 == MBContactImformation(i, 5)) && (0 == MBContactImformation(i, 6)))
+				 {
+					 MBInCta->FrictionJudgment = 1;
+				 }
+				 else
+				 {
+					 MBInCta->FrictionJudgment = 0;
+				 };
+				 //节点集号
+				 MBInCta->SlaveNodeSetId = MBContactImformation2(i, 1);
+				 MBInCta->MasterNodeSetId = MBContactImformation2(i, 2);
+				 //摩擦系数
+				 MBInCta->StaticFrictionCoefficient = MBContactImformation(i, 5);
+				 MBInCta->DynamicFrictionCoefficient = MBContactImformation(i, 6);
+				 int k = 1;
+				 //主从面节点号
+				 for (int j = 0; j < (mbls->AllMBSetSegmentNode[MBInCta->MasterNodeSetId].SetSegmentNodeID.cols() - 1) / 4; j++)
+				 {
+					 Matrix<int, 4, 1> SetSegmentRow = mbls->AllMBSetSegmentNode[MBInCta->MasterNodeSetId].SetSegmentNodeID.block<1, 4>(0, k).adjoint();
+					 (void)MBInCta->MasterContactNode.insert(make_pair((j + 1), SetSegmentRow));
+					 k += 4;
+				 };
+				 for (int k = 0; k < mbls->AllMBSetNode[MBInCta->SlaveNodeSetId].SetNodeID.rows(); k++)
+				 {
+					 (void)MBInCta->SlaveContactNode.insert(make_pair((k + 1), mbls->AllMBSetNode[MBInCta->SlaveNodeSetId].SetNodeID.row(k).adjoint()));
+				 };
+				 (void)IADate->InputAllFEMtoMBContact.insert(make_pair(MBInCta->ContactNumber, (*MBInCta)));
+				 delete MBInCta;
+				 MBInCta = nullptr;
 
-	delete mbls;
-	mbls = nullptr;
+			 }
 
-	//删除文件
-	//remove(MBContactFileString.c_str());
-	//remove(MBNodeFileString.c_str());
-	//remove(RigidBodyFileString.c_str());
-	//remove(ColumHingeFileString.c_str());
-	//remove(BallJointFileString.c_str());
-	//remove(MBContactFileString2.c_str());
-	//remove(ConnectNodeFileString.c_str());
-	//remove(SegmentSetFile2String.c_str());
-	//remove(SetNodeFile2String.c_str());
-	//remove(SegmentSetFile1String.c_str());
-	//remove(SetNodeFile1String.c_str());
+		 }
 
-	return 1;
+		 //ConnectNodeFileString
+		 if (isFileExists(ConnectNodeFileString) == 1)
+		 {
+			 Matrix<int, Dynamic, Dynamic>ConnectNodeImformation = LinearMSTMMSolver::openDataInt(ConnectNodeFileString);
+			 IADate->ConnectNode = ConnectNodeImformation(0, 0);
+
+		 }
+
+		 delete mbls;
+		 mbls = nullptr;
+
+		 //删除文件
+		 //remove(MBContactFileString.c_str());
+		 //remove(MBNodeFileString.c_str());
+		 //remove(RigidBodyFileString.c_str());
+		 //remove(ColumHingeFileString.c_str());
+		 //remove(BallJointFileString.c_str());
+		 //remove(MBContactFileString2.c_str());
+		 //remove(ConnectNodeFileString.c_str());
+		 //remove(SegmentSetFile2String.c_str());
+		 //remove(SetNodeFile2String.c_str());
+		 //remove(SegmentSetFile1String.c_str());
+		 //remove(SetNodeFile1String.c_str());
+
+		 return 1;
+
+	 }
 };
 
 //读文件主函数
