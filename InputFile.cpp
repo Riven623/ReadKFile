@@ -6,7 +6,6 @@
 int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllDate* IADate)
 {
 	DummyInformation* DummyIn = new DummyInformation;
-
 	DummyIn->InMB.open(MBfileToOpen);
 	DummyIn->InMB.seekg(0, ios::end); //将文件指针指向文件末端
 	streampos fp = DummyIn->InMB.tellg(); //fp 为文件指针的偏移量
