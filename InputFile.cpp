@@ -9,1664 +9,1664 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 
 	DummyIn->InMB.open(MBfileToOpen);
 	DummyIn->InMB.seekg(0, ios::end); //将文件指针指向文件末端
-	 streampos fp = DummyIn->InMB.tellg(); //fp 为文件指针的偏移量
-	 if (int(fp) <= 0) // 偏移量为0，证明文件为空，为首次进入系统
-	 {
-		 return 0;
-	 }
-	 else
-	 {
-		 DummyIn->InMB.seekg(0, ios::beg);
-		 while (getline(DummyIn->InMB, DummyIn->LineMB))
-		 {
-			 //刚体
-			 if (DummyIn->LineMB == "*RigidBody")
-			 {
-				 DummyIn->ColumHingeFile.close();
-				 DummyIn->MBNodeFile.close();
-				 DummyIn->BallJointFile.close();
-				 DummyIn->MBContactFile.close();
-				 DummyIn->LineMB.erase(0, 1);
-				 DummyIn->RigidBodyFileString = getFileName(DummyIn->LineMB);
-			     DummyIn->RigidBodyFile.open(getFileName(DummyIn->LineMB));
-			 }
-			 if (DummyIn->RigidBodyFile.is_open())
-			 {
-				 getdigit2(DummyIn->RigidBodyFile, DummyIn->LineMB);
-			 };
-			 //柱铰
-			 if (DummyIn->LineMB == "*ColumHinge")
-			 {
-				 DummyIn->RigidBodyFile.close();
-				 DummyIn->BallJointFile.close();
-				 DummyIn->MBNodeFile.close();
-				 DummyIn->MBContactFile.close();
-				 DummyIn->LineMB.erase(0, 1);
-				 DummyIn->ColumHingeFileString = getFileName(DummyIn->LineMB);
-				 DummyIn->ColumHingeFile.open(getFileName(DummyIn->LineMB));
-			 }
-			 if (DummyIn->ColumHingeFile.is_open())
-			 {
-				 getdigit2(DummyIn->ColumHingeFile, DummyIn->LineMB);
-			 };
-			 //球铰
-			 if (DummyIn->LineMB == "*BallJoint")
-			 {
-				 DummyIn->ColumHingeFile.close();
-				 DummyIn->RigidBodyFile.close();
-				 DummyIn->MBNodeFile.close();
-				 DummyIn->MBContactFile.close();
-				 DummyIn->LineMB.erase(0, 1);
-				 DummyIn->BallJointFileString = getFileName(DummyIn->LineMB);
-				 DummyIn->BallJointFile.open(getFileName(DummyIn->LineMB));
-			 }
-			 if (DummyIn->BallJointFile.is_open())
-			 {
-				 getdigit2(DummyIn->BallJointFile, DummyIn->LineMB);
-			 };
+	streampos fp = DummyIn->InMB.tellg(); //fp 为文件指针的偏移量
+	if (int(fp) <= 0) // 偏移量为0，证明文件为空，为首次进入系统
+	{
+		return 0;
+	}
+	else
+	{
+		DummyIn->InMB.seekg(0, ios::beg);
+		while (getline(DummyIn->InMB, DummyIn->LineMB))
+		{
+			//刚体
+			if (DummyIn->LineMB == "*RigidBody")
+			{
+				DummyIn->ColumHingeFile.close();
+				DummyIn->MBNodeFile.close();
+				DummyIn->BallJointFile.close();
+				DummyIn->MBContactFile.close();
+				DummyIn->LineMB.erase(0, 1);
+				DummyIn->RigidBodyFileString = getFileName(DummyIn->LineMB);
+				DummyIn->RigidBodyFile.open(getFileName(DummyIn->LineMB));
+			}
+			if (DummyIn->RigidBodyFile.is_open())
+			{
+				getdigit2(DummyIn->RigidBodyFile, DummyIn->LineMB);
+			};
+			//柱铰
+			if (DummyIn->LineMB == "*ColumHinge")
+			{
+				DummyIn->RigidBodyFile.close();
+				DummyIn->BallJointFile.close();
+				DummyIn->MBNodeFile.close();
+				DummyIn->MBContactFile.close();
+				DummyIn->LineMB.erase(0, 1);
+				DummyIn->ColumHingeFileString = getFileName(DummyIn->LineMB);
+				DummyIn->ColumHingeFile.open(getFileName(DummyIn->LineMB));
+			}
+			if (DummyIn->ColumHingeFile.is_open())
+			{
+				getdigit2(DummyIn->ColumHingeFile, DummyIn->LineMB);
+			};
+			//球铰
+			if (DummyIn->LineMB == "*BallJoint")
+			{
+				DummyIn->ColumHingeFile.close();
+				DummyIn->RigidBodyFile.close();
+				DummyIn->MBNodeFile.close();
+				DummyIn->MBContactFile.close();
+				DummyIn->LineMB.erase(0, 1);
+				DummyIn->BallJointFileString = getFileName(DummyIn->LineMB);
+				DummyIn->BallJointFile.open(getFileName(DummyIn->LineMB));
+			}
+			if (DummyIn->BallJointFile.is_open())
+			{
+				getdigit2(DummyIn->BallJointFile, DummyIn->LineMB);
+			};
 
-			 //NODE
-			 if (DummyIn->LineMB == "*NODE")
-			 {
-				 DummyIn->ColumHingeFile.close();
-				 DummyIn->RigidBodyFile.close();
-				 DummyIn->BallJointFile.close();
-				 DummyIn->MBContactFile.close();
-				 DummyIn->LineMB.erase(0, 1);
-				 DummyIn->MBNodeFileString = getFileName2(DummyIn->Multibody, DummyIn->LineMB);
-				 DummyIn->MBNodeFile.open(DummyIn->MBNodeFileString);
-			 }
-			 if (DummyIn->MBNodeFile.is_open())
-			 {
-				 getdigit2(DummyIn->MBNodeFile, DummyIn->LineMB);
-			 };
+			//NODE
+			if (DummyIn->LineMB == "*NODE")
+			{
+				DummyIn->ColumHingeFile.close();
+				DummyIn->RigidBodyFile.close();
+				DummyIn->BallJointFile.close();
+				DummyIn->MBContactFile.close();
+				DummyIn->LineMB.erase(0, 1);
+				DummyIn->MBNodeFileString = getFileName2(DummyIn->Multibody, DummyIn->LineMB);
+				DummyIn->MBNodeFile.open(DummyIn->MBNodeFileString);
+			}
+			if (DummyIn->MBNodeFile.is_open())
+			{
+				getdigit2(DummyIn->MBNodeFile, DummyIn->LineMB);
+			};
 
-			 //接触
-			 if (DummyIn->LineMB == "*CONTACT_NODES_TO_SURFACE_ID")
-			 {
-				 DummyIn->ColumHingeFile.close();
-				 DummyIn->RigidBodyFile.close();
-				 DummyIn->BallJointFile.close();
-				 DummyIn->MBNodeFile.close();
-				 DummyIn->LineMB.erase(0, 1);
-				 DummyIn->MBContactFileString = "MBContact.txt";
-				 DummyIn->MBContactFileString2 = "MBContactTemp.txt";
-				 DummyIn->MBContactFile.open(DummyIn->MBContactFileString2);
-				 DummyIn->MBContactFile.clear();
-				 DummyIn->MBContactFile << endl;
-			 }
-			 if (DummyIn->MBContactFile.is_open())
-			 {
-				 if (' ' == DummyIn->LineMB[0])
-				 {
-					 DummyIn->MBContactFile << DummyIn->LineMB << " ";
-				 }
-			 }
+			//接触
+			if (DummyIn->LineMB == "*CONTACT_NODES_TO_SURFACE_ID")
+			{
+				DummyIn->ColumHingeFile.close();
+				DummyIn->RigidBodyFile.close();
+				DummyIn->BallJointFile.close();
+				DummyIn->MBNodeFile.close();
+				DummyIn->LineMB.erase(0, 1);
+				DummyIn->MBContactFileString = "MBContact.txt";
+				DummyIn->MBContactFileString2 = "MBContactTemp.txt";
+				DummyIn->MBContactFile.open(DummyIn->MBContactFileString2);
+				DummyIn->MBContactFile.clear();
+				DummyIn->MBContactFile << endl;
+			}
+			if (DummyIn->MBContactFile.is_open())
+			{
+				if (' ' == DummyIn->LineMB[0])
+				{
+					DummyIn->MBContactFile << DummyIn->LineMB << " ";
+				}
+			}
 
-			 if (DummyIn->LineMB == "*SET_NODE_LIST")
-			 {
-				 DummyIn->ColumHingeFile.close();
-				 DummyIn->RigidBodyFile.close();
-				 DummyIn->BallJointFile.close();
-				 DummyIn->MBNodeFile.close();
-				 DummyIn->MBContactFile.close();
-			 }
-			 if (DummyIn->LineMB == "*SET_SEGMENT")
-			 {
-				 DummyIn->ColumHingeFile.close();
-				 DummyIn->RigidBodyFile.close();
-				 DummyIn->BallJointFile.close();
-				 DummyIn->MBNodeFile.close();
-				 DummyIn->MBContactFile.close();
-			 }
-			 if (DummyIn->LineMB == "*END")
-			 {
-				 DummyIn->ColumHingeFile.close();
-				 DummyIn->RigidBodyFile.close();
-				 DummyIn->BallJointFile.close();
-				 DummyIn->MBNodeFile.close();
-				 DummyIn->MBContactFile.close();
-			 }
-			 if ("*ConnectNode" == DummyIn->LineMB)
-			 {
-				 DummyIn->LineMB = DummyIn->LineMB.erase(0, 1);
-				 DummyIn->ConnectNodeFileString = getFileName(DummyIn->LineMB);
-				 DummyIn->ConnectNodeFile.open(DummyIn->ConnectNodeFileString);
-			 }
-			 if (DummyIn->ConnectNodeFile.is_open())
-			 {
-				 getdigit2(DummyIn->ConnectNodeFile, DummyIn->LineMB);
-			 }
-			 if (DummyIn->LineMB == "*END2")
-			 {
-				 DummyIn->ConnectNodeFile.close();
-			 }
-		 }
-		 DummyIn->InMB.close();
+			if (DummyIn->LineMB == "*SET_NODE_LIST")
+			{
+				DummyIn->ColumHingeFile.close();
+				DummyIn->RigidBodyFile.close();
+				DummyIn->BallJointFile.close();
+				DummyIn->MBNodeFile.close();
+				DummyIn->MBContactFile.close();
+			}
+			if (DummyIn->LineMB == "*SET_SEGMENT")
+			{
+				DummyIn->ColumHingeFile.close();
+				DummyIn->RigidBodyFile.close();
+				DummyIn->BallJointFile.close();
+				DummyIn->MBNodeFile.close();
+				DummyIn->MBContactFile.close();
+			}
+			if (DummyIn->LineMB == "*END")
+			{
+				DummyIn->ColumHingeFile.close();
+				DummyIn->RigidBodyFile.close();
+				DummyIn->BallJointFile.close();
+				DummyIn->MBNodeFile.close();
+				DummyIn->MBContactFile.close();
+			}
+			if ("*ConnectNode" == DummyIn->LineMB)
+			{
+				DummyIn->LineMB = DummyIn->LineMB.erase(0, 1);
+				DummyIn->ConnectNodeFileString = getFileName(DummyIn->LineMB);
+				DummyIn->ConnectNodeFile.open(DummyIn->ConnectNodeFileString);
+			}
+			if (DummyIn->ConnectNodeFile.is_open())
+			{
+				getdigit2(DummyIn->ConnectNodeFile, DummyIn->LineMB);
+			}
+			if (DummyIn->LineMB == "*END2")
+			{
+				DummyIn->ConnectNodeFile.close();
+			}
+		}
+		DummyIn->InMB.close();
 
-		 //Contact 文件
-		 DummyIn->MBInContact.open(DummyIn->MBContactFileString2);
-		 DummyIn->MBContactFile2.open(DummyIn->MBContactFileString);
-		 while (getline(DummyIn->MBInContact, DummyIn->MBLineContact))
-		 {
-			 if (DummyIn->MBContactFile2.is_open())
-			 {
-				 if (' ' == DummyIn->MBLineContact[0])
-				 {
-					 DummyIn->MBContactFile2 << DummyIn->MBLineContact << endl;
-				 }
-			 }
-		 }
-		 DummyIn->MBContactFile2.close();
-		 DummyIn->MBInContact.close();
+		//Contact 文件
+		DummyIn->MBInContact.open(DummyIn->MBContactFileString2);
+		DummyIn->MBContactFile2.open(DummyIn->MBContactFileString);
+		while (getline(DummyIn->MBInContact, DummyIn->MBLineContact))
+		{
+			if (DummyIn->MBContactFile2.is_open())
+			{
+				if (' ' == DummyIn->MBLineContact[0])
+				{
+					DummyIn->MBContactFile2 << DummyIn->MBLineContact << endl;
+				}
+			}
+		}
+		DummyIn->MBContactFile2.close();
+		DummyIn->MBInContact.close();
 
-		 //SegmentSet 文件
-		 MBlsmap* mbls = new MBlsmap;
-		 MBSetSegmentNode* pMBSetSegmentNode = new MBSetSegmentNode;
-		 DummyIn->InSegmentSet.open(MBfileToOpen);
-		 while (getline(DummyIn->InSegmentSet, DummyIn->LineSegmentSet))
-		 {
-			 //主面节点
-			 if ("*SET_SEGMENT" == DummyIn->LineSegmentSet)
-			 {
-				 DummyIn->LineSegmentSet = ("MB") + (DummyIn->LineSegmentSet.erase(0, 1));
-				 DummyIn->SegmentSetFile1String = getFileName(DummyIn->LineSegmentSet);
-				 DummyIn->SegmentSetFile1.open(DummyIn->SegmentSetFile1String);
-				 DummyIn->SegmentSetFile1.clear();
-				 DummyIn->SegmentSetFile1 << endl;
-			 }
-			 if (DummyIn->SegmentSetFile1.is_open())
-			 {
-				 if (' ' == DummyIn->LineSegmentSet[0])
-				 {
-					 DummyIn->SegmentSetFile1 << DummyIn->LineSegmentSet << " ";
-				 }
-			 }
-			 if (("*CONTACT_AUTOMATIC_NODES_TO_SURFACE_ID" == DummyIn->LineSegmentSet) || ("*CONTACT_NODES_TO_SURFACE_ID" == DummyIn->LineSegmentSet) || ("*RIGIDWALL_PLANAR_FINITE_ID" == DummyIn->LineSegmentSet) || ("*ELEMENT_BEAM" == DummyIn->LineSegmentSet)
-				 || ("*ELEMENT_SHELL" == DummyIn->LineSegmentSet) || ("*ELEMENT_SOLID" == DummyIn->LineSegmentSet) || ("*SET_NODE_LIST" == DummyIn->LineSegmentSet) || ("*DEFINE_CURVE" == DummyIn->LineSegmentSet) || ("*SET_PART_LIST" == DummyIn->LineSegmentSet)
-				 || ("*END" == DummyIn->LineSegmentSet))
-			 {
-				 DummyIn->SegmentSetFile1.close();
-			 }
-		 }
-		 DummyIn->InSegmentSet.close();
-		 ifstream InSegmentSet2;
-		 InSegmentSet2.open(DummyIn->SegmentSetFile1String);
-		 DummyIn->SegmentSetFile2String = "MBSegmentSet.txt";
-		 string LineSegmentSet2;
-		 int panduanneirongSegmentSet = 0;
-		 while (getline(InSegmentSet2, LineSegmentSet2))
-		 {
-			 ofstream SegmentSetFile2(DummyIn->SegmentSetFile2String);
-			 if (' ' == LineSegmentSet2[0])
-			 {
-				 LineSegmentSet2.erase(50, 4);
-				 SegmentSetFile2 << LineSegmentSet2 << flush;
-				 panduanneirongSegmentSet = 1;
-			 }
-			 if ((panduanneirongSegmentSet == 1) && (1 == isFileExists(DummyIn->SegmentSetFile2String)))
-			 {
-				 Matrix<int, Dynamic, Dynamic>SegmentSet = LinearMSTMMSolver::openDataInt(DummyIn->SegmentSetFile2String);
-				 pMBSetSegmentNode->SetSegmentId = SegmentSet(0, 0);
-				 pMBSetSegmentNode->SetSegmentNodeID = SegmentSet;
-				 (void)mbls->AllMBSetSegmentNode.insert(make_pair(pMBSetSegmentNode->SetSegmentId, (*pMBSetSegmentNode)));
-			 };
-		 }
-		 InSegmentSet2.close();
-		 delete pMBSetSegmentNode;
-		 pMBSetSegmentNode = nullptr;
+		//SegmentSet 文件
+		MBlsmap* mbls = new MBlsmap;
+		MBSetSegmentNode* pMBSetSegmentNode = new MBSetSegmentNode;
+		DummyIn->InSegmentSet.open(MBfileToOpen);
+		while (getline(DummyIn->InSegmentSet, DummyIn->LineSegmentSet))
+		{
+			//主面节点
+			if ("*SET_SEGMENT" == DummyIn->LineSegmentSet)
+			{
+				DummyIn->LineSegmentSet = ("MB") + (DummyIn->LineSegmentSet.erase(0, 1));
+				DummyIn->SegmentSetFile1String = getFileName(DummyIn->LineSegmentSet);
+				DummyIn->SegmentSetFile1.open(DummyIn->SegmentSetFile1String);
+				DummyIn->SegmentSetFile1.clear();
+				DummyIn->SegmentSetFile1 << endl;
+			}
+			if (DummyIn->SegmentSetFile1.is_open())
+			{
+				if (' ' == DummyIn->LineSegmentSet[0])
+				{
+					DummyIn->SegmentSetFile1 << DummyIn->LineSegmentSet << " ";
+				}
+			}
+			if (("*CONTACT_AUTOMATIC_NODES_TO_SURFACE_ID" == DummyIn->LineSegmentSet) || ("*CONTACT_NODES_TO_SURFACE_ID" == DummyIn->LineSegmentSet) || ("*RIGIDWALL_PLANAR_FINITE_ID" == DummyIn->LineSegmentSet) || ("*ELEMENT_BEAM" == DummyIn->LineSegmentSet)
+				|| ("*ELEMENT_SHELL" == DummyIn->LineSegmentSet) || ("*ELEMENT_SOLID" == DummyIn->LineSegmentSet) || ("*SET_NODE_LIST" == DummyIn->LineSegmentSet) || ("*DEFINE_CURVE" == DummyIn->LineSegmentSet) || ("*SET_PART_LIST" == DummyIn->LineSegmentSet)
+				|| ("*END" == DummyIn->LineSegmentSet))
+			{
+				DummyIn->SegmentSetFile1.close();
+			}
+		}
+		DummyIn->InSegmentSet.close();
+		ifstream InSegmentSet2;
+		InSegmentSet2.open(DummyIn->SegmentSetFile1String);
+		DummyIn->SegmentSetFile2String = "MBSegmentSet.txt";
+		string LineSegmentSet2;
+		int panduanneirongSegmentSet = 0;
+		while (getline(InSegmentSet2, LineSegmentSet2))
+		{
+			ofstream SegmentSetFile2(DummyIn->SegmentSetFile2String);
+			if (' ' == LineSegmentSet2[0])
+			{
+				LineSegmentSet2.erase(50, 4);
+				SegmentSetFile2 << LineSegmentSet2 << flush;
+				panduanneirongSegmentSet = 1;
+			}
+			if ((panduanneirongSegmentSet == 1) && (1 == isFileExists(DummyIn->SegmentSetFile2String)))
+			{
+				Matrix<int, Dynamic, Dynamic>SegmentSet = LinearMSTMMSolver::openDataInt(DummyIn->SegmentSetFile2String);
+				pMBSetSegmentNode->SetSegmentId = SegmentSet(0, 0);
+				pMBSetSegmentNode->SetSegmentNodeID = SegmentSet;
+				(void)mbls->AllMBSetSegmentNode.insert(make_pair(pMBSetSegmentNode->SetSegmentId, (*pMBSetSegmentNode)));
+			};
+		}
+		InSegmentSet2.close();
+		delete pMBSetSegmentNode;
+		pMBSetSegmentNode = nullptr;
 
-		 MBSetNode* pMBSetNode = new MBSetNode;
-		 //NODE
-		 if (1 == isFileExists(DummyIn->MBNodeFileString))
-		 {
-			 Matrix<int, Dynamic, Dynamic>MBNode1 = LinearMSTMMSolver::openDataInt(DummyIn->MBNodeFileString);
-			 Matrix<double, Dynamic, Dynamic>MBNode2 = LinearMSTMMSolver::openData(DummyIn->MBNodeFileString);
-			 MBNode* pMBNode = new MBNode;
-			 for (int i = 0; i < MBNode1.rows(); i++)
-			 {
-				 pMBNode->NodeID = MBNode1(i, 0);
-				 pMBNode->NodeCoordinates = MBNode2.row(i).rightCols(3);
-				 (void)mbls->AllMBNode.insert(make_pair(pMBNode->NodeID, (*pMBNode)));
-			 };
-			 delete pMBNode;
-			 pMBNode = nullptr;
-		 };
+		MBSetNode* pMBSetNode = new MBSetNode;
+		//NODE
+		if (1 == isFileExists(DummyIn->MBNodeFileString))
+		{
+			Matrix<int, Dynamic, Dynamic>MBNode1 = LinearMSTMMSolver::openDataInt(DummyIn->MBNodeFileString);
+			Matrix<double, Dynamic, Dynamic>MBNode2 = LinearMSTMMSolver::openData(DummyIn->MBNodeFileString);
+			MBNode* pMBNode = new MBNode;
+			for (int i = 0; i < MBNode1.rows(); i++)
+			{
+				pMBNode->NodeID = MBNode1(i, 0);
+				pMBNode->NodeCoordinates = MBNode2.row(i).rightCols(3);
+				(void)mbls->AllMBNode.insert(make_pair(pMBNode->NodeID, (*pMBNode)));
+			};
+			delete pMBNode;
+			pMBNode = nullptr;
+		};
 
-		 //SetNode
-		 DummyIn->InSetNode.open(MBfileToOpen);
-		 while (getline(DummyIn->InSetNode, DummyIn->LineSetNode))
-		 {
-			 if ("*SET_NODE_LIST" == DummyIn->LineSetNode)
-			 {
-				 DummyIn->LineSetNode = ("MB") + (DummyIn->LineSetNode.erase(0, 1));
-				 DummyIn->SetNodeFile1String = getFileName(DummyIn->LineSetNode);
-				 DummyIn->SetNodeFile1.open(DummyIn->SetNodeFile1String);
-				 DummyIn->SetNodeFile1.clear();
-				 DummyIn->SetNodeFile1 << endl;
-			 }
-			 if (DummyIn->SetNodeFile1.is_open())
-			 {
-				 if (' ' == DummyIn->LineSetNode[0])
-				 {
-					 DummyIn->SetNodeFile1 << DummyIn->LineSetNode << " ";
-				 }
-			 }
-			 if (("*END" == DummyIn->LineSetNode) || ("*DEFINE_CURVE" == DummyIn->LineSetNode) || ("*BOUNDARY_SPC_NODE" == DummyIn->LineSetNode) || ("*SET_PART_LIST" == DummyIn->LineSetNode) || ("*CONTACT_NODES_TO_SURFACE_ID" == DummyIn->LineSetNode))
-			 {
-				 DummyIn->SetNodeFile1.close();
-			 }
-		 }
-		 DummyIn->InSetNode.close();
-		 ifstream InSetNode2;
-		 InSetNode2.open(DummyIn->SetNodeFile1String);
-		 DummyIn->SetNodeFile2String = "MBSETNODELIST.txt";
-		 string LineSetNode2;
-		 int panduanneirong = 0;
-		 while (getline(InSetNode2, LineSetNode2))
-		 {
-			 ofstream SetNodeFile2(DummyIn->SetNodeFile2String);
-			 if (' ' == LineSetNode2[0])
-			 {
-				 LineSetNode2.erase(50, 4);
-				 SetNodeFile2 << LineSetNode2 << flush;
-				 panduanneirong = 1;
-			 }
-			 if ((panduanneirong == 1) && (1 == isFileExists(DummyIn->SetNodeFile2String)))
-			 {
-				 Matrix<int, Dynamic, Dynamic>SetNode = LinearMSTMMSolver::openDataInt(DummyIn->SetNodeFile2String);
-				 pMBSetNode->SetId = SetNode(0, 0);
-				 pMBSetNode->SetNodeID = SetNode.rightCols(SetNode.size() - 1);
-				 (void)mbls->AllMBSetNode.insert(make_pair(pMBSetNode->SetId, (*pMBSetNode)));
-			 };
-		 }
-		 InSetNode2.close();
-		 delete pMBSetNode;
-		 pMBSetNode = nullptr;
+		//SetNode
+		DummyIn->InSetNode.open(MBfileToOpen);
+		while (getline(DummyIn->InSetNode, DummyIn->LineSetNode))
+		{
+			if ("*SET_NODE_LIST" == DummyIn->LineSetNode)
+			{
+				DummyIn->LineSetNode = ("MB") + (DummyIn->LineSetNode.erase(0, 1));
+				DummyIn->SetNodeFile1String = getFileName(DummyIn->LineSetNode);
+				DummyIn->SetNodeFile1.open(DummyIn->SetNodeFile1String);
+				DummyIn->SetNodeFile1.clear();
+				DummyIn->SetNodeFile1 << endl;
+			}
+			if (DummyIn->SetNodeFile1.is_open())
+			{
+				if (' ' == DummyIn->LineSetNode[0])
+				{
+					DummyIn->SetNodeFile1 << DummyIn->LineSetNode << " ";
+				}
+			}
+			if (("*END" == DummyIn->LineSetNode) || ("*DEFINE_CURVE" == DummyIn->LineSetNode) || ("*BOUNDARY_SPC_NODE" == DummyIn->LineSetNode) || ("*SET_PART_LIST" == DummyIn->LineSetNode) || ("*CONTACT_NODES_TO_SURFACE_ID" == DummyIn->LineSetNode))
+			{
+				DummyIn->SetNodeFile1.close();
+			}
+		}
+		DummyIn->InSetNode.close();
+		ifstream InSetNode2;
+		InSetNode2.open(DummyIn->SetNodeFile1String);
+		DummyIn->SetNodeFile2String = "MBSETNODELIST.txt";
+		string LineSetNode2;
+		int panduanneirong = 0;
+		while (getline(InSetNode2, LineSetNode2))
+		{
+			ofstream SetNodeFile2(DummyIn->SetNodeFile2String);
+			if (' ' == LineSetNode2[0])
+			{
+				LineSetNode2.erase(50, 4);
+				SetNodeFile2 << LineSetNode2 << flush;
+				panduanneirong = 1;
+			}
+			if ((panduanneirong == 1) && (1 == isFileExists(DummyIn->SetNodeFile2String)))
+			{
+				Matrix<int, Dynamic, Dynamic>SetNode = LinearMSTMMSolver::openDataInt(DummyIn->SetNodeFile2String);
+				pMBSetNode->SetId = SetNode(0, 0);
+				pMBSetNode->SetNodeID = SetNode.rightCols(SetNode.size() - 1);
+				(void)mbls->AllMBSetNode.insert(make_pair(pMBSetNode->SetId, (*pMBSetNode)));
+			};
+		}
+		InSetNode2.close();
+		delete pMBSetNode;
+		pMBSetNode = nullptr;
 
-		 //开始读入数据
-		 ///////////////////////////////////////////////////////////////////////////////////////////////////
+		//开始读入数据
+		///////////////////////////////////////////////////////////////////////////////////////////////////
 
-		 // 刚体信息
-		 if (isFileExists(DummyIn->RigidBodyFileString) == 1)
-		 {
-			 Matrix<int, Dynamic, Dynamic>RigidBodyImformation1 = LinearMSTMMSolver::openDataInt(DummyIn->RigidBodyFileString);
-			 Matrix<double, Dynamic, Dynamic>RigidBodyImformation2 = LinearMSTMMSolver::openData(DummyIn->RigidBodyFileString);
-			 for (int i = 0; i < RigidBodyImformation1.rows(); i++)
-			 {
-				 inputRigidBody* InRigidBody = new inputRigidBody;
-				 (*InRigidBody).RigidBodyID = RigidBodyImformation1(i, 0);
-				 (*InRigidBody).RI1(0, 0) = RigidBodyImformation2(i, 1);
-				 (*InRigidBody).RI1(1, 0) = RigidBodyImformation2(i, 2);
-				 (*InRigidBody).RI1(2, 0) = RigidBodyImformation2(i, 3);
-				 (*InRigidBody).RI2(0, 0) = RigidBodyImformation2(i, 4);
-				 (*InRigidBody).RI2(1, 0) = RigidBodyImformation2(i, 5);
-				 (*InRigidBody).RI2(2, 0) = RigidBodyImformation2(i, 6);
-				 (*InRigidBody).RI3(0, 0) = RigidBodyImformation2(i, 7);
-				 (*InRigidBody).RI3(1, 0) = RigidBodyImformation2(i, 8);
-				 (*InRigidBody).RI3(2, 0) = RigidBodyImformation2(i, 9);
-				 (*InRigidBody).RO(0, 0) = RigidBodyImformation2(i, 10);
-				 (*InRigidBody).RO(1, 0) = RigidBodyImformation2(i, 11);
-				 (*InRigidBody).RO(2, 0) = RigidBodyImformation2(i, 12);
-				 (*InRigidBody).RC(0, 0) = RigidBodyImformation2(i, 13);
-				 (*InRigidBody).RC(1, 0) = RigidBodyImformation2(i, 14);
-				 (*InRigidBody).RC(2, 0) = RigidBodyImformation2(i, 15);
-				 (*InRigidBody).J.setZero(3, 3);
-				 (*InRigidBody).J(0, 0) = RigidBodyImformation2(i, 16);
-				 (*InRigidBody).J(1, 1) = RigidBodyImformation2(i, 17);
-				 (*InRigidBody).J(2, 2) = RigidBodyImformation2(i, 18);
-				 (*InRigidBody).OuO(0, 0) = RigidBodyImformation2(i, 19);
-				 (*InRigidBody).OuO(1, 0) = RigidBodyImformation2(i, 20);
-				 (*InRigidBody).OuO(2, 0) = RigidBodyImformation2(i, 21);
-				 (*InRigidBody).VO(0, 0) = RigidBodyImformation2(i, 22);
-				 (*InRigidBody).VO(1, 0) = RigidBodyImformation2(i, 23);
-				 (*InRigidBody).VO(2, 0) = RigidBodyImformation2(i, 24);
-				 (*InRigidBody).M = RigidBodyImformation2(i, 25);
-				 (*InRigidBody).OuLa1 = RigidBodyImformation2(i, 26);
-				 (*InRigidBody).OuLa2 = RigidBodyImformation2(i, 27);
-				 (*InRigidBody).OuLa3 = RigidBodyImformation2(i, 28);
-				 (*InRigidBody).OuLa4 = RigidBodyImformation2(i, 29);
-				 (*InRigidBody).Fc(0, 0) = RigidBodyImformation2(i, 30);
-				 (*InRigidBody).Fc(1, 0) = RigidBodyImformation2(i, 31);
-				 (*InRigidBody).Fc(2, 0) = RigidBodyImformation2(i, 32);
-				 (*InRigidBody).Mc(0, 0) = RigidBodyImformation2(i, 33);
-				 (*InRigidBody).Mc(1, 0) = RigidBodyImformation2(i, 34);
-				 (*InRigidBody).Mc(2, 0) = RigidBodyImformation2(i, 35);
-				 (*InRigidBody).ZbO(0, 0) = RigidBodyImformation2(i, 36);
-				 (*InRigidBody).ZbO(1, 0) = RigidBodyImformation2(i, 37);
-				 (*InRigidBody).ZbO(2, 0) = RigidBodyImformation2(i, 38);
-				 (*InRigidBody).ZbO(3, 0) = RigidBodyImformation2(i, 39);
-				 (*InRigidBody).ZbO(4, 0) = RigidBodyImformation2(i, 40);
-				 (*InRigidBody).ZbO(5, 0) = RigidBodyImformation2(i, 41);
-				 InRigidBody->RigidBodySetID = RigidBodyImformation1(i, 42);
-				 for (int j = 0; j < mbls->AllMBSetNode[InRigidBody->RigidBodySetID].SetNodeID.cols(); j++)
-				 {
+		// 刚体信息
+		if (isFileExists(DummyIn->RigidBodyFileString) == 1)
+		{
+			Matrix<int, Dynamic, Dynamic>RigidBodyImformation1 = LinearMSTMMSolver::openDataInt(DummyIn->RigidBodyFileString);
+			Matrix<double, Dynamic, Dynamic>RigidBodyImformation2 = LinearMSTMMSolver::openData(DummyIn->RigidBodyFileString);
+			for (int i = 0; i < RigidBodyImformation1.rows(); i++)
+			{
+				inputRigidBody* InRigidBody = new inputRigidBody;
+				(*InRigidBody).RigidBodyID = RigidBodyImformation1(i, 0);
+				(*InRigidBody).RI1(0, 0) = RigidBodyImformation2(i, 1);
+				(*InRigidBody).RI1(1, 0) = RigidBodyImformation2(i, 2);
+				(*InRigidBody).RI1(2, 0) = RigidBodyImformation2(i, 3);
+				(*InRigidBody).RI2(0, 0) = RigidBodyImformation2(i, 4);
+				(*InRigidBody).RI2(1, 0) = RigidBodyImformation2(i, 5);
+				(*InRigidBody).RI2(2, 0) = RigidBodyImformation2(i, 6);
+				(*InRigidBody).RI3(0, 0) = RigidBodyImformation2(i, 7);
+				(*InRigidBody).RI3(1, 0) = RigidBodyImformation2(i, 8);
+				(*InRigidBody).RI3(2, 0) = RigidBodyImformation2(i, 9);
+				(*InRigidBody).RO(0, 0) = RigidBodyImformation2(i, 10);
+				(*InRigidBody).RO(1, 0) = RigidBodyImformation2(i, 11);
+				(*InRigidBody).RO(2, 0) = RigidBodyImformation2(i, 12);
+				(*InRigidBody).RC(0, 0) = RigidBodyImformation2(i, 13);
+				(*InRigidBody).RC(1, 0) = RigidBodyImformation2(i, 14);
+				(*InRigidBody).RC(2, 0) = RigidBodyImformation2(i, 15);
+				(*InRigidBody).J.setZero(3, 3);
+				(*InRigidBody).J(0, 0) = RigidBodyImformation2(i, 16);
+				(*InRigidBody).J(1, 1) = RigidBodyImformation2(i, 17);
+				(*InRigidBody).J(2, 2) = RigidBodyImformation2(i, 18);
+				(*InRigidBody).OuO(0, 0) = RigidBodyImformation2(i, 19);
+				(*InRigidBody).OuO(1, 0) = RigidBodyImformation2(i, 20);
+				(*InRigidBody).OuO(2, 0) = RigidBodyImformation2(i, 21);
+				(*InRigidBody).VO(0, 0) = RigidBodyImformation2(i, 22);
+				(*InRigidBody).VO(1, 0) = RigidBodyImformation2(i, 23);
+				(*InRigidBody).VO(2, 0) = RigidBodyImformation2(i, 24);
+				(*InRigidBody).M = RigidBodyImformation2(i, 25);
+				(*InRigidBody).OuLa1 = RigidBodyImformation2(i, 26);
+				(*InRigidBody).OuLa2 = RigidBodyImformation2(i, 27);
+				(*InRigidBody).OuLa3 = RigidBodyImformation2(i, 28);
+				(*InRigidBody).OuLa4 = RigidBodyImformation2(i, 29);
+				(*InRigidBody).Fc(0, 0) = RigidBodyImformation2(i, 30);
+				(*InRigidBody).Fc(1, 0) = RigidBodyImformation2(i, 31);
+				(*InRigidBody).Fc(2, 0) = RigidBodyImformation2(i, 32);
+				(*InRigidBody).Mc(0, 0) = RigidBodyImformation2(i, 33);
+				(*InRigidBody).Mc(1, 0) = RigidBodyImformation2(i, 34);
+				(*InRigidBody).Mc(2, 0) = RigidBodyImformation2(i, 35);
+				(*InRigidBody).ZbO(0, 0) = RigidBodyImformation2(i, 36);
+				(*InRigidBody).ZbO(1, 0) = RigidBodyImformation2(i, 37);
+				(*InRigidBody).ZbO(2, 0) = RigidBodyImformation2(i, 38);
+				(*InRigidBody).ZbO(3, 0) = RigidBodyImformation2(i, 39);
+				(*InRigidBody).ZbO(4, 0) = RigidBodyImformation2(i, 40);
+				(*InRigidBody).ZbO(5, 0) = RigidBodyImformation2(i, 41);
+				InRigidBody->RigidBodySetID = RigidBodyImformation1(i, 42);
+				for (int j = 0; j < mbls->AllMBSetNode[InRigidBody->RigidBodySetID].SetNodeID.cols(); j++)
+				{
 
-					 InRigidBody->MeshCoor.insert(make_pair(mbls->AllMBSetNode[InRigidBody->RigidBodySetID].SetNodeID(0, j), mbls->AllMBNode[mbls->AllMBSetNode[InRigidBody->RigidBodySetID].SetNodeID(0, j)].NodeCoordinates));
-				 }
-				 (*IADate).inputAllRigidBody.insert(make_pair((*InRigidBody).RigidBodyID, (*InRigidBody)));
-				 delete InRigidBody;
-			 }
-		 };
+					InRigidBody->MeshCoor.insert(make_pair(mbls->AllMBSetNode[InRigidBody->RigidBodySetID].SetNodeID(0, j), mbls->AllMBNode[mbls->AllMBSetNode[InRigidBody->RigidBodySetID].SetNodeID(0, j)].NodeCoordinates));
+				}
+				(*IADate).inputAllRigidBody.insert(make_pair((*InRigidBody).RigidBodyID, (*InRigidBody)));
+				delete InRigidBody;
+			}
+		};
 
-		 // 柱铰信息
-		 if (isFileExists(DummyIn->ColumHingeFileString) == 1)
-		 {
-			 Matrix<int, Dynamic, Dynamic>ColumHingeImformation1 = LinearMSTMMSolver::openDataInt(DummyIn->ColumHingeFileString);
-			 Matrix<double, Dynamic, Dynamic>ColumHingeImformation2 = LinearMSTMMSolver::openData(DummyIn->ColumHingeFileString);
-			 inputColumnHinge* InColumnHinge = new inputColumnHinge;
-			 for (int i = 0; i < ColumHingeImformation1.rows(); i++)
-			 {
-				 InColumnHinge->ColumnHingeID = ColumHingeImformation1(i, 0);
-				 (*InColumnHinge).SeiTa0(0, 0) = ColumHingeImformation2(i, 1);
-				 (*InColumnHinge).SeiTa0(1, 0) = ColumHingeImformation2(i, 2);
-				 (*InColumnHinge).SeiTa0(2, 0) = ColumHingeImformation2(i, 3);
-				 (*InColumnHinge).WR(0, 0) = ColumHingeImformation2(i, 4);
-				 (*InColumnHinge).WR(1, 0) = ColumHingeImformation2(i, 5);
-				 (*InColumnHinge).WR(2, 0) = ColumHingeImformation2(i, 6);
-				 (*InColumnHinge).K(0, 0) = ColumHingeImformation2(i, 7);
-				 (*InColumnHinge).K(0, 1) = ColumHingeImformation2(i, 8);
-				 (*InColumnHinge).K(0, 2) = ColumHingeImformation2(i, 9);
-				 (*InColumnHinge).C(0, 0) = ColumHingeImformation2(i, 10);
-				 (*InColumnHinge).C(0, 1) = ColumHingeImformation2(i, 11);
-				 (*InColumnHinge).C(0, 2) = ColumHingeImformation2(i, 12);
-				 (*IADate).inputAllColumnHinge.insert(make_pair((*InColumnHinge).ColumnHingeID, (*InColumnHinge)));
-			 }
-			 delete InColumnHinge;
-		 };
+		// 柱铰信息
+		if (isFileExists(DummyIn->ColumHingeFileString) == 1)
+		{
+			Matrix<int, Dynamic, Dynamic>ColumHingeImformation1 = LinearMSTMMSolver::openDataInt(DummyIn->ColumHingeFileString);
+			Matrix<double, Dynamic, Dynamic>ColumHingeImformation2 = LinearMSTMMSolver::openData(DummyIn->ColumHingeFileString);
+			inputColumnHinge* InColumnHinge = new inputColumnHinge;
+			for (int i = 0; i < ColumHingeImformation1.rows(); i++)
+			{
+				InColumnHinge->ColumnHingeID = ColumHingeImformation1(i, 0);
+				(*InColumnHinge).SeiTa0(0, 0) = ColumHingeImformation2(i, 1);
+				(*InColumnHinge).SeiTa0(1, 0) = ColumHingeImformation2(i, 2);
+				(*InColumnHinge).SeiTa0(2, 0) = ColumHingeImformation2(i, 3);
+				(*InColumnHinge).WR(0, 0) = ColumHingeImformation2(i, 4);
+				(*InColumnHinge).WR(1, 0) = ColumHingeImformation2(i, 5);
+				(*InColumnHinge).WR(2, 0) = ColumHingeImformation2(i, 6);
+				(*InColumnHinge).K(0, 0) = ColumHingeImformation2(i, 7);
+				(*InColumnHinge).K(0, 1) = ColumHingeImformation2(i, 8);
+				(*InColumnHinge).K(0, 2) = ColumHingeImformation2(i, 9);
+				(*InColumnHinge).C(0, 0) = ColumHingeImformation2(i, 10);
+				(*InColumnHinge).C(0, 1) = ColumHingeImformation2(i, 11);
+				(*InColumnHinge).C(0, 2) = ColumHingeImformation2(i, 12);
+				(*IADate).inputAllColumnHinge.insert(make_pair((*InColumnHinge).ColumnHingeID, (*InColumnHinge)));
+			}
+			delete InColumnHinge;
+		};
 
-		 // 球铰信息
-		 if (isFileExists(DummyIn->BallJointFileString) == 1)
-		 {
-			 Matrix<int, Dynamic, Dynamic>BallJointImformation1 = LinearMSTMMSolver::openDataInt(DummyIn->BallJointFileString);
-			 Matrix<double, Dynamic, Dynamic>BallJointImformation2 = LinearMSTMMSolver::openData(DummyIn->BallJointFileString);
-			 inputBallJoint* InBallJoint = new inputBallJoint;
-			 for (int i = 0; i < BallJointImformation1.rows(); i++)
-			 {
-				 (*InBallJoint).BallJointID = BallJointImformation1(i, 0);
-				 (*InBallJoint).SeiTa0(0, 0) = BallJointImformation2(i, 10);
-				 (*InBallJoint).SeiTa0(1, 0) = BallJointImformation2(i, 11);
-				 (*InBallJoint).SeiTa0(2, 0) = BallJointImformation2(i, 12);
-				 (*InBallJoint).WR(0, 0) = BallJointImformation2(i, 13);
-				 (*InBallJoint).WR(1, 0) = BallJointImformation2(i, 14);
-				 (*InBallJoint).WR(2, 0) = BallJointImformation2(i, 15);
-				 (*InBallJoint).K.setZero(3, 3);
-				 (*InBallJoint).K(0, 0) = BallJointImformation2(i, 1);
-				 (*InBallJoint).K(1, 1) = BallJointImformation2(i, 2);
-				 (*InBallJoint).K(2, 2) = BallJointImformation2(i, 3);
-				 (*InBallJoint).C.setZero(3, 3);
-				 (*InBallJoint).C(0, 0) = BallJointImformation2(i, 4);
-				 (*InBallJoint).C(1, 1) = BallJointImformation2(i, 5);
-				 (*InBallJoint).C(2, 2) = BallJointImformation2(i, 6);
-				 (*InBallJoint).Md(0, 0) = BallJointImformation2(i, 7);
-				 (*InBallJoint).Md(1, 0) = BallJointImformation2(i, 8);
-				 (*InBallJoint).Md(2, 0) = BallJointImformation2(i, 9);
-				 (*IADate).inputAllBallJoint.insert(make_pair((*InBallJoint).BallJointID, (*InBallJoint)));
-			 }
-			 delete InBallJoint;
-		 };
+		// 球铰信息
+		if (isFileExists(DummyIn->BallJointFileString) == 1)
+		{
+			Matrix<int, Dynamic, Dynamic>BallJointImformation1 = LinearMSTMMSolver::openDataInt(DummyIn->BallJointFileString);
+			Matrix<double, Dynamic, Dynamic>BallJointImformation2 = LinearMSTMMSolver::openData(DummyIn->BallJointFileString);
+			inputBallJoint* InBallJoint = new inputBallJoint;
+			for (int i = 0; i < BallJointImformation1.rows(); i++)
+			{
+				(*InBallJoint).BallJointID = BallJointImformation1(i, 0);
+				(*InBallJoint).SeiTa0(0, 0) = BallJointImformation2(i, 10);
+				(*InBallJoint).SeiTa0(1, 0) = BallJointImformation2(i, 11);
+				(*InBallJoint).SeiTa0(2, 0) = BallJointImformation2(i, 12);
+				(*InBallJoint).WR(0, 0) = BallJointImformation2(i, 13);
+				(*InBallJoint).WR(1, 0) = BallJointImformation2(i, 14);
+				(*InBallJoint).WR(2, 0) = BallJointImformation2(i, 15);
+				(*InBallJoint).K.setZero(3, 3);
+				(*InBallJoint).K(0, 0) = BallJointImformation2(i, 1);
+				(*InBallJoint).K(1, 1) = BallJointImformation2(i, 2);
+				(*InBallJoint).K(2, 2) = BallJointImformation2(i, 3);
+				(*InBallJoint).C.setZero(3, 3);
+				(*InBallJoint).C(0, 0) = BallJointImformation2(i, 4);
+				(*InBallJoint).C(1, 1) = BallJointImformation2(i, 5);
+				(*InBallJoint).C(2, 2) = BallJointImformation2(i, 6);
+				(*InBallJoint).Md(0, 0) = BallJointImformation2(i, 7);
+				(*InBallJoint).Md(1, 0) = BallJointImformation2(i, 8);
+				(*InBallJoint).Md(2, 0) = BallJointImformation2(i, 9);
+				(*IADate).inputAllBallJoint.insert(make_pair((*InBallJoint).BallJointID, (*InBallJoint)));
+			}
+			delete InBallJoint;
+		};
 
-		 //Contact
-		 if (1 == isFileExists(DummyIn->MBContactFileString))
-		 {
-			 //Contact 关键字信息
-			 Matrix<double, Dynamic, Dynamic>MBContactImformation = LinearMSTMMSolver::openData(DummyIn->MBContactFileString);
-			 Matrix<int, Dynamic, Dynamic>MBContactImformation2 = LinearMSTMMSolver::openDataInt(DummyIn->MBContactFileString);
-			 //cout << ContactImformation;
-			 for (int i = 0; i < MBContactImformation.rows(); i++)
-			 {
-				 InputFEMtoMBContact* MBInCta = new InputFEMtoMBContact;
-				 MBInCta->ContactNumber = MBContactImformation2(i, 0);
-				 MBInCta->ContactType = 1;
-				 if ((0 == MBContactImformation(i, 5)) && (0 == MBContactImformation(i, 6)))
-				 {
-					 MBInCta->FrictionJudgment = 1;
-				 }
-				 else
-				 {
-					 MBInCta->FrictionJudgment = 0;
-				 };
-				 //节点集号
-				 MBInCta->SlaveNodeSetId = MBContactImformation2(i, 1);
-				 MBInCta->MasterNodeSetId = MBContactImformation2(i, 2);
-				 //摩擦系数
-				 MBInCta->StaticFrictionCoefficient = MBContactImformation(i, 5);
-				 MBInCta->DynamicFrictionCoefficient = MBContactImformation(i, 6);
-				 int k = 1;
-				 //主从面节点号
-				 for (int j = 0; j < (mbls->AllMBSetSegmentNode[MBInCta->MasterNodeSetId].SetSegmentNodeID.cols() - 1) / 4; j++)
-				 {
-					 Matrix<int, 4, 1> SetSegmentRow = mbls->AllMBSetSegmentNode[MBInCta->MasterNodeSetId].SetSegmentNodeID.block<1, 4>(0, k).adjoint();
-					 (void)MBInCta->MasterContactNode.insert(make_pair((j + 1), SetSegmentRow));
-					 k += 4;
-				 };
-				 for (int k = 0; k < mbls->AllMBSetNode[MBInCta->SlaveNodeSetId].SetNodeID.rows(); k++)
-				 {
-					 (void)MBInCta->SlaveContactNode.insert(make_pair((k + 1), mbls->AllMBSetNode[MBInCta->SlaveNodeSetId].SetNodeID.row(k).adjoint()));
-				 };
-				 (void)IADate->InputAllFEMtoMBContact.insert(make_pair(MBInCta->ContactNumber, (*MBInCta)));
-				 delete MBInCta;
-				 MBInCta = nullptr;
+		//Contact
+		if (1 == isFileExists(DummyIn->MBContactFileString))
+		{
+			//Contact 关键字信息
+			Matrix<double, Dynamic, Dynamic>MBContactImformation = LinearMSTMMSolver::openData(DummyIn->MBContactFileString);
+			Matrix<int, Dynamic, Dynamic>MBContactImformation2 = LinearMSTMMSolver::openDataInt(DummyIn->MBContactFileString);
+			//cout << ContactImformation;
+			for (int i = 0; i < MBContactImformation.rows(); i++)
+			{
+				InputFEMtoMBContact* MBInCta = new InputFEMtoMBContact;
+				MBInCta->ContactNumber = MBContactImformation2(i, 0);
+				MBInCta->ContactType = 1;
+				if ((0 == MBContactImformation(i, 5)) && (0 == MBContactImformation(i, 6)))
+				{
+					MBInCta->FrictionJudgment = 1;
+				}
+				else
+				{
+					MBInCta->FrictionJudgment = 0;
+				};
+				//节点集号
+				MBInCta->SlaveNodeSetId = MBContactImformation2(i, 1);
+				MBInCta->MasterNodeSetId = MBContactImformation2(i, 2);
+				//摩擦系数
+				MBInCta->StaticFrictionCoefficient = MBContactImformation(i, 5);
+				MBInCta->DynamicFrictionCoefficient = MBContactImformation(i, 6);
+				int k = 1;
+				//主从面节点号
+				for (int j = 0; j < (mbls->AllMBSetSegmentNode[MBInCta->MasterNodeSetId].SetSegmentNodeID.cols() - 1) / 4; j++)
+				{
+					Matrix<int, 4, 1> SetSegmentRow = mbls->AllMBSetSegmentNode[MBInCta->MasterNodeSetId].SetSegmentNodeID.block<1, 4>(0, k).adjoint();
+					(void)MBInCta->MasterContactNode.insert(make_pair((j + 1), SetSegmentRow));
+					k += 4;
+				};
+				for (int k = 0; k < mbls->AllMBSetNode[MBInCta->SlaveNodeSetId].SetNodeID.rows(); k++)
+				{
+					(void)MBInCta->SlaveContactNode.insert(make_pair((k + 1), mbls->AllMBSetNode[MBInCta->SlaveNodeSetId].SetNodeID.row(k).adjoint()));
+				};
+				(void)IADate->InputAllFEMtoMBContact.insert(make_pair(MBInCta->ContactNumber, (*MBInCta)));
+				delete MBInCta;
+				MBInCta = nullptr;
 
-			 }
+			}
 
-		 }
+		}
 
-		 //ConnectNodeFileString
-		 if (isFileExists(DummyIn->ConnectNodeFileString) == 1)
-		 {
-			 Matrix<int, Dynamic, Dynamic>ConnectNodeImformation = LinearMSTMMSolver::openDataInt(DummyIn->ConnectNodeFileString);
-			 IADate->ConnectNode = ConnectNodeImformation(0, 0);
+		//ConnectNodeFileString
+		if (isFileExists(DummyIn->ConnectNodeFileString) == 1)
+		{
+			Matrix<int, Dynamic, Dynamic>ConnectNodeImformation = LinearMSTMMSolver::openDataInt(DummyIn->ConnectNodeFileString);
+			IADate->ConnectNode = ConnectNodeImformation(0, 0);
 
-		 }
+		}
 
-		 delete mbls;
-		 mbls = nullptr;
+		delete mbls;
+		mbls = nullptr;
 
-		 //删除文件
-		 //remove(MBContactFileString.c_str());
-		 //remove(MBNodeFileString.c_str());
-		 //remove(RigidBodyFileString.c_str());
-		 //remove(ColumHingeFileString.c_str());
-		 //remove(BallJointFileString.c_str());
-		 //remove(MBContactFileString2.c_str());
-		 //remove(ConnectNodeFileString.c_str());
-		 //remove(SegmentSetFile2String.c_str());
-		 //remove(SetNodeFile2String.c_str());
-		 //remove(SegmentSetFile1String.c_str());
-		 //remove(SetNodeFile1String.c_str());
+		//删除文件
+		//remove(MBContactFileString.c_str());
+		//remove(MBNodeFileString.c_str());
+		//remove(RigidBodyFileString.c_str());
+		//remove(ColumHingeFileString.c_str());
+		//remove(BallJointFileString.c_str());
+		//remove(MBContactFileString2.c_str());
+		//remove(ConnectNodeFileString.c_str());
+		//remove(SegmentSetFile2String.c_str());
+		//remove(SetNodeFile2String.c_str());
+		//remove(SegmentSetFile1String.c_str());
+		//remove(SetNodeFile1String.c_str());
 
-		 delete DummyIn;
-		 DummyIn = nullptr;
-		 return 1;
+		delete DummyIn;
+		DummyIn = nullptr;
+		return 1;
 
-	 }
+	}
 };
 
 //读文件主函数
 InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 {
-
-    In.open(fileToOpen);
-    while (getline(In, line))
+	VehicleInformation* VehicleIn = new VehicleInformation;
+	VehicleIn->In.open(fileToOpen);
+    while (getline(VehicleIn->In, VehicleIn->line))
     {
 		//跳过注释行
-		if (line[0] == '$')
+		if (VehicleIn->line[0] == '$')
 		{
 			continue;
 		}
 
         //*LOAD_BODY_PARTS
-        if ("*LOAD_BODY_PARTS" ==line )
+        if ("*LOAD_BODY_PARTS" ==VehicleIn->line )
         {
-            LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            ComputingTimeFile.close();
-            LoadNodeFile.close();
-            LoadBodyYFile.close();
+            VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->LoadBodyYFile.close();
         }
 
         //*SET_PART_LIST
-        if ( "*SET_PART_LIST"==line )
+        if ( "*SET_PART_LIST"==VehicleIn->line )
         {
-            LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            ComputingTimeFile.close();
-            LoadNodeFile.close();
-            LoadBodyYFile.close();
+            VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->LoadBodyYFile.close();
         }
 
         //*LOAD_BODY_Y
-        if ( "*LOAD_BODY_Y"== line)
+        if ( "*LOAD_BODY_Y"== VehicleIn->line)
         {
-            LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            ComputingTimeFile.close();
-            LoadNodeFile.close();
-			line = line.erase(0, 1);
-            LoadBodyYFileString = getFileName(line);
-            LoadBodyYFile.open(LoadBodyYFileString);
+            VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->LoadNodeFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+            VehicleIn->LoadBodyYFileString = getFileName(VehicleIn->line);
+            VehicleIn->LoadBodyYFile.open(VehicleIn->LoadBodyYFileString);
 			continue;
         }
-        if (LoadBodyYFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->LoadBodyYFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-			LoadBodyYFile << line << endl;
+			VehicleIn->LoadBodyYFile << VehicleIn->line << endl;
         };
 
         //*LOAD_BODY_Z
-		if ( "*LOAD_BODY_Z"==line )
+		if ( "*LOAD_BODY_Z"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-			WallSlaveNodeFile.close();
-			BoundarySetFile.close();
-			HourglassFile.close();
-			RigidWallFile.close();
-			TimeIncrementFile.close();
-			NodeVelocityFile.close();
-			PlaFile.close();
-			PartFile.close();
-			SecSolidFile.close();
-			MasterNodeFile.close();
-			ContactFile.close();
-			EleSoFile.close();
-			SlaveNodeFile.close();
-			BoundaryFile.close();
-			EleBFile.close();
-			EleShFile.close();
-			SecBeamFile.close();
-			SecShellFile.close();
-			SetFile.close();
-			ComputingTimeFile.close();
-			LoadNodeFile.close();
-			line=line.erase(0, 1);
-            LoadBodyZFileString = getFileName(line);
-            LoadBodyZFile.open(LoadBodyZFileString);
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn-> SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->line=VehicleIn->line.erase(0, 1);
+            VehicleIn->LoadBodyZFileString = getFileName(VehicleIn->line);
+            VehicleIn->LoadBodyZFile.open(VehicleIn->LoadBodyZFileString);
 			continue;
 		}
-		if (LoadBodyZFile.is_open() && (line[0] != '*'))
+		if (VehicleIn->LoadBodyZFile.is_open() && (VehicleIn->line[0] != '*'))
 		{
-			LoadBodyZFile << line << endl;
+			VehicleIn->LoadBodyZFile << VehicleIn->line << endl;
 		};
 
         //*DEFINE_CURVE
-        if ( "*DEFINE_CURVE"==line )
+        if ( "*DEFINE_CURVE"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-            LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            ComputingTimeFile.close();
-            LoadNodeFile.close();
-			line = line.erase(0, 1);
-            DefineCurveFileString = getFileName(line);
-            DefineCurveFile.open(DefineCurveFileString);
+			VehicleIn->LoadBodyYFile.close();
+            VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->LoadNodeFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+            VehicleIn->DefineCurveFileString = getFileName(VehicleIn->line);
+            VehicleIn->DefineCurveFile.open(VehicleIn->DefineCurveFileString);
 			continue;
         }
-        if (DefineCurveFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->DefineCurveFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-			DefineCurveFile << line << endl;
+			VehicleIn->DefineCurveFile << VehicleIn->line << endl;
         };
 
         //*LOAD_NODE_SET
-        if ( "*LOAD_NODE_SET"==line )
+        if ( "*LOAD_NODE_SET"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            ComputingTimeFile.close();
-            DefineCurveFile.close();
-			line = line.erase(0, 1);
-            LoadNodeFileString = getFileName(line);
-            LoadNodeFile.open(LoadNodeFileString);
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->LoadNodeFileString = getFileName(VehicleIn->line);
+            VehicleIn->LoadNodeFile.open(VehicleIn->LoadNodeFileString);
 			continue;
         }
-        if (LoadNodeFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->LoadNodeFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-			LoadNodeFile << line << endl;
+			VehicleIn->LoadNodeFile << VehicleIn->line << endl;
         };
 
         //计算时长
-        if ( "*CONTROL_TERMINATION"==line )
+        if ( "*CONTROL_TERMINATION"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
-			line = line.erase(0, 1);
-            ComputingTimeFileString = getFileName(line);
-            ComputingTimeFile.open(ComputingTimeFileString);
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->ComputingTimeFileString = getFileName(VehicleIn->line);
+            VehicleIn->ComputingTimeFile.open(VehicleIn->ComputingTimeFileString);
 			continue;
         }
-        if (ComputingTimeFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->ComputingTimeFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-			ComputingTimeFile << line << endl;
+			VehicleIn->ComputingTimeFile << VehicleIn->line << endl;
         };
 
         //步长
-        if (  "*CONTROL_TIMESTEP"== line)
+        if (  "*CONTROL_TIMESTEP"== VehicleIn->line)
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            ComputingTimeFile.close();
-            NodeVelocityFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
-			line = line.erase(0, 1);
-            TimeIncrementFileString = getFileName(line);
-            TimeIncrementFile.open(getFileName(line));
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->TimeIncrementFileString = getFileName(VehicleIn->line);
+            VehicleIn->TimeIncrementFile.open(getFileName(VehicleIn->line));
 			continue;
         }
-        if (TimeIncrementFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->TimeIncrementFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-			TimeIncrementFile<< line << endl;
+			VehicleIn->TimeIncrementFile<< VehicleIn->line << endl;
         };
 
-		if ( "*DATABASE_BINARY_D3PLOT"==line )
+		if ( "*DATABASE_BINARY_D3PLOT"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-			WallSlaveNodeFile.close();
-			BoundarySetFile.close();
-			HourglassFile.close();
-			RigidWallFile.close();
-			ComputingTimeFile.close();
-			TimeIncrementFile.close();
-			NodeVelocityFile.close();
-			PlaFile.close();
-			PartFile.close();
-			SecSolidFile.close();
-			MasterNodeFile.close();
-			ContactFile.close();
-			EleSoFile.close();
-			SlaveNodeFile.close();
-			BoundaryFile.close();
-			EleBFile.close();
-			EleShFile.close();
-			SecBeamFile.close();
-			SecShellFile.close();
-			SetFile.close();
-			LoadNodeFile.close();
-			DefineCurveFile.close();
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn-> SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
 		};
 
-        if ( "*DATABASE_GLSTAT"== line)
+        if ( "*DATABASE_GLSTAT"== VehicleIn->line)
 		{
-			LoadBodyYFile.close();
+			VehicleIn->LoadBodyYFile.close();
 
-			LoadBodyZFile.close();
+			VehicleIn->LoadBodyZFile.close();
 
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
         };
 
-        if ( "*CONTROL_IMPLICIT_EIGENVALUE"==line )
+        if ( "*CONTROL_IMPLICIT_EIGENVALUE"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
+			VehicleIn->LoadBodyYFile.close();
 
-			LoadBodyZFile.close();
+			VehicleIn->LoadBodyZFile.close();
 
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
         };
 
         //节点
-        if ( "*NODE"==line )
+        if ( "*NODE"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
-			line = line.erase(0, 1);
-            NodeFileString = getFileName(line);
-            NodeFile.open(NodeFileString);
-            NodeFile.clear();
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->NodeFileString = getFileName(VehicleIn->line);
+            VehicleIn->NodeFile.open(VehicleIn->NodeFileString);
+            VehicleIn->NodeFile.clear();
             continue;
         }
-        if (NodeFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->NodeFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-			NodeFile << line << endl;
+			VehicleIn->NodeFile << VehicleIn->line << endl;
         }
 
         //材料部分最终输出文件见最下方，InputElaFile，InputPlaFile。
-        if ( "*MAT_ELASTIC"==line )
+        if ( "*MAT_ELASTIC"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            NodeFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
-            line=line.erase(0, 1);
-            ElaFileString = getFileName(line);
-            ElaFile.open(getFileName(line));
-            ElaFile.clear();
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->NodeFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
+            VehicleIn->line=VehicleIn->line.erase(0, 1);
+			VehicleIn->ElaFileString = getFileName(VehicleIn->line);
+			VehicleIn->ElaFile.open(getFileName(VehicleIn->line));
+			VehicleIn->ElaFile.clear();
             continue;
         }
-        if (ElaFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->ElaFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-                line = line.insert(10, " ");
-				line = line.insert(21, " ");
-                ElaFile << line << endl;
+                VehicleIn->line = VehicleIn->line.insert(10, " ");
+				VehicleIn->line = VehicleIn->line.insert(21, " ");
+				VehicleIn->ElaFile << VehicleIn->line << endl;
         }
 
-        if ( "*MAT_PLASTIC_KINEMATIC"==line )
+        if ( "*MAT_PLASTIC_KINEMATIC"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            NodeFile.close();
-            ElaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
-			line = line.erase(0, 1);
-            PlaFileString = getFileName(line);
-            PlaFile.open(getFileName(line));
-            PlaFile.clear();
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->NodeFile.close();
+			VehicleIn->ElaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->PlaFileString = getFileName(VehicleIn->line);
+            VehicleIn->PlaFile.open(getFileName(VehicleIn->line));
+            VehicleIn->PlaFile.clear();
             continue;
         }
-        if (PlaFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->PlaFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-                line = line.insert(10, " ");
-                PlaFile << line << endl;
+                VehicleIn->line = VehicleIn->line.insert(10, " ");
+                VehicleIn->PlaFile << VehicleIn->line << endl;
         }
 
         //Part
-        if ( "*PART"==line )
+        if ( "*PART"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            NodeFile.close();
-            ElaFile.close();
-            PlaFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
-			line = line.erase(0, 1);
-            PartFileString = getFileName(line);
-            PartFile.open(getFileName(line));
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->NodeFile.close();
+			VehicleIn->ElaFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->PartFileString = getFileName(VehicleIn->line);
+            VehicleIn->PartFile.open(getFileName(VehicleIn->line));
             continue;
         }
-        if (PartFile.is_open()&&(' ' == line[0]))
+        if (VehicleIn->PartFile.is_open()&&(' ' == VehicleIn->line[0]))
         {
-				line = line.erase(49, 2);
-                PartFile << line << endl;
+				VehicleIn->line = VehicleIn->line.erase(49, 2);
+                VehicleIn->PartFile << VehicleIn->line << endl;
         };
 
         //沙漏
-        if ( "*HOURGLASS"==line )
+        if ( "*HOURGLASS"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            SecSolidFile.close();
-            BoundarySetFile.close();
-            RigidWallFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            NodeFile.close();
-            ElaFile.close();
-            PlaFile.close();
-            PartFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
-			line = line.erase(0, 1);
-            HourglassFileString = getFileName(line);
-            HourglassFile.open(getFileName(line));
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->NodeFile.close();
+			VehicleIn->ElaFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->HourglassFileString = getFileName(VehicleIn->line);
+            VehicleIn->HourglassFile.open(getFileName(VehicleIn->line));
             continue;
         }
-        if (HourglassFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->HourglassFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-			HourglassFile << line << endl;
+			VehicleIn->HourglassFile << VehicleIn->line << endl;
         }
 
         //初始速度*INITIAL_VELOCITY_GENERATION
-        if ( "*INITIAL_VELOCITY_GENERATION"== line)
+        if ( "*INITIAL_VELOCITY_GENERATION"== VehicleIn->line)
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeFile.close();
-            ElaFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
-			line = line.erase(0, 1);
-            NodeVelocityFileString = getFileName(line);
-            NodeVelocityFile.open(getFileName(line));
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeFile.close();
+			VehicleIn->ElaFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->NodeVelocityFileString = getFileName(VehicleIn->line);
+            VehicleIn->NodeVelocityFile.open(getFileName(VehicleIn->line));
 			continue;
         }
-        if (NodeVelocityFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->NodeVelocityFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-             NodeVelocityFile << line << " ";
+             VehicleIn->NodeVelocityFile << VehicleIn->line << " ";
         }
 
         //*BOUNDARY_SPC_SET
-        if ( "*BOUNDARY_SPC_SET"==line )
+        if ( "*BOUNDARY_SPC_SET"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            RigidWallFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            NodeFile.close();
-            ElaFile.close();
-            PlaFile.close();
-            PartFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
-			line = line.erase(0, 1);
-            BoundarySetFileString = getFileName(line);
-            BoundarySetFile.open(getFileName(line));
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->NodeFile.close();
+			VehicleIn->ElaFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->BoundarySetFileString = getFileName(VehicleIn->line);
+            VehicleIn->BoundarySetFile.open(getFileName(VehicleIn->line));
             continue;
         }
-        if (BoundarySetFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->BoundarySetFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-			BoundarySetFile << line << endl;
+			VehicleIn->BoundarySetFile << VehicleIn->line << endl;
         }
 
-        if ( "*SET_SEGMENT"==line )
+        if ( "*SET_SEGMENT"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-			WallSlaveNodeFile.close();
-			BoundarySetFile.close();
-			HourglassFile.close();
-			RigidWallFile.close();
-			ComputingTimeFile.close();
-			TimeIncrementFile.close();
-			NodeVelocityFile.close();
-			NodeFile.close();
-			ElaFile.close();
-			PlaFile.close();
-			PartFile.close();
-			SecSolidFile.close();
-			MasterNodeFile.close();
-			ContactFile.close();
-			EleSoFile.close();
-			SlaveNodeFile.close();
-			BoundaryFile.close();
-			EleBFile.close();
-			EleShFile.close();
-			SecBeamFile.close();
-			SecShellFile.close();
-			SetFile.close();
-			LoadNodeFile.close();
-			DefineCurveFile.close();
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->NodeFile.close();
+			VehicleIn->ElaFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn-> SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
         }
 
         //接触
-        if ( "*CONTACT_AUTOMATIC_NODES_TO_SURFACE_ID"==line  ||  "*CONTACT_NODES_TO_SURFACE_ID"==line )
+        if ( "*CONTACT_AUTOMATIC_NODES_TO_SURFACE_ID"==VehicleIn->line  ||  "*CONTACT_NODES_TO_SURFACE_ID"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            NodeFile.close();
-            ElaFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
-			line = line.erase(0, 1);
-            ContactFileString = "Contact.txt";
-            ContactFileString2 = "ContactTemp.txt";
-            ContactFile.open(ContactFileString2);
-            ContactFile.clear();
-            ContactFile << endl;
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->NodeFile.close();
+			VehicleIn->ElaFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->ContactFileString = "Contact.txt";
+			VehicleIn->ContactFileString2 = "ContactTemp.txt";
+            VehicleIn->ContactFile.open(VehicleIn->ContactFileString2);
+            VehicleIn->ContactFile.clear();
+            VehicleIn->ContactFile << endl;
             continue;
         }
-        if (ContactFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->ContactFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-                ContactFile << line << " ";
+                VehicleIn->ContactFile << VehicleIn->line << " ";
         }
 
         //实体单元   
-        if ( "*ELEMENT_SOLID"==line )
+        if ( "*ELEMENT_SOLID"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            NodeFile.close();
-            ElaFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
-			line = line.erase(0, 1);
-            EleSoFileString = getFileName(line);
-            EleSoFile.open(getFileName(line));
-			EleSoFile.clear();
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->NodeFile.close();
+			VehicleIn->ElaFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->EleSoFileString = getFileName(VehicleIn->line);
+            VehicleIn->EleSoFile.open(getFileName(VehicleIn->line));
+			VehicleIn->EleSoFile.clear();
             continue;
         }
-        if (EleSoFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->EleSoFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-			EleSoFile << line << endl;
+			VehicleIn->EleSoFile << VehicleIn->line << endl;
         }
 
         //从面节点
-        if ( "*SET_NODE_LIST"== line)
+        if ( "*SET_NODE_LIST"== VehicleIn->line)
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            NodeFile.close();
-            ElaFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            RigidWallFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->NodeFile.close();
+			VehicleIn->ElaFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
         }
 
         //边界条件
-        if (  "*BOUNDARY_SPC_NODE"==line)
+        if (  "*BOUNDARY_SPC_NODE"==VehicleIn->line)
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            NodeFile.close();
-            ElaFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
-			line = line.erase(0, 1);
-            BoundaryFileString = getFileName(line);
-            BoundaryFile.open(getFileName(line));
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->NodeFile.close();
+			VehicleIn->ElaFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->BoundaryFileString = getFileName(VehicleIn->line);
+            VehicleIn->BoundaryFile.open(getFileName(VehicleIn->line));
             continue;
         }
-        if (BoundaryFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->BoundaryFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-			BoundaryFile << line << endl;
+			VehicleIn->BoundaryFile << VehicleIn->line << endl;
         }
 
         //刚性墙
-        if ( "*RIGIDWALL_PLANAR_FINITE_ID"== line)
+        if ( "*RIGIDWALL_PLANAR_FINITE_ID"== VehicleIn->line)
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            NodeFile.close();
-            ElaFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
-			line = line.erase(0, 1);
-            RigidWallFileString2 = getFileName2(line, AdditionalDigit);
-            RigidWallFileString = getFileName(line);
-            RigidWallFile.open(RigidWallFileString2);
-            RigidWallFile.clear();
-            RigidWallFile << endl;
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->NodeFile.close();
+			VehicleIn->ElaFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->RigidWallFileString2 = getFileName2(VehicleIn->line, VehicleIn->AdditionalDigit);
+			VehicleIn->RigidWallFileString = getFileName(VehicleIn->line);
+            VehicleIn->RigidWallFile.open(VehicleIn->RigidWallFileString2);
+            VehicleIn->RigidWallFile.clear();
+            VehicleIn->RigidWallFile << endl;
 			continue;
         }
-        if (RigidWallFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->RigidWallFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-                line = line.insert(20, " ");
-                line = line.insert(51, " ");
-                RigidWallFile << line << " ";
+                VehicleIn->line = VehicleIn->line.insert(20, " ");
+                VehicleIn->line = VehicleIn->line.insert(51, " ");
+                VehicleIn->RigidWallFile << VehicleIn->line << " ";
         }
 
         //梁单元
-        if ("*ELEMENT_BEAM" == line)
+        if ("*ELEMENT_BEAM" == VehicleIn->line)
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            NodeFile.close();
-            ElaFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            RigidWallFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
-			line = line.erase(0, 1);
-            EleBFileString = getFileName(line);
-            EleBFile.open(getFileName(line));
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->NodeFile.close();
+			VehicleIn->ElaFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->EleBFileString = getFileName(VehicleIn->line);
+            VehicleIn->EleBFile.open(getFileName(VehicleIn->line));
             continue;
         }
-        if (EleBFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->EleBFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-			EleBFile << line << endl;
+			VehicleIn->EleBFile << VehicleIn->line << endl;
         }
 
         //壳单元
-        if ( "*ELEMENT_SHELL"==line )
+        if ( "*ELEMENT_SHELL"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            NodeFile.close();
-            ElaFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
-			line = line.erase(0, 1);
-            EleShFileString = getFileName(line);
-            EleShFile.open(getFileName(line));
-            EleShFile.clear();
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->NodeFile.close();
+			VehicleIn->ElaFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->EleShFileString = getFileName(VehicleIn->line);
+            VehicleIn->EleShFile.open(getFileName(VehicleIn->line));
+            VehicleIn->EleShFile.clear();
             continue;
         }
-        if (EleShFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->EleShFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-			EleShFile << line << endl;
+			VehicleIn->EleShFile << VehicleIn->line << endl;
         }
 
         //SECTION梁
-        if ( "*SECTION_BEAM"==line )
+        if ( "*SECTION_BEAM"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            NodeFile.close();
-            ElaFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
-			line = line.erase(0, 1);
-            SecBeamFileString = getFileName(line);
-            SecBeamFile.open(getFileName(line));
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->NodeFile.close();
+			VehicleIn->ElaFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->SecBeamFileString = getFileName(VehicleIn->line);
+            VehicleIn->SecBeamFile.open(getFileName(VehicleIn->line));
             continue;
         }
-        if (SecBeamFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->SecBeamFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-                line = line.insert(0, AdditionalDigit);
-                SecBeamFile << line << " ";
+                VehicleIn->line = VehicleIn->line.insert(0, VehicleIn->AdditionalDigit);
+                VehicleIn->SecBeamFile << VehicleIn->line << " ";
         }
 
         //SECTION壳
-        if ( "*SECTION_SHELL"==line )
+        if ( "*SECTION_SHELL"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            NodeFile.close();
-            ElaFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
-			line = line.erase(0, 1);
-            SecShellFileString = getFileName(line);
-            SecShellFileString2 = getFileName2(line, AdditionalDigit);
-            SecShellFile.open(SecShellFileString2);
-            SecShellFile.clear();
-            SecShellFile << endl;
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->NodeFile.close();
+			VehicleIn->ElaFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->SecShellFileString = getFileName(VehicleIn->line);
+			VehicleIn->SecShellFileString2 = getFileName2(VehicleIn->line, VehicleIn->AdditionalDigit);
+            VehicleIn->SecShellFile.open(VehicleIn->SecShellFileString2);
+            VehicleIn->SecShellFile.clear();
+            VehicleIn->SecShellFile << endl;
             continue;
         }
-        if (SecShellFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->SecShellFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-                SecShellFile << line << " ";
+                VehicleIn->SecShellFile << VehicleIn->line << " ";
         }
 
         //SECTION实体
-        if ( "*SECTION_SOLID"==line )
+        if ( "*SECTION_SOLID"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            NodeFile.close();
-            ElaFile.close();
-            PlaFile.close();
-            PartFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
-			line = line.erase(0, 1);
-            SecSolidFileString = getFileName(line);
-            SecSolidFile.open(getFileName(line));
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->NodeFile.close();
+			VehicleIn->ElaFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->SecSolidFileString = getFileName(VehicleIn->line);
+            VehicleIn->SecSolidFile.open(getFileName(VehicleIn->line));
             continue;
         }
-        if (SecSolidFile.is_open() && (line[0] != '*'))
+        if (VehicleIn->SecSolidFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-			SecSolidFile << line << endl;
+			VehicleIn->SecSolidFile << VehicleIn->line << endl;
         };
-        if ( "*END"==line )
+        if ( "*END"==VehicleIn->line )
 		{
-			LoadBodyYFile.close();
-			LoadBodyZFile.close();
-            WallSlaveNodeFile.close();
-            BoundarySetFile.close();
-            HourglassFile.close();
-            RigidWallFile.close();
-            ComputingTimeFile.close();
-            TimeIncrementFile.close();
-            NodeVelocityFile.close();
-            NodeFile.close();
-            ElaFile.close();
-            PlaFile.close();
-            PartFile.close();
-            SecSolidFile.close();
-            MasterNodeFile.close();
-            ContactFile.close();
-            EleSoFile.close();
-            SlaveNodeFile.close();
-            BoundaryFile.close();
-            EleBFile.close();
-            EleShFile.close();
-            SecBeamFile.close();
-            SecShellFile.close();
-            SetFile.close();
-            LoadNodeFile.close();
-            DefineCurveFile.close();
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
+            VehicleIn->WallSlaveNodeFile.close();
+            VehicleIn->BoundarySetFile.close();
+            VehicleIn->HourglassFile.close();
+            VehicleIn->RigidWallFile.close();
+            VehicleIn->ComputingTimeFile.close();
+            VehicleIn->TimeIncrementFile.close();
+            VehicleIn->NodeVelocityFile.close();
+            VehicleIn->NodeFile.close();
+			VehicleIn->ElaFile.close();
+            VehicleIn->PlaFile.close();
+            VehicleIn->PartFile.close();
+            VehicleIn->SecSolidFile.close();
+            VehicleIn->MasterNodeFile.close();
+            VehicleIn->ContactFile.close();
+            VehicleIn->EleSoFile.close();
+            VehicleIn-> SlaveNodeFile.close();
+            VehicleIn->BoundaryFile.close();
+            VehicleIn->EleBFile.close();
+            VehicleIn->EleShFile.close();
+            VehicleIn->SecBeamFile.close();
+            VehicleIn->SecShellFile.close();
+            VehicleIn->SetFile.close();
+            VehicleIn->LoadNodeFile.close();
+            VehicleIn->DefineCurveFile.close();
         }
     }
-    In.close();
+	VehicleIn->In.close();
 
      //SecShell文件
-	  InSecShell.open(SecShellFileString2);
-     SecShellFile2.open(SecShellFileString);
-    while (getline(InSecShell,LineSecShell))
+	VehicleIn->InSecShell.open(VehicleIn->SecShellFileString2);
+	VehicleIn->SecShellFile2.open(VehicleIn->SecShellFileString);
+    while (getline(VehicleIn->InSecShell, VehicleIn->LineSecShell))
     {
-        if (SecShellFile2.is_open())
+        if (VehicleIn->SecShellFile2.is_open())
         {
-            if ( ' '==LineSecShell[0] )
+            if ( ' '== VehicleIn->LineSecShell[0] )
             {
-                SecShellFile2 << LineSecShell << endl;
+				VehicleIn->SecShellFile2 << VehicleIn->LineSecShell << endl;
             }
         }
 
     }
-    SecShellFile2.close();
-    InSecShell.close();
+	VehicleIn->SecShellFile2.close();
+	VehicleIn->InSecShell.close();
 
     //Contact 文件
-	 InContact.open(ContactFileString2);
-    ContactFile2.open(ContactFileString);
-    while (getline(InContact, LineContact))
+	VehicleIn->InContact.open(VehicleIn->ContactFileString2);
+	VehicleIn->ContactFile2.open(VehicleIn->ContactFileString);
+    while (getline(VehicleIn->InContact, VehicleIn->LineContact))
     {
-        if (ContactFile2.is_open())
+        if (VehicleIn->ContactFile2.is_open())
         {
-            if (  ' '==LineContact[0])
+            if (  ' '== VehicleIn->LineContact[0])
             {
-                ContactFile2 << LineContact << endl;
+				VehicleIn->ContactFile2 << VehicleIn->LineContact << endl;
             }
         }
     }
-    ContactFile2.close();
-    InContact.close();
+	VehicleIn->ContactFile2.close();
+	VehicleIn->InContact.close();
 
     //RIGIDWALL_PLANAR_FINITE_ID
-    InRigidwall.open(RigidWallFileString2);
-    RigidWallFile2.open(RigidWallFileString);
-	while (getline(InRigidwall, LineRigidwall))
+	VehicleIn->InRigidwall.open(VehicleIn->RigidWallFileString2);
+	VehicleIn->RigidWallFile2.open(VehicleIn->RigidWallFileString);
+	while (getline(VehicleIn->InRigidwall, VehicleIn->LineRigidwall))
 	{
-		if (RigidWallFile2.is_open())
+		if (VehicleIn->RigidWallFile2.is_open())
 		{
-			if ( ' '==LineRigidwall[0] )
+			if ( ' '== VehicleIn->LineRigidwall[0] )
 			{
-                RigidWallFile2 << LineRigidwall << endl;
+				VehicleIn->RigidWallFile2 << VehicleIn->LineRigidwall << endl;
 			}
 		}
 
 	}
-    RigidWallFile2.close();
-    InRigidwall.close();
+	VehicleIn->RigidWallFile2.close();
+	VehicleIn->InRigidwall.close();
 
     //SegmentSet test
 	lsmap* ls = new lsmap;
 	SetSegmentNode* pSegment = new SetSegmentNode;
-	InSegmentSet.open(fileToOpen);
-	while (getline(InSegmentSet, LineSegmentSet))
+	VehicleIn->InSegmentSet.open(fileToOpen);
+	while (getline(VehicleIn->InSegmentSet, VehicleIn->LineSegmentSet))
 	{
 		//跳过注释行
-		if (LineSegmentSet[0] == '$')
+		if (VehicleIn->LineSegmentSet[0] == '$')
 		{
 			continue;
 		}
 		//主面节点
-		if ("*SET_SEGMENT" == LineSegmentSet)
+		if ("*SET_SEGMENT" == VehicleIn->LineSegmentSet)
 		{
-			SetSegment = LineSegmentSet.erase(0, 1);
-			SegmentSetFile1String = getFileName(LineSegmentSet);
-			SegmentSetFile1.open(SegmentSetFile1String);
-			SegmentSetFile1.clear();
-			SegmentSetFile1 << endl;
+			VehicleIn->SetSegment = VehicleIn->LineSegmentSet.erase(0, 1);
+			VehicleIn->SegmentSetFile1String = getFileName(VehicleIn->LineSegmentSet);
+			VehicleIn->SegmentSetFile1.open(VehicleIn->SegmentSetFile1String);
+			VehicleIn->SegmentSetFile1.clear();
+			VehicleIn->SegmentSetFile1 << endl;
 			continue;
 		}
-		if (SegmentSetFile1.is_open() && (LineSegmentSet[0] != '*'))
+		if (VehicleIn->SegmentSetFile1.is_open() && (VehicleIn->LineSegmentSet[0] != '*'))
 		{
-				SegmentSetFile1 << LineSegmentSet << " ";
+			VehicleIn->SegmentSetFile1 << VehicleIn->LineSegmentSet << " ";
 		}
-		if (("*CONTACT_AUTOMATIC_NODES_TO_SURFACE_ID" == LineSegmentSet) || ("*CONTACT_NODES_TO_SURFACE_ID" == LineSegmentSet) || ("*RIGIDWALL_PLANAR_FINITE_ID" == LineSegmentSet) || ("*ELEMENT_BEAM" == LineSegmentSet)
-			|| ("*ELEMENT_SHELL" == LineSegmentSet) || ("*ELEMENT_SOLID" == LineSegmentSet) || ("*SET_NODE_LIST" == LineSegmentSet) || ("*DEFINE_CURVE" == LineSegmentSet) || ("*SET_PART_LIST" == LineSegmentSet)
-			|| ("*END" == LineSegmentSet))
+		if (("*CONTACT_AUTOMATIC_NODES_TO_SURFACE_ID" == VehicleIn->LineSegmentSet) || ("*CONTACT_NODES_TO_SURFACE_ID" == VehicleIn->LineSegmentSet) || ("*RIGIDWALL_PLANAR_FINITE_ID" == VehicleIn->LineSegmentSet) || ("*ELEMENT_BEAM" == VehicleIn->LineSegmentSet)
+			|| ("*ELEMENT_SHELL" == VehicleIn->LineSegmentSet) || ("*ELEMENT_SOLID" == VehicleIn->LineSegmentSet) || ("*SET_NODE_LIST" == VehicleIn->LineSegmentSet) || ("*DEFINE_CURVE" == VehicleIn->LineSegmentSet) || ("*SET_PART_LIST" == VehicleIn->LineSegmentSet)
+			|| ("*END" == VehicleIn->LineSegmentSet))
 		{
-			SegmentSetFile1.close();
+			VehicleIn->SegmentSetFile1.close();
 		}
 	}
-	InSegmentSet.close();
+	VehicleIn->InSegmentSet.close();
 	ifstream InSegmentSet2;
-	InSegmentSet2.open(SegmentSetFile1String);
-	SegmentSetFile2String = "SegmentSet.txt";
+	InSegmentSet2.open(VehicleIn->SegmentSetFile1String);
+	VehicleIn->SegmentSetFile2String = "SegmentSet.txt";
 	string LineSegmentSet2;
 	int panduanneirongSegmentSet = 0;
 	while (getline(InSegmentSet2, LineSegmentSet2))
 	{
-		ofstream SegmentSetFile2(SegmentSetFile2String);
+		ofstream SegmentSetFile2(VehicleIn->SegmentSetFile2String);
 		if (' ' == LineSegmentSet2[0])
 		{
 			LineSegmentSet2.erase(50, 4);
 			SegmentSetFile2 << LineSegmentSet2 << flush;
 			panduanneirongSegmentSet = 1;
 		}
-		if ((panduanneirongSegmentSet == 1) && (1 == isFileExists(SegmentSetFile2String)))
+		if ((panduanneirongSegmentSet == 1) && (1 == isFileExists(VehicleIn->SegmentSetFile2String)))
 		{
-			Matrix<int, Dynamic, Dynamic>SegmentSet = LinearMSTMMSolver::openDataInt(SegmentSetFile2String);
+			Matrix<int, Dynamic, Dynamic>SegmentSet = LinearMSTMMSolver::openDataInt(VehicleIn->SegmentSetFile2String);
 			pSegment->SetSegmentId = SegmentSet(0, 0);
 			pSegment->SetSegmentNodeID = SegmentSet;
 			(void)ls->AllSetSegment.insert(make_pair(pSegment->SetSegmentId, (*pSegment)));
@@ -1679,52 +1679,52 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 
 	//SetNode信息  
 	SetNode* pSetNode = new SetNode;
-	InSetNode.open(fileToOpen);
-	while (getline(InSetNode, LineSetNode))
+	VehicleIn->InSetNode.open(fileToOpen);
+	while (getline(VehicleIn->InSetNode, VehicleIn->LineSetNode))
 	{
 		//跳过注释行
-		if (LineSetNode[0] == '$')
+		if (VehicleIn->LineSetNode[0] == '$')
 		{
 			continue;
 		}
-		if ("*SET_NODE_LIST" == LineSetNode)
+		if ("*SET_NODE_LIST" == VehicleIn->LineSetNode)
 		{
-			Setnodelist = LineSetNode.erase(0, 1);
-			SetNodeFile1String = getFileName( LineSetNode);
-			SetNodeFile1.open(SetNodeFile1String);
-			SetNodeFile1.clear();
-			SetNodeFile1 << endl;
-			PanduanSetNode = 1;
+			VehicleIn->Setnodelist = VehicleIn->LineSetNode.erase(0, 1);
+			VehicleIn->SetNodeFile1String = getFileName(VehicleIn->LineSetNode);
+			VehicleIn->SetNodeFile1.open(VehicleIn->SetNodeFile1String);
+			VehicleIn->SetNodeFile1.clear();
+			VehicleIn->SetNodeFile1 << endl;
+			VehicleIn->PanduanSetNode = 1;
 			continue;
 		}
-		if (SetNodeFile1.is_open() && (LineSetNode[0] != '*'))
+		if (VehicleIn->SetNodeFile1.is_open() && (VehicleIn->LineSetNode[0] != '*'))
 		{
-				SetNodeFile1 << LineSetNode << " ";
+			VehicleIn->SetNodeFile1 << VehicleIn->LineSetNode << " ";
 		}
-		if (("*END" == LineSetNode) || ("*DEFINE_CURVE" == LineSetNode) || ("*BOUNDARY_SPC_NODE" == LineSetNode) || ("*SET_PART_LIST" == LineSetNode) || ("*CONTACT_NODES_TO_SURFACE_ID" == LineSetNode))
+		if (("*END" == VehicleIn->LineSetNode) || ("*DEFINE_CURVE" == VehicleIn->LineSetNode) || ("*BOUNDARY_SPC_NODE" == VehicleIn->LineSetNode) || ("*SET_PART_LIST" == VehicleIn->LineSetNode) || ("*CONTACT_NODES_TO_SURFACE_ID" == VehicleIn->LineSetNode))
 		{
-			SetNodeFile1.close();
-			PanduanSetNode = 0;
+			VehicleIn->SetNodeFile1.close();
+			VehicleIn->PanduanSetNode = 0;
 		}
 	}
-	InSetNode.close();
+	VehicleIn->InSetNode.close();
 	ifstream InSetNode2;
-	InSetNode2.open(SetNodeFile1String);
-	SetNodeFile2String = "SETNODELIST.txt";
+	InSetNode2.open(VehicleIn->SetNodeFile1String);
+	VehicleIn->SetNodeFile2String = "SETNODELIST.txt";
 	string LineSetNode2;
 	int panduanneirong=0;
 	while (getline(InSetNode2, LineSetNode2))
 	{
-		ofstream SetNodeFile2(SetNodeFile2String);
+		ofstream SetNodeFile2(VehicleIn->SetNodeFile2String);
 		if (' ' == LineSetNode2[0])
 		{
 			LineSetNode2.erase(50, 4);
 			SetNodeFile2 << LineSetNode2 << flush;
 			panduanneirong = 1;
 		}
-		if ((panduanneirong == 1) && (1 == isFileExists(SetNodeFile2String)))
+		if ((panduanneirong == 1) && (1 == isFileExists(VehicleIn->SetNodeFile2String)))
 		{
-			Matrix<int, Dynamic, Dynamic>SetNode = LinearMSTMMSolver::openDataInt(SetNodeFile2String);
+			Matrix<int, Dynamic, Dynamic>SetNode = LinearMSTMMSolver::openDataInt(VehicleIn->SetNodeFile2String);
 			pSetNode->SetId = SetNode(0, 0);
 			pSetNode->SetNodeID = SetNode.rightCols(SetNode.size() - 1);
 			(void)ls->AllSetNode.insert(make_pair(pSetNode->SetId, (*pSetNode)));
@@ -1737,66 +1737,66 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	//cout << ls->AllSetNode[4].SetNodeID << endl;
 	
 	//FORCE
-	InForce.open(fileToOpen);
-	while (getline(InForce, LineForce))
+	VehicleIn->InForce.open(fileToOpen);
+	while (getline(VehicleIn->InForce, VehicleIn->LineForce))
 	{
-		if ("*END" == LineForce)
+		if ("*END" == VehicleIn->LineForce)
 		{
-			PanduanForce = 1;
+			VehicleIn->PanduanForce = 1;
 		}
-		if (("*BOUNDARY_FORCE_SET" == LineForce)&&(PanduanForce == 1))
+		if (("*BOUNDARY_FORCE_SET" == VehicleIn->LineForce)&&(VehicleIn->PanduanForce == 1))
 		{
-			LineForce = LineForce.erase(0, 1);
-			ForceBOUNDARYFileString = getFileName(LineForce);
-			ForceBOUNDARYFile.open(ForceBOUNDARYFileString);
+			VehicleIn->LineForce = VehicleIn->LineForce.erase(0, 1);
+			VehicleIn->ForceBOUNDARYFileString = getFileName(VehicleIn->LineForce);
+			VehicleIn->ForceBOUNDARYFile.open(VehicleIn->ForceBOUNDARYFileString);
 		}
-		if (ForceBOUNDARYFile.is_open())
+		if (VehicleIn->ForceBOUNDARYFile.is_open())
 		{
-			getdigit2(ForceBOUNDARYFile, LineForce);
+			getdigit2(VehicleIn->ForceBOUNDARYFile, VehicleIn->LineForce);
 		}
-		if (("*SET_NODE_LIST_FORCE" == LineForce) && (PanduanForce == 1))
+		if (("*SET_NODE_LIST_FORCE" == VehicleIn->LineForce) && (VehicleIn->PanduanForce == 1))
 		{
-			ForceBOUNDARYFile.close();
-			LineForce = LineForce.erase(0, 1);
-			ForceSetNodeFileString = getFileName(LineForce);
-			ForceSetNodeFile.open(ForceSetNodeFileString);
+			VehicleIn->ForceBOUNDARYFile.close();
+			VehicleIn->LineForce = VehicleIn->LineForce.erase(0, 1);
+			VehicleIn->ForceSetNodeFileString = getFileName(VehicleIn->LineForce);
+			VehicleIn->ForceSetNodeFile.open(VehicleIn->ForceSetNodeFileString);
 		}
-		if (ForceSetNodeFile.is_open())
+		if (VehicleIn->ForceSetNodeFile.is_open())
 		{
-			if (' ' == LineForce[0])
+			if (' ' == VehicleIn->LineForce[0])
 			{
-				ForceSetNodeFile << LineForce << " ";
+				VehicleIn->ForceSetNodeFile << VehicleIn->LineForce << " ";
 			}
 		}
-		if (("*FORCE" == LineForce) && (PanduanForce == 1))
+		if (("*FORCE" == VehicleIn->LineForce) && (VehicleIn->PanduanForce == 1))
 		{
-			ForceBOUNDARYFile.close();
-			ForceSetNodeFile.close();
-			LineForce = LineForce.erase(0, 1);
-			ForceFileString = getFileName(LineForce);
-			ForceFile.open(ForceFileString);
+			VehicleIn->ForceBOUNDARYFile.close();
+			VehicleIn->ForceSetNodeFile.close();
+			VehicleIn->LineForce = VehicleIn->LineForce.erase(0, 1);
+			VehicleIn->ForceFileString = getFileName(VehicleIn->LineForce);
+			VehicleIn->ForceFile.open(VehicleIn->ForceFileString);
 		}
-		if (ForceFile.is_open())
+		if (VehicleIn->ForceFile.is_open())
 		{
-			getdigit2(ForceFile, LineForce);
+			getdigit2(VehicleIn->ForceFile, VehicleIn->LineForce);
 
 		}
-		if (("*END2" == LineForce) && (PanduanForce == 1))
+		if (("*END2" == VehicleIn->LineForce) && (VehicleIn->PanduanForce == 1))
 		{
-			ForceBOUNDARYFile.close();
-			ForceSetNodeFile.close();
-			ForceFile.close();
-			PanduanForce = 0;
+			VehicleIn->ForceBOUNDARYFile.close();
+			VehicleIn->ForceSetNodeFile.close();
+			VehicleIn->ForceFile.close();
+			VehicleIn->PanduanForce = 0;
 		}
 		
 	}
-	InForce.close();
+	VehicleIn->InForce.close();
     
     //LoadBodyZ信息
-	if (1 ==isFileExists(LoadBodyZFileString) )
+	if (1 ==isFileExists(VehicleIn->LoadBodyZFileString) )
 	{
-		Matrix<int, Dynamic, Dynamic>LoadBodyZ1 = LinearMSTMMSolver::openDataInt(LoadBodyZFileString);
-		Matrix<double, Dynamic, Dynamic>LoadBodyZ2 = LinearMSTMMSolver::openData(LoadBodyZFileString);
+		Matrix<int, Dynamic, Dynamic>LoadBodyZ1 = LinearMSTMMSolver::openDataInt(VehicleIn->LoadBodyZFileString);
+		Matrix<double, Dynamic, Dynamic>LoadBodyZ2 = LinearMSTMMSolver::openData(VehicleIn->LoadBodyZFileString);
         LoadBodyZ* pLoadBodyZ = new LoadBodyZ;
         pLoadBodyZ->LoadBodyZCurveID = LoadBodyZ1(0, 0);
 		pLoadBodyZ->LoadCurveScaleFactor = LoadBodyZ2(0, 1);
@@ -1806,10 +1806,10 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	};
 
 	//LoadBodyY信息
-	if (1 ==isFileExists(LoadBodyYFileString) )
+	if (1 ==isFileExists(VehicleIn->LoadBodyYFileString) )
 	{
-		Matrix<int, Dynamic, Dynamic>LoadBodyY1 = LinearMSTMMSolver::openDataInt(LoadBodyYFileString);
-		Matrix<double, Dynamic, Dynamic>LoadBodyY2 = LinearMSTMMSolver::openData(LoadBodyYFileString);
+		Matrix<int, Dynamic, Dynamic>LoadBodyY1 = LinearMSTMMSolver::openDataInt(VehicleIn->LoadBodyYFileString);
+		Matrix<double, Dynamic, Dynamic>LoadBodyY2 = LinearMSTMMSolver::openData(VehicleIn->LoadBodyYFileString);
 		LoadBodyY* pLoadBodyY = new LoadBodyY;
         pLoadBodyY->LoadBodyYCurveID = LoadBodyY1(0, 0);
         pLoadBodyY->LoadCurveScaleFactor = LoadBodyY2(0, 1);
@@ -1820,9 +1820,9 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	};
 
     //Part 信息
-    if ( 1==isFileExists(PartFileString) )
+    if ( 1==isFileExists(VehicleIn->PartFileString) )
     {
-        Matrix<int, Dynamic, Dynamic>PartImformation = LinearMSTMMSolver::openDataInt(PartFileString);
+        Matrix<int, Dynamic, Dynamic>PartImformation = LinearMSTMMSolver::openDataInt(VehicleIn->PartFileString);
         Part* IP = new Part;
         for (int i = 0; i < PartImformation.rows(); i++)
         {
@@ -1837,10 +1837,10 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     }
 
     //Sec_Beam信息
-    if ( 1==isFileExists(SecBeamFileString) )
+    if ( 1==isFileExists(VehicleIn->SecBeamFileString) )
     {
-        Matrix<int, Dynamic, Dynamic>SecBImformation1 = LinearMSTMMSolver::openDataInt(SecBeamFileString);
-        Matrix<double, Dynamic, Dynamic>SecBImformation2 = LinearMSTMMSolver::openData(SecBeamFileString);
+        Matrix<int, Dynamic, Dynamic>SecBImformation1 = LinearMSTMMSolver::openDataInt(VehicleIn->SecBeamFileString);
+        Matrix<double, Dynamic, Dynamic>SecBImformation2 = LinearMSTMMSolver::openData(VehicleIn->SecBeamFileString);
         //cout << SecBImformation2 << endl;
         sectionbeam* ISB = new sectionbeam;
         /*lsmap* ls = new lsmap;*/
@@ -1857,10 +1857,10 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 
 
     //Sec_Shell信息
-    if ( 1==isFileExists(SecShellFileString) )
+    if ( 1==isFileExists(VehicleIn->SecShellFileString) )
     {
-        Matrix<int, Dynamic, Dynamic>SecSHImformation1 = LinearMSTMMSolver::openDataInt(SecShellFileString);
-        Matrix<double, Dynamic, Dynamic>SecSHImformation2 = LinearMSTMMSolver::openData(SecShellFileString);
+        Matrix<int, Dynamic, Dynamic>SecSHImformation1 = LinearMSTMMSolver::openDataInt(VehicleIn->SecShellFileString);
+        Matrix<double, Dynamic, Dynamic>SecSHImformation2 = LinearMSTMMSolver::openData(VehicleIn->SecShellFileString);
         sectionshell* ISSH = new sectionshell;
         //cout << SecSHImformation1;
         /*lsmap* ls = new lsmap;*/
@@ -1896,10 +1896,10 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     }
 
     //Velocity 初速度信息
-    if ( 1==isFileExists(NodeVelocityFileString) )
+    if ( 1==isFileExists(VehicleIn->NodeVelocityFileString) )
     {
-        Matrix<int, Dynamic, Dynamic>NodeVelocityFileImformation1 = LinearMSTMMSolver::openDataInt(NodeVelocityFileString);
-        Matrix<double, Dynamic, Dynamic>NodeVelocityFileImformation2 = LinearMSTMMSolver::openData(NodeVelocityFileString);
+        Matrix<int, Dynamic, Dynamic>NodeVelocityFileImformation1 = LinearMSTMMSolver::openDataInt(VehicleIn->NodeVelocityFileString);
+        Matrix<double, Dynamic, Dynamic>NodeVelocityFileImformation2 = LinearMSTMMSolver::openData(VehicleIn->NodeVelocityFileString);
         Velocity* IVelocity = new Velocity;
         for (int i = 0; i < NodeVelocityFileImformation1.rows(); i++)
         {
@@ -1921,10 +1921,10 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     InputAllDate* IAD = new InputAllDate;
 
     //节点信息
-    if ( 1==isFileExists(NodeFileString) )
+    if ( 1==isFileExists(VehicleIn->NodeFileString) )
     {
-        Matrix<double, Dynamic, Dynamic>NodeImformation1 = LinearMSTMMSolver::openData(NodeFileString);
-        Matrix<int, Dynamic, Dynamic>NodeImformation2 = LinearMSTMMSolver::openDataInt(NodeFileString);
+        Matrix<double, Dynamic, Dynamic>NodeImformation1 = LinearMSTMMSolver::openData(VehicleIn->NodeFileString);
+        Matrix<int, Dynamic, Dynamic>NodeImformation2 = LinearMSTMMSolver::openDataInt(VehicleIn->NodeFileString);
         InputNode* INN = new InputNode;
         for (int i = 0; i < NodeImformation1.rows(); i++)
         {
@@ -1939,9 +1939,9 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     }
 
     //实体单元信息
-    if (1 ==isFileExists(EleSoFileString) )
+    if (1 ==isFileExists(VehicleIn->EleSoFileString) )
     {
-        Matrix<int, Dynamic, Dynamic>EleSoImformation = LinearMSTMMSolver::openDataInt(EleSoFileString);
+        Matrix<int, Dynamic, Dynamic>EleSoImformation = LinearMSTMMSolver::openDataInt(VehicleIn->EleSoFileString);
         /* cout << EleSoImformation;*/
         InputElement* InESo = new InputElement;
         /*  InputAllDate* IAD = new InputAllDate;*/
@@ -1968,9 +1968,9 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     };
 
     // 壳单元信息
-    if ( 1==isFileExists(EleShFileString) )
+    if ( 1==isFileExists(VehicleIn->EleShFileString) )
     {
-        Matrix<int, Dynamic, Dynamic>EleShImformation = LinearMSTMMSolver::openDataInt(EleShFileString);
+        Matrix<int, Dynamic, Dynamic>EleShImformation = LinearMSTMMSolver::openDataInt(VehicleIn->EleShFileString);
         InputElement* InESh = new InputElement;
         /*  InputAllDate* IAD = new InputAllDate;*/
         for (int i = 0; i < EleShImformation.rows(); i++)
@@ -1999,9 +1999,9 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     };
 
     // 梁单元信息
-    if ( 1==isFileExists(EleBFileString) )
+    if ( 1==isFileExists(VehicleIn->EleBFileString) )
     {
-        Matrix<int, Dynamic, Dynamic>EleBImformation = LinearMSTMMSolver::openDataInt(EleBFileString);
+        Matrix<int, Dynamic, Dynamic>EleBImformation = LinearMSTMMSolver::openDataInt(VehicleIn->EleBFileString);
         InputElement* InEB = new InputElement;
         /*  InputAllDate* IAD = new InputAllDate;*/
         for (int i = 0; i < EleBImformation.rows(); i++)
@@ -2074,7 +2074,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
         };
     };
      //赋速度
-    if ( 1==isFileExists(NodeVelocityFileString) )
+    if ( 1==isFileExists(VehicleIn->NodeVelocityFileString) )
     {
         for (auto& it : ls->AllVelocity)
         {
@@ -2097,7 +2097,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
         //cout << IAD->InputAllNode[108552].NodeVelocity;
     }	
     //赋加速度
-	if (1 ==isFileExists(LoadBodyZFileString) )
+	if (1 ==isFileExists(VehicleIn->LoadBodyZFileString) )
 	{
 		for (auto& itLoad : ls->AllLoadBodyZ)
 		{
@@ -2109,7 +2109,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 		}
 		//cout << IAD->InputAllNode[108552].NodeVelocity;
 	}
-	if (1 ==isFileExists(LoadBodyYFileString) )
+	if (1 ==isFileExists(VehicleIn->LoadBodyYFileString) )
 	{
 		for (auto& itLoad : ls->AllLoadBodyY)
 		{
@@ -2122,10 +2122,10 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	}
 
     //1号弹性材料信息
-    if ( 1==isFileExists(ElaFileString) )
+    if ( 1==isFileExists(VehicleIn->ElaFileString) )
     {
-        Matrix<double, Dynamic, Dynamic>MaEImformation1 = LinearMSTMMSolver::openData(ElaFileString);
-        Matrix<int, Dynamic, Dynamic>MaEImformation2 = LinearMSTMMSolver::openDataInt(ElaFileString);
+        Matrix<double, Dynamic, Dynamic>MaEImformation1 = LinearMSTMMSolver::openData(VehicleIn->ElaFileString);
+        Matrix<int, Dynamic, Dynamic>MaEImformation2 = LinearMSTMMSolver::openDataInt(VehicleIn->ElaFileString);
         /*cout << MaEImformation1 << endl ;*/
         InputMaterial* InME = new InputMaterial;
         /*  InputAllDate* IAD = new InputAllDate;*/
@@ -2146,10 +2146,10 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     }
 
     //3号塑性材料信息
-    if (1 ==isFileExists(PlaFileString) )
+    if (1 ==isFileExists(VehicleIn->PlaFileString) )
     {
-        Matrix<double, Dynamic, Dynamic>MaPImformation1 = LinearMSTMMSolver::openData(PlaFileString);
-        Matrix<int, Dynamic, Dynamic>MaPImformation2 = LinearMSTMMSolver::openDataInt(PlaFileString);
+        Matrix<double, Dynamic, Dynamic>MaPImformation1 = LinearMSTMMSolver::openData(VehicleIn->PlaFileString);
+        Matrix<int, Dynamic, Dynamic>MaPImformation2 = LinearMSTMMSolver::openDataInt(VehicleIn->PlaFileString);
         /* cout << MaPImformation1 << endl;*/
          //cout << MaPImformation2 << endl;
         InputMaterial* InMP = new InputMaterial;
@@ -2173,11 +2173,11 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     }
 
     //contact 信息
-	if ( 1==isFileExists(ContactFileString) )
+	if ( 1==isFileExists(VehicleIn->ContactFileString) )
 	{
         //Contact 关键字信息
-		Matrix<double, Dynamic, Dynamic>ContactImformation = LinearMSTMMSolver::openData(ContactFileString);
-		Matrix<int, Dynamic, Dynamic>ContactImformation2 = LinearMSTMMSolver::openDataInt(ContactFileString);		
+		Matrix<double, Dynamic, Dynamic>ContactImformation = LinearMSTMMSolver::openData(VehicleIn->ContactFileString);
+		Matrix<int, Dynamic, Dynamic>ContactImformation2 = LinearMSTMMSolver::openDataInt(VehicleIn->ContactFileString);
         //cout << ContactImformation;
 		for (int i = 0; i < ContactImformation.rows(); i++)
 		{
@@ -2221,9 +2221,9 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 
 	InputConstraint* InConstraint = new InputConstraint;
     //边界约束条件信息
-    if ( 1==isFileExists(BoundaryFileString) )
+    if ( 1==isFileExists(VehicleIn->BoundaryFileString) )
     {
-        Matrix<int, Dynamic, Dynamic>BoundaryIntImformation = LinearMSTMMSolver::openDataInt(BoundaryFileString);
+        Matrix<int, Dynamic, Dynamic>BoundaryIntImformation = LinearMSTMMSolver::openDataInt(VehicleIn->BoundaryFileString);
         //Matrix<double, Dynamic, Dynamic>BoundaryDouImformation = LinearMSTMMSolver::openData(BoundaryFileString);
       
         /*  InputAllDate* IAD = new InputAllDate;*/
@@ -3193,10 +3193,10 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     }
 
     //刚性墙
-    if ( 1==isFileExists(RigidWallFileString) )
+    if ( 1==isFileExists(VehicleIn->RigidWallFileString) )
     {
-        Matrix<double, Dynamic, Dynamic>RigidWallImformation1 = LinearMSTMMSolver::openData(RigidWallFileString);
-        Matrix<int, Dynamic, Dynamic>RigidWallImformation2 = LinearMSTMMSolver::openDataInt(RigidWallFileString);
+        Matrix<double, Dynamic, Dynamic>RigidWallImformation1 = LinearMSTMMSolver::openData(VehicleIn->RigidWallFileString);
+        Matrix<int, Dynamic, Dynamic>RigidWallImformation2 = LinearMSTMMSolver::openDataInt(VehicleIn->RigidWallFileString);
         for (int i = 0; i < RigidWallImformation1.rows(); i++)
         {
 			InputRigidWallContact* InRigidWall = new InputRigidWallContact;
@@ -3233,11 +3233,11 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     //cout << IAD->InputAllNode[IAD->InputAllRigidContact[6].SlaveContactNode[3](0,0)].NodeID;
     
 	//定载荷约束信息
-	if (1 == isFileExists(ForceBOUNDARYFileString))
+	if (1 == isFileExists(VehicleIn->ForceBOUNDARYFileString))
 	{
-		Matrix<int, Dynamic, Dynamic>ForceBOUNDARYImformation = LinearMSTMMSolver::openDataInt(ForceBOUNDARYFileString);
-		Matrix<int, Dynamic, Dynamic>ForceSetNodeImformation = LinearMSTMMSolver::openDataInt(ForceSetNodeFileString);
-		Matrix<double, Dynamic, Dynamic>ForceFileImformation = LinearMSTMMSolver::openData(ForceFileString);
+		Matrix<int, Dynamic, Dynamic>ForceBOUNDARYImformation = LinearMSTMMSolver::openDataInt(VehicleIn->ForceBOUNDARYFileString);
+		Matrix<int, Dynamic, Dynamic>ForceSetNodeImformation = LinearMSTMMSolver::openDataInt(VehicleIn->ForceSetNodeFileString);
+		Matrix<double, Dynamic, Dynamic>ForceFileImformation = LinearMSTMMSolver::openData(VehicleIn->ForceFileString);
 		for (int i = 0; i < ForceSetNodeImformation.cols(); i++)
 		{
 			(*InConstraint).ConstraintType = 1;
@@ -3300,7 +3300,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     ls = nullptr;
 
     //删除文件
-   /* remove(DefineCurveFileString.c_str());
+   /* remove(VehicleIn->DefineCurveFileString.c_str());
 	remove(HourglassFileString.c_str());
 	remove(SecBeamFileString.c_str());
 	remove(EleShFileString.c_str());
@@ -3325,8 +3325,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	remove(SetNodeFile2String.c_str());
 	remove(SegmentSetFile1String.c_str());
 	remove(SegmentSetFile2String.c_str());
-	remove(LoadBodyYFileString.c_str());
-	remove(LoadBodyZFileString.c_str());
+	remove(VehicleIn->LoadBodyYFileString.c_str());
+	remove(VehicleIn->LoadBodyZFileString.c_str());
 	remove(ContactFileString2.c_str());
 	remove(SecShellFileString2.c_str());
 	remove(RigidWallFileString2.c_str());
@@ -3334,77 +3334,82 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	remove(RigidWallFileString.c_str());
 	remove(ContactFileString.c_str());*/
 
+	delete VehicleIn;
+	VehicleIn = nullptr;
+
     return IAD;
 }
 
-InputFileProject::InputFileProject()
+VehicleInformation::VehicleInformation()
 {
-	 SetNodeId1 = 0;
-	 SetNodeId2 = 0;
-	 SegmentSetId1 = 0;
-	 PanduanSetNode=0;
-	 PanduanSegmentSetNode=0;
-	 AdditionalDigit = "1";
-	 PanduanSecondpart = 0;
-	 Multibody = "MB";
+	SetNodeId1 = 0;
+	SetNodeId2 = 0;
+	SegmentSetId1 = 0;
+	PanduanSetNode = 0;
+	PanduanSegmentSetNode = 0;
+	AdditionalDigit = "1";
+	PanduanSecondpart = 0;
 };
-
+DummyInformation::DummyInformation()
+{
+	Multibody = "MB";
+};
 Part::Part()
 {
-	 Pid = 0;
-	 SectionID = 0;
-	 Mid = 0;
+	Pid = 0;
+	SectionID = 0;
+	Mid = 0;
 };
 sectionbeam::sectionbeam()
 {
-	 secidbeam = 0;
-	 TS = 0;
-     TT = 0;
+	secidbeam = 0;
+	TS = 0;
+	TT = 0;
 };
 sectionshell::sectionshell()
 {
-	 secidshell=0;
-	 T1=0;
-	 T2=0;
-	 T3=0;
-	 T4=0;
+	secidshell = 0;
+	T1 = 0;
+	T2 = 0;
+	T3 = 0;
+	T4 = 0;
 };
 Velocity::Velocity()
 {
-	 SetType=3;     // 1: part set ID
-				 // 2: part ID
-				 // 3: node set ID
-	 SetNodeid = 0;
-	 XVelocity = 0;
-	 YVelocity = 0;
-	 ZVelocity = 0;
+	SetType = 3;     // 1: part set ID
+				// 2: part ID
+				// 3: node set ID
+	SetNodeid = 0;
+	XVelocity = 0;
+	YVelocity = 0;
+	ZVelocity = 0;
 };
 SetNode::SetNode()
 {
-	 SetType = 4;
-	 SetId=0; //set 集号
-	 (void)SetNodeID.setZero();  //set 集节点号
+	SetType = 4;
+	SetId = 0; //set 集号
+	(void)SetNodeID.setZero();  //set 集节点号
 };
 SetSegmentNode::SetSegmentNode()
 {
-	 SetType = 0;
-	 SetSegmentId=0; //SetSegment集号
-	 (void)SetSegmentNodeID.setZero();  //SetSegment集节点号
+	SetType = 0;
+	SetSegmentId = 0; //SetSegment集号
+	(void)SetSegmentNodeID.setZero();  //SetSegment集节点号
 };
 LoadBodyZ::LoadBodyZ()
 {
-	 LoadBodyZCurveID=0;
-	 LoadCurveScaleFactor=0;
+	LoadBodyZCurveID = 0;
+	LoadCurveScaleFactor = 0;
 };
 LoadBodyY::LoadBodyY()
 {
-	 LoadBodyYCurveID=0;
-	 LoadCurveScaleFactor=0;
+	LoadBodyYCurveID = 0;
+	LoadCurveScaleFactor = 0;
 };
 LoadBodyX::LoadBodyX()
 {
-	 LoadBodyXCurveID=0;
-	 LoadCurveScaleFactor=0;
+	LoadBodyXCurveID = 0;
+	LoadCurveScaleFactor = 0;
 };
 
 FilenameCombine::FilenameCombine(string file1, string file2)
@@ -3430,7 +3435,7 @@ MBSetNode::MBSetNode()
 	SetId = 0;
 	SetNodeID.fill(0);
 };
-MBSetSegmentNode:: MBSetSegmentNode()
+MBSetSegmentNode::MBSetSegmentNode()
 {
 	SetSegmentId = 0;
 	SetSegmentNodeID.fill(0);
