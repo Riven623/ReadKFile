@@ -5,207 +5,208 @@
 //读人体模型文件函数
 int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllDate* IADate)
 {
+	DummyInformation* DummyIn = new DummyInformation;
 
-	 InMB.open(MBfileToOpen);
-	 InMB.seekg(0, ios::end); //将文件指针指向文件末端
-	 streampos fp = InMB.tellg(); //fp 为文件指针的偏移量
+	DummyIn->InMB.open(MBfileToOpen);
+	DummyIn->InMB.seekg(0, ios::end); //将文件指针指向文件末端
+	 streampos fp = DummyIn->InMB.tellg(); //fp 为文件指针的偏移量
 	 if (int(fp) <= 0) // 偏移量为0，证明文件为空，为首次进入系统
 	 {
 		 return 0;
 	 }
 	 else
 	 {
-		 InMB.seekg(0, ios::beg);
-		 while (getline(InMB, LineMB))
+		 DummyIn->InMB.seekg(0, ios::beg);
+		 while (getline(DummyIn->InMB, DummyIn->LineMB))
 		 {
 			 //刚体
-			 if (LineMB == "*RigidBody")
+			 if (DummyIn->LineMB == "*RigidBody")
 			 {
-				 ColumHingeFile.close();
-				 MBNodeFile.close();
-				 BallJointFile.close();
-				 MBContactFile.close();
-				 LineMB.erase(0, 1);
-				 RigidBodyFileString = getFileName(LineMB);
-				 RigidBodyFile.open(getFileName(LineMB));
+				 DummyIn->ColumHingeFile.close();
+				 DummyIn->MBNodeFile.close();
+				 DummyIn->BallJointFile.close();
+				 DummyIn->MBContactFile.close();
+				 DummyIn->LineMB.erase(0, 1);
+				 DummyIn->RigidBodyFileString = getFileName(DummyIn->LineMB);
+			     DummyIn->RigidBodyFile.open(getFileName(DummyIn->LineMB));
 			 }
-			 if (RigidBodyFile.is_open())
+			 if (DummyIn->RigidBodyFile.is_open())
 			 {
-				 getdigit2(RigidBodyFile, LineMB);
+				 getdigit2(DummyIn->RigidBodyFile, DummyIn->LineMB);
 			 };
 			 //柱铰
-			 if (LineMB == "*ColumHinge")
+			 if (DummyIn->LineMB == "*ColumHinge")
 			 {
-				 RigidBodyFile.close();
-				 BallJointFile.close();
-				 MBNodeFile.close();
-				 MBContactFile.close();
-				 LineMB.erase(0, 1);
-				 ColumHingeFileString = getFileName(LineMB);
-				 ColumHingeFile.open(getFileName(LineMB));
+				 DummyIn->RigidBodyFile.close();
+				 DummyIn->BallJointFile.close();
+				 DummyIn->MBNodeFile.close();
+				 DummyIn->MBContactFile.close();
+				 DummyIn->LineMB.erase(0, 1);
+				 DummyIn->ColumHingeFileString = getFileName(DummyIn->LineMB);
+				 DummyIn->ColumHingeFile.open(getFileName(DummyIn->LineMB));
 			 }
-			 if (ColumHingeFile.is_open())
+			 if (DummyIn->ColumHingeFile.is_open())
 			 {
-				 getdigit2(ColumHingeFile, LineMB);
+				 getdigit2(DummyIn->ColumHingeFile, DummyIn->LineMB);
 			 };
 			 //球铰
-			 if (LineMB == "*BallJoint")
+			 if (DummyIn->LineMB == "*BallJoint")
 			 {
-				 ColumHingeFile.close();
-				 RigidBodyFile.close();
-				 MBNodeFile.close();
-				 MBContactFile.close();
-				 LineMB.erase(0, 1);
-				 BallJointFileString = getFileName(LineMB);
-				 BallJointFile.open(getFileName(LineMB));
+				 DummyIn->ColumHingeFile.close();
+				 DummyIn->RigidBodyFile.close();
+				 DummyIn->MBNodeFile.close();
+				 DummyIn->MBContactFile.close();
+				 DummyIn->LineMB.erase(0, 1);
+				 DummyIn->BallJointFileString = getFileName(DummyIn->LineMB);
+				 DummyIn->BallJointFile.open(getFileName(DummyIn->LineMB));
 			 }
-			 if (BallJointFile.is_open())
+			 if (DummyIn->BallJointFile.is_open())
 			 {
-				 getdigit2(BallJointFile, LineMB);
+				 getdigit2(DummyIn->BallJointFile, DummyIn->LineMB);
 			 };
 
 			 //NODE
-			 if (LineMB == "*NODE")
+			 if (DummyIn->LineMB == "*NODE")
 			 {
-				 ColumHingeFile.close();
-				 RigidBodyFile.close();
-				 BallJointFile.close();
-				 MBContactFile.close();
-				 LineMB.erase(0, 1);
-				 MBNodeFileString = getFileName2(Multibody, LineMB);
-				 MBNodeFile.open(MBNodeFileString);
+				 DummyIn->ColumHingeFile.close();
+				 DummyIn->RigidBodyFile.close();
+				 DummyIn->BallJointFile.close();
+				 DummyIn->MBContactFile.close();
+				 DummyIn->LineMB.erase(0, 1);
+				 DummyIn->MBNodeFileString = getFileName2(DummyIn->Multibody, DummyIn->LineMB);
+				 DummyIn->MBNodeFile.open(DummyIn->MBNodeFileString);
 			 }
-			 if (MBNodeFile.is_open())
+			 if (DummyIn->MBNodeFile.is_open())
 			 {
-				 getdigit2(MBNodeFile, LineMB);
+				 getdigit2(DummyIn->MBNodeFile, DummyIn->LineMB);
 			 };
 
 			 //接触
-			 if (LineMB == "*CONTACT_NODES_TO_SURFACE_ID")
+			 if (DummyIn->LineMB == "*CONTACT_NODES_TO_SURFACE_ID")
 			 {
-				 ColumHingeFile.close();
-				 RigidBodyFile.close();
-				 BallJointFile.close();
-				 MBNodeFile.close();
-				 LineMB.erase(0, 1);
-				 MBContactFileString = "MBContact.txt";
-				 MBContactFileString2 = "MBContactTemp.txt";
-				 MBContactFile.open(MBContactFileString2);
-				 MBContactFile.clear();
-				 MBContactFile << endl;
+				 DummyIn->ColumHingeFile.close();
+				 DummyIn->RigidBodyFile.close();
+				 DummyIn->BallJointFile.close();
+				 DummyIn->MBNodeFile.close();
+				 DummyIn->LineMB.erase(0, 1);
+				 DummyIn->MBContactFileString = "MBContact.txt";
+				 DummyIn->MBContactFileString2 = "MBContactTemp.txt";
+				 DummyIn->MBContactFile.open(DummyIn->MBContactFileString2);
+				 DummyIn->MBContactFile.clear();
+				 DummyIn->MBContactFile << endl;
 			 }
-			 if (MBContactFile.is_open())
+			 if (DummyIn->MBContactFile.is_open())
 			 {
-				 if (' ' == LineMB[0])
+				 if (' ' == DummyIn->LineMB[0])
 				 {
-					 MBContactFile << LineMB << " ";
+					 DummyIn->MBContactFile << DummyIn->LineMB << " ";
 				 }
 			 }
 
-			 if (LineMB == "*SET_NODE_LIST")
+			 if (DummyIn->LineMB == "*SET_NODE_LIST")
 			 {
-				 ColumHingeFile.close();
-				 RigidBodyFile.close();
-				 BallJointFile.close();
-				 MBNodeFile.close();
-				 MBContactFile.close();
+				 DummyIn->ColumHingeFile.close();
+				 DummyIn->RigidBodyFile.close();
+				 DummyIn->BallJointFile.close();
+				 DummyIn->MBNodeFile.close();
+				 DummyIn->MBContactFile.close();
 			 }
-			 if (LineMB == "*SET_SEGMENT")
+			 if (DummyIn->LineMB == "*SET_SEGMENT")
 			 {
-				 ColumHingeFile.close();
-				 RigidBodyFile.close();
-				 BallJointFile.close();
-				 MBNodeFile.close();
-				 MBContactFile.close();
+				 DummyIn->ColumHingeFile.close();
+				 DummyIn->RigidBodyFile.close();
+				 DummyIn->BallJointFile.close();
+				 DummyIn->MBNodeFile.close();
+				 DummyIn->MBContactFile.close();
 			 }
-			 if (LineMB == "*END")
+			 if (DummyIn->LineMB == "*END")
 			 {
-				 ColumHingeFile.close();
-				 RigidBodyFile.close();
-				 BallJointFile.close();
-				 MBNodeFile.close();
-				 MBContactFile.close();
+				 DummyIn->ColumHingeFile.close();
+				 DummyIn->RigidBodyFile.close();
+				 DummyIn->BallJointFile.close();
+				 DummyIn->MBNodeFile.close();
+				 DummyIn->MBContactFile.close();
 			 }
-			 if ("*ConnectNode" == LineMB)
+			 if ("*ConnectNode" == DummyIn->LineMB)
 			 {
-				 LineMB = LineMB.erase(0, 1);
-				 ConnectNodeFileString = getFileName(LineMB);
-				 ConnectNodeFile.open(ConnectNodeFileString);
+				 DummyIn->LineMB = DummyIn->LineMB.erase(0, 1);
+				 DummyIn->ConnectNodeFileString = getFileName(DummyIn->LineMB);
+				 DummyIn->ConnectNodeFile.open(DummyIn->ConnectNodeFileString);
 			 }
-			 if (ConnectNodeFile.is_open())
+			 if (DummyIn->ConnectNodeFile.is_open())
 			 {
-				 getdigit2(ConnectNodeFile, LineMB);
+				 getdigit2(DummyIn->ConnectNodeFile, DummyIn->LineMB);
 			 }
-			 if (LineMB == "*END2")
+			 if (DummyIn->LineMB == "*END2")
 			 {
-				 ConnectNodeFile.close();
+				 DummyIn->ConnectNodeFile.close();
 			 }
 		 }
-		 InMB.close();
+		 DummyIn->InMB.close();
 
 		 //Contact 文件
-		 MBInContact.open(MBContactFileString2);
-		 MBContactFile2.open(MBContactFileString);
-		 while (getline(MBInContact, MBLineContact))
+		 DummyIn->MBInContact.open(DummyIn->MBContactFileString2);
+		 DummyIn->MBContactFile2.open(DummyIn->MBContactFileString);
+		 while (getline(DummyIn->MBInContact, DummyIn->MBLineContact))
 		 {
-			 if (MBContactFile2.is_open())
+			 if (DummyIn->MBContactFile2.is_open())
 			 {
-				 if (' ' == MBLineContact[0])
+				 if (' ' == DummyIn->MBLineContact[0])
 				 {
-					 MBContactFile2 << MBLineContact << endl;
+					 DummyIn->MBContactFile2 << DummyIn->MBLineContact << endl;
 				 }
 			 }
 		 }
-		 MBContactFile2.close();
-		 MBInContact.close();
+		 DummyIn->MBContactFile2.close();
+		 DummyIn->MBInContact.close();
 
 		 //SegmentSet 文件
 		 MBlsmap* mbls = new MBlsmap;
 		 MBSetSegmentNode* pMBSetSegmentNode = new MBSetSegmentNode;
-		 InSegmentSet.open(MBfileToOpen);
-		 while (getline(InSegmentSet, LineSegmentSet))
+		 DummyIn->InSegmentSet.open(MBfileToOpen);
+		 while (getline(DummyIn->InSegmentSet, DummyIn->LineSegmentSet))
 		 {
 			 //主面节点
-			 if ("*SET_SEGMENT" == LineSegmentSet)
+			 if ("*SET_SEGMENT" == DummyIn->LineSegmentSet)
 			 {
-				 LineSegmentSet = ("MB") + (LineSegmentSet.erase(0, 1));
-				 SegmentSetFile1String = getFileName(LineSegmentSet);
-				 SegmentSetFile1.open(SegmentSetFile1String);
-				 SegmentSetFile1.clear();
-				 SegmentSetFile1 << endl;
+				 DummyIn->LineSegmentSet = ("MB") + (DummyIn->LineSegmentSet.erase(0, 1));
+				 DummyIn->SegmentSetFile1String = getFileName(DummyIn->LineSegmentSet);
+				 DummyIn->SegmentSetFile1.open(DummyIn->SegmentSetFile1String);
+				 DummyIn->SegmentSetFile1.clear();
+				 DummyIn->SegmentSetFile1 << endl;
 			 }
-			 if (SegmentSetFile1.is_open())
+			 if (DummyIn->SegmentSetFile1.is_open())
 			 {
-				 if (' ' == LineSegmentSet[0])
+				 if (' ' == DummyIn->LineSegmentSet[0])
 				 {
-					 SegmentSetFile1 << LineSegmentSet << " ";
+					 DummyIn->SegmentSetFile1 << DummyIn->LineSegmentSet << " ";
 				 }
 			 }
-			 if (("*CONTACT_AUTOMATIC_NODES_TO_SURFACE_ID" == LineSegmentSet) || ("*CONTACT_NODES_TO_SURFACE_ID" == LineSegmentSet) || ("*RIGIDWALL_PLANAR_FINITE_ID" == LineSegmentSet) || ("*ELEMENT_BEAM" == LineSegmentSet)
-				 || ("*ELEMENT_SHELL" == LineSegmentSet) || ("*ELEMENT_SOLID" == LineSegmentSet) || ("*SET_NODE_LIST" == LineSegmentSet) || ("*DEFINE_CURVE" == LineSegmentSet) || ("*SET_PART_LIST" == LineSegmentSet)
-				 || ("*END" == LineSegmentSet))
+			 if (("*CONTACT_AUTOMATIC_NODES_TO_SURFACE_ID" == DummyIn->LineSegmentSet) || ("*CONTACT_NODES_TO_SURFACE_ID" == DummyIn->LineSegmentSet) || ("*RIGIDWALL_PLANAR_FINITE_ID" == DummyIn->LineSegmentSet) || ("*ELEMENT_BEAM" == DummyIn->LineSegmentSet)
+				 || ("*ELEMENT_SHELL" == DummyIn->LineSegmentSet) || ("*ELEMENT_SOLID" == DummyIn->LineSegmentSet) || ("*SET_NODE_LIST" == DummyIn->LineSegmentSet) || ("*DEFINE_CURVE" == DummyIn->LineSegmentSet) || ("*SET_PART_LIST" == DummyIn->LineSegmentSet)
+				 || ("*END" == DummyIn->LineSegmentSet))
 			 {
-				 SegmentSetFile1.close();
+				 DummyIn->SegmentSetFile1.close();
 			 }
 		 }
-		 InSegmentSet.close();
+		 DummyIn->InSegmentSet.close();
 		 ifstream InSegmentSet2;
-		 InSegmentSet2.open(SegmentSetFile1String);
-		 SegmentSetFile2String = "MBSegmentSet.txt";
+		 InSegmentSet2.open(DummyIn->SegmentSetFile1String);
+		 DummyIn->SegmentSetFile2String = "MBSegmentSet.txt";
 		 string LineSegmentSet2;
 		 int panduanneirongSegmentSet = 0;
 		 while (getline(InSegmentSet2, LineSegmentSet2))
 		 {
-			 ofstream SegmentSetFile2(SegmentSetFile2String);
+			 ofstream SegmentSetFile2(DummyIn->SegmentSetFile2String);
 			 if (' ' == LineSegmentSet2[0])
 			 {
 				 LineSegmentSet2.erase(50, 4);
 				 SegmentSetFile2 << LineSegmentSet2 << flush;
 				 panduanneirongSegmentSet = 1;
 			 }
-			 if ((panduanneirongSegmentSet == 1) && (1 == isFileExists(SegmentSetFile2String)))
+			 if ((panduanneirongSegmentSet == 1) && (1 == isFileExists(DummyIn->SegmentSetFile2String)))
 			 {
-				 Matrix<int, Dynamic, Dynamic>SegmentSet = LinearMSTMMSolver::openDataInt(SegmentSetFile2String);
+				 Matrix<int, Dynamic, Dynamic>SegmentSet = LinearMSTMMSolver::openDataInt(DummyIn->SegmentSetFile2String);
 				 pMBSetSegmentNode->SetSegmentId = SegmentSet(0, 0);
 				 pMBSetSegmentNode->SetSegmentNodeID = SegmentSet;
 				 (void)mbls->AllMBSetSegmentNode.insert(make_pair(pMBSetSegmentNode->SetSegmentId, (*pMBSetSegmentNode)));
@@ -217,10 +218,10 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 
 		 MBSetNode* pMBSetNode = new MBSetNode;
 		 //NODE
-		 if (1 == isFileExists(MBNodeFileString))
+		 if (1 == isFileExists(DummyIn->MBNodeFileString))
 		 {
-			 Matrix<int, Dynamic, Dynamic>MBNode1 = LinearMSTMMSolver::openDataInt(MBNodeFileString);
-			 Matrix<double, Dynamic, Dynamic>MBNode2 = LinearMSTMMSolver::openData(MBNodeFileString);
+			 Matrix<int, Dynamic, Dynamic>MBNode1 = LinearMSTMMSolver::openDataInt(DummyIn->MBNodeFileString);
+			 Matrix<double, Dynamic, Dynamic>MBNode2 = LinearMSTMMSolver::openData(DummyIn->MBNodeFileString);
 			 MBNode* pMBNode = new MBNode;
 			 for (int i = 0; i < MBNode1.rows(); i++)
 			 {
@@ -233,47 +234,47 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		 };
 
 		 //SetNode
-		 InSetNode.open(MBfileToOpen);
-		 while (getline(InSetNode, LineSetNode))
+		 DummyIn->InSetNode.open(MBfileToOpen);
+		 while (getline(DummyIn->InSetNode, DummyIn->LineSetNode))
 		 {
-			 if ("*SET_NODE_LIST" == LineSetNode)
+			 if ("*SET_NODE_LIST" == DummyIn->LineSetNode)
 			 {
-				 LineSetNode = ("MB") + (LineSetNode.erase(0, 1));
-				 SetNodeFile1String = getFileName(LineSetNode);
-				 SetNodeFile1.open(SetNodeFile1String);
-				 SetNodeFile1.clear();
-				 SetNodeFile1 << endl;
+				 DummyIn->LineSetNode = ("MB") + (DummyIn->LineSetNode.erase(0, 1));
+				 DummyIn->SetNodeFile1String = getFileName(DummyIn->LineSetNode);
+				 DummyIn->SetNodeFile1.open(DummyIn->SetNodeFile1String);
+				 DummyIn->SetNodeFile1.clear();
+				 DummyIn->SetNodeFile1 << endl;
 			 }
-			 if (SetNodeFile1.is_open())
+			 if (DummyIn->SetNodeFile1.is_open())
 			 {
-				 if (' ' == LineSetNode[0])
+				 if (' ' == DummyIn->LineSetNode[0])
 				 {
-					 SetNodeFile1 << LineSetNode << " ";
+					 DummyIn->SetNodeFile1 << DummyIn->LineSetNode << " ";
 				 }
 			 }
-			 if (("*END" == LineSetNode) || ("*DEFINE_CURVE" == LineSetNode) || ("*BOUNDARY_SPC_NODE" == LineSetNode) || ("*SET_PART_LIST" == LineSetNode) || ("*CONTACT_NODES_TO_SURFACE_ID" == LineSetNode))
+			 if (("*END" == DummyIn->LineSetNode) || ("*DEFINE_CURVE" == DummyIn->LineSetNode) || ("*BOUNDARY_SPC_NODE" == DummyIn->LineSetNode) || ("*SET_PART_LIST" == DummyIn->LineSetNode) || ("*CONTACT_NODES_TO_SURFACE_ID" == DummyIn->LineSetNode))
 			 {
-				 SetNodeFile1.close();
+				 DummyIn->SetNodeFile1.close();
 			 }
 		 }
-		 InSetNode.close();
+		 DummyIn->InSetNode.close();
 		 ifstream InSetNode2;
-		 InSetNode2.open(SetNodeFile1String);
-		 SetNodeFile2String = "MBSETNODELIST.txt";
+		 InSetNode2.open(DummyIn->SetNodeFile1String);
+		 DummyIn->SetNodeFile2String = "MBSETNODELIST.txt";
 		 string LineSetNode2;
 		 int panduanneirong = 0;
 		 while (getline(InSetNode2, LineSetNode2))
 		 {
-			 ofstream SetNodeFile2(SetNodeFile2String);
+			 ofstream SetNodeFile2(DummyIn->SetNodeFile2String);
 			 if (' ' == LineSetNode2[0])
 			 {
 				 LineSetNode2.erase(50, 4);
 				 SetNodeFile2 << LineSetNode2 << flush;
 				 panduanneirong = 1;
 			 }
-			 if ((panduanneirong == 1) && (1 == isFileExists(SetNodeFile2String)))
+			 if ((panduanneirong == 1) && (1 == isFileExists(DummyIn->SetNodeFile2String)))
 			 {
-				 Matrix<int, Dynamic, Dynamic>SetNode = LinearMSTMMSolver::openDataInt(SetNodeFile2String);
+				 Matrix<int, Dynamic, Dynamic>SetNode = LinearMSTMMSolver::openDataInt(DummyIn->SetNodeFile2String);
 				 pMBSetNode->SetId = SetNode(0, 0);
 				 pMBSetNode->SetNodeID = SetNode.rightCols(SetNode.size() - 1);
 				 (void)mbls->AllMBSetNode.insert(make_pair(pMBSetNode->SetId, (*pMBSetNode)));
@@ -287,10 +288,10 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 		 // 刚体信息
-		 if (isFileExists(RigidBodyFileString) == 1)
+		 if (isFileExists(DummyIn->RigidBodyFileString) == 1)
 		 {
-			 Matrix<int, Dynamic, Dynamic>RigidBodyImformation1 = LinearMSTMMSolver::openDataInt(RigidBodyFileString);
-			 Matrix<double, Dynamic, Dynamic>RigidBodyImformation2 = LinearMSTMMSolver::openData(RigidBodyFileString);
+			 Matrix<int, Dynamic, Dynamic>RigidBodyImformation1 = LinearMSTMMSolver::openDataInt(DummyIn->RigidBodyFileString);
+			 Matrix<double, Dynamic, Dynamic>RigidBodyImformation2 = LinearMSTMMSolver::openData(DummyIn->RigidBodyFileString);
 			 for (int i = 0; i < RigidBodyImformation1.rows(); i++)
 			 {
 				 inputRigidBody* InRigidBody = new inputRigidBody;
@@ -349,10 +350,10 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		 };
 
 		 // 柱铰信息
-		 if (isFileExists(ColumHingeFileString) == 1)
+		 if (isFileExists(DummyIn->ColumHingeFileString) == 1)
 		 {
-			 Matrix<int, Dynamic, Dynamic>ColumHingeImformation1 = LinearMSTMMSolver::openDataInt(ColumHingeFileString);
-			 Matrix<double, Dynamic, Dynamic>ColumHingeImformation2 = LinearMSTMMSolver::openData(ColumHingeFileString);
+			 Matrix<int, Dynamic, Dynamic>ColumHingeImformation1 = LinearMSTMMSolver::openDataInt(DummyIn->ColumHingeFileString);
+			 Matrix<double, Dynamic, Dynamic>ColumHingeImformation2 = LinearMSTMMSolver::openData(DummyIn->ColumHingeFileString);
 			 inputColumnHinge* InColumnHinge = new inputColumnHinge;
 			 for (int i = 0; i < ColumHingeImformation1.rows(); i++)
 			 {
@@ -375,10 +376,10 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		 };
 
 		 // 球铰信息
-		 if (isFileExists(BallJointFileString) == 1)
+		 if (isFileExists(DummyIn->BallJointFileString) == 1)
 		 {
-			 Matrix<int, Dynamic, Dynamic>BallJointImformation1 = LinearMSTMMSolver::openDataInt(BallJointFileString);
-			 Matrix<double, Dynamic, Dynamic>BallJointImformation2 = LinearMSTMMSolver::openData(BallJointFileString);
+			 Matrix<int, Dynamic, Dynamic>BallJointImformation1 = LinearMSTMMSolver::openDataInt(DummyIn->BallJointFileString);
+			 Matrix<double, Dynamic, Dynamic>BallJointImformation2 = LinearMSTMMSolver::openData(DummyIn->BallJointFileString);
 			 inputBallJoint* InBallJoint = new inputBallJoint;
 			 for (int i = 0; i < BallJointImformation1.rows(); i++)
 			 {
@@ -406,11 +407,11 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		 };
 
 		 //Contact
-		 if (1 == isFileExists(MBContactFileString))
+		 if (1 == isFileExists(DummyIn->MBContactFileString))
 		 {
 			 //Contact 关键字信息
-			 Matrix<double, Dynamic, Dynamic>MBContactImformation = LinearMSTMMSolver::openData(MBContactFileString);
-			 Matrix<int, Dynamic, Dynamic>MBContactImformation2 = LinearMSTMMSolver::openDataInt(MBContactFileString);
+			 Matrix<double, Dynamic, Dynamic>MBContactImformation = LinearMSTMMSolver::openData(DummyIn->MBContactFileString);
+			 Matrix<int, Dynamic, Dynamic>MBContactImformation2 = LinearMSTMMSolver::openDataInt(DummyIn->MBContactFileString);
 			 //cout << ContactImformation;
 			 for (int i = 0; i < MBContactImformation.rows(); i++)
 			 {
@@ -452,9 +453,9 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		 }
 
 		 //ConnectNodeFileString
-		 if (isFileExists(ConnectNodeFileString) == 1)
+		 if (isFileExists(DummyIn->ConnectNodeFileString) == 1)
 		 {
-			 Matrix<int, Dynamic, Dynamic>ConnectNodeImformation = LinearMSTMMSolver::openDataInt(ConnectNodeFileString);
+			 Matrix<int, Dynamic, Dynamic>ConnectNodeImformation = LinearMSTMMSolver::openDataInt(DummyIn->ConnectNodeFileString);
 			 IADate->ConnectNode = ConnectNodeImformation(0, 0);
 
 		 }
@@ -475,6 +476,8 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		 //remove(SegmentSetFile1String.c_str());
 		 //remove(SetNodeFile1String.c_str());
 
+		 delete DummyIn;
+		 DummyIn = nullptr;
 		 return 1;
 
 	 }

@@ -67,83 +67,90 @@ inline int isFileExists(string& name)
 	return Exist;
 }
 
-//读文件主函数定义类
+//读文件函数定义
 class InputFileProject
 {
 public:
-	InputFileProject();
+	//车
+	InputAllDate* inputFunction(const std::string& fileToOpen);
+	//假人
+	int inputMBFunction(const std::string& MBfileToOpen, InputAllDate*IADate);
+
+};
+
+//车辆模型读取信息
+class VehicleInformation
+{
+public:
+	VehicleInformation();
 	//第一次总的读取
-    ifstream In;
-    string line;
-    ofstream SlaveNodeFile;
-    ofstream EleBFile;
-    ofstream EleShFile;
-    ofstream SecBeamFile;
-    ofstream SecShellFile;
-    ofstream SecSolidFile;
-    ofstream BoundaryFile;
-    ofstream NodeFile;
-    ofstream ElaFile;
-    ofstream PlaFile;
-    ofstream EleSoFile;
-    ofstream MasterNodeFile;
-    ofstream PartFile;
-    ofstream ContactFile;
-    ofstream SetFile;
-    ofstream NodeVelocityFile;
-    ofstream ComputingTimeFile;
-    ofstream TimeIncrementFile;
-    ofstream RigidWallFile;
-    ofstream HourglassFile;
-    ofstream BoundarySetFile;
-    ofstream WallSlaveNodeFile;
-    ofstream LoadNodeFile;
-    ofstream DefineCurveFile;
+	ifstream In;
+	string line;
+	ofstream SlaveNodeFile;
+	ofstream EleBFile;
+	ofstream EleShFile;
+	ofstream SecBeamFile;
+	ofstream SecShellFile;
+	ofstream SecSolidFile;
+	ofstream BoundaryFile;
+	ofstream NodeFile;
+	ofstream ElaFile;
+	ofstream PlaFile;
+	ofstream EleSoFile;
+	ofstream MasterNodeFile;
+	ofstream PartFile;
+	ofstream ContactFile;
+	ofstream SetFile;
+	ofstream NodeVelocityFile;
+	ofstream ComputingTimeFile;
+	ofstream TimeIncrementFile;
+	ofstream RigidWallFile;
+	ofstream HourglassFile;
+	ofstream BoundarySetFile;
+	ofstream WallSlaveNodeFile;
+	ofstream LoadNodeFile;
+	ofstream DefineCurveFile;
 	ofstream LoadBodyZFile;
 	ofstream LoadBodyYFile;
 
 	string LoadBodyYFileString;
 	string LoadBodyZFileString;
-    string DefineCurveFileString;
-    string LoadNodeFileString;
-    string WallSlaveNodeFileString;
-    string BoundarySetFileString;
-    string ElaFileString;
-    string PlaFileString;
-    string ComputingTimeFileString;
-    string TimeIncrementFileString;
-    string NodeFileString;
-    string PartFileString;
-    string SecSolidFileString;
-    string NodeVelocityFileString;
-    string MasterNodeFileString;
-    string ContactFileString;
-    string ContactFileString2;
+	string DefineCurveFileString;
+	string LoadNodeFileString;
+	string WallSlaveNodeFileString;
+	string BoundarySetFileString;
+	string ElaFileString;
+	string PlaFileString;
+	string ComputingTimeFileString;
+	string TimeIncrementFileString;
+	string NodeFileString;
+	string PartFileString;
+	string SecSolidFileString;
+	string NodeVelocityFileString;
+	string MasterNodeFileString;
+	string ContactFileString;
+	string ContactFileString2;
 	string RigidWallFileString2;
 
 
-    string EleSoFileString;
-    string SlaveNodeFileString;
-    string SetFileString;
-    string BoundaryFileString;
-    string EleBFileString;
-    string EleShFileString;
-    string SecBeamFileString;
-    string SecShellFileString;
-    string SecShellFileString2;
-    string RigidWallFileString;
-    string HourglassFileString;
+	string EleSoFileString;
+	string SlaveNodeFileString;
+	string SetFileString;
+	string BoundaryFileString;
+	string EleBFileString;
+	string EleShFileString;
+	string SecBeamFileString;
+	string SecShellFileString;
+	string SecShellFileString2;
+	string RigidWallFileString;
+	string HourglassFileString;
 
-    string AdditionalDigit;
+	string AdditionalDigit;
 
-    int SetNodeId1 ;
-    int SetNodeId2 ;
-  
-    int SegmentSetId1 ;
-    
-	InputAllDate* inputFunction(const std::string& fileToOpen);
+	int SetNodeId1;
+	int SetNodeId2;
 
-	int inputMBFunction(const std::string& MBfileToOpen, InputAllDate*IADate);
+	int SegmentSetId1;
 
 	//FORCE
 	ifstream InForce;
@@ -174,9 +181,9 @@ public:
 	string LineContact;
 	ofstream ContactFile2;
 
-    //SegmentSet
+	//SegmentSet
 	ifstream InSegmentSet;
-    string LineSegmentSet;
+	string LineSegmentSet;
 	ofstream SegmentSetFile1;
 	ofstream SegmentSetFile2;
 
@@ -184,7 +191,7 @@ public:
 	string SegmentSetFile1String;
 	string SegmentSetFile2String;
 
-    //SetNode
+	//SetNode
 	string Setnodelist;
 	ifstream InSetNode;
 	string LineSetNode;
@@ -194,14 +201,20 @@ public:
 
 	string SetNodeFile1String;
 	string SetNodeFile2String;
-    int PanduanSetNode ;
-	int PanduanSegmentSetNode ;
+	int PanduanSetNode;
+	int PanduanSegmentSetNode;
 	int PanduanSecondpart;
+};
 
+//人体模型读取信息
+class DummyInformation
+{
+public:
+	DummyInformation();
 	//人体模型
 	ifstream InMB;
 	string LineMB;
-	string Multibody ;
+	string Multibody;
 
 	ofstream RigidBodyFile;
 	ofstream ColumHingeFile;
@@ -226,6 +239,27 @@ public:
 	//ConnectNode
 	ofstream ConnectNodeFile;
 	string ConnectNodeFileString;
+
+	//SegmentSet
+	ifstream InSegmentSet;
+	string LineSegmentSet;
+	ofstream SegmentSetFile1;
+	ofstream SegmentSetFile2;
+
+	string SetSegment;
+	string SegmentSetFile1String;
+	string SegmentSetFile2String;
+
+	//SetNode
+	string Setnodelist;
+	ifstream InSetNode;
+	string LineSetNode;
+
+	ofstream SetNodeFile1;
+	ofstream SetNodeFile2;
+
+	string SetNodeFile1String;
+	string SetNodeFile2String;
 };
 
 //汇总Part, Section，Velocity，SetNode，SetSegmentNode 信息

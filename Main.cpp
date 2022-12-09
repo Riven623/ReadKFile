@@ -9,13 +9,13 @@ using namespace Eigen;
 
 int main() 
 {
-	//1208
+
 	 //hdfread("BIGcar_1.h5",157774,87);
 	
 	InputFileProject* pInputFile = new InputFileProject;
 	InputAllDate* IAD = new InputAllDate;
 
-	//IAD= pInputFile->inputFunction("D:\\Cfile\\OriginalInputFile\\car1127.txt");
+	IAD= pInputFile->inputFunction("D:\\Cfile\\OriginalInputFile\\car1127.txt");
 
 	pInputFile->inputMBFunction("D:\\Cfile\\OriginalInputFile\\RenTi1205.txt", IAD);
 
