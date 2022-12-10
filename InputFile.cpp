@@ -463,17 +463,17 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		mbls = nullptr;
 
 		//删除文件
-		//remove(MBContactFileString.c_str());
-		//remove(MBNodeFileString.c_str());
-		//remove(RigidBodyFileString.c_str());
-		//remove(ColumHingeFileString.c_str());
-		//remove(BallJointFileString.c_str());
-		//remove(MBContactFileString2.c_str());
-		//remove(ConnectNodeFileString.c_str());
-		//remove(SegmentSetFile2String.c_str());
-		//remove(SetNodeFile2String.c_str());
-		//remove(SegmentSetFile1String.c_str());
-		//remove(SetNodeFile1String.c_str());
+	/*	remove(DummyIn->MBContactFileString.c_str());
+		remove(DummyIn->MBNodeFileString.c_str());
+		remove(DummyIn->RigidBodyFileString.c_str());
+		remove(DummyIn->ColumHingeFileString.c_str());
+		remove(DummyIn->BallJointFileString.c_str());
+		remove(DummyIn->MBContactFileString2.c_str());
+		remove(DummyIn->ConnectNodeFileString.c_str());
+		remove(DummyIn->SegmentSetFile2String.c_str());
+		remove(DummyIn->SetNodeFile2String.c_str());
+		remove(DummyIn->SegmentSetFile1String.c_str());
+		remove(DummyIn->SetNodeFile1String.c_str());*/
 
 		delete DummyIn;
 		DummyIn = nullptr;
@@ -3300,38 +3300,38 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 
     //删除文件
    /* remove(VehicleIn->DefineCurveFileString.c_str());
-	remove(HourglassFileString.c_str());
-	remove(SecBeamFileString.c_str());
-	remove(EleShFileString.c_str());
-	remove(EleBFileString.c_str());
-	remove(BoundaryFileString.c_str());
-	remove(SetFileString.c_str());
-	remove(SlaveNodeFileString.c_str());
-	remove(EleSoFileString.c_str());
-	remove(MasterNodeFileString.c_str());
-	remove(NodeVelocityFileString.c_str());
-	remove(SecSolidFileString.c_str());
-	remove(PartFileString.c_str());
-	remove(NodeFileString.c_str());
-	remove(TimeIncrementFileString.c_str());
-	remove(ComputingTimeFileString.c_str());
-	remove(PlaFileString.c_str());
-	remove(ElaFileString.c_str());
-	remove(BoundarySetFileString.c_str());
-	remove(WallSlaveNodeFileString.c_str());
-	remove(LoadNodeFileString.c_str());
-	remove(SetNodeFile1String.c_str());
-	remove(SetNodeFile2String.c_str());
-	remove(SegmentSetFile1String.c_str());
-	remove(SegmentSetFile2String.c_str());
+	remove(VehicleIn->HourglassFileString.c_str());
+	remove(VehicleIn->SecBeamFileString.c_str());
+	remove(VehicleIn->EleShFileString.c_str());
+	remove(VehicleIn->EleBFileString.c_str());
+	remove(VehicleIn->BoundaryFileString.c_str());
+	remove(VehicleIn->SetFileString.c_str());
+	remove(VehicleIn->SlaveNodeFileString.c_str());
+	remove(VehicleIn->EleSoFileString.c_str());
+	remove(VehicleIn->MasterNodeFileString.c_str());
+	remove(VehicleIn->NodeVelocityFileString.c_str());
+	remove(VehicleIn->SecSolidFileString.c_str());
+	remove(VehicleIn->PartFileString.c_str());
+	remove(VehicleIn->NodeFileString.c_str());
+	remove(VehicleIn->TimeIncrementFileString.c_str());
+	remove(VehicleIn->ComputingTimeFileString.c_str());
+	remove(VehicleIn->PlaFileString.c_str());
+	remove(VehicleIn->ElaFileString.c_str());
+	remove(VehicleIn->BoundarySetFileString.c_str());
+	remove(VehicleIn->WallSlaveNodeFileString.c_str());
+	remove(VehicleIn->LoadNodeFileString.c_str());
+	remove(VehicleIn->SetNodeFile1String.c_str());
+	remove(VehicleIn->SetNodeFile2String.c_str());
+	remove(VehicleIn->SegmentSetFile1String.c_str());
+	remove(VehicleIn->SegmentSetFile2String.c_str());
 	remove(VehicleIn->LoadBodyYFileString.c_str());
 	remove(VehicleIn->LoadBodyZFileString.c_str());
-	remove(ContactFileString2.c_str());
-	remove(SecShellFileString2.c_str());
-	remove(RigidWallFileString2.c_str());
-	remove(SecShellFileString.c_str());
-	remove(RigidWallFileString.c_str());
-	remove(ContactFileString.c_str());*/
+	remove(VehicleIn->ContactFileString2.c_str());
+	remove(VehicleIn->SecShellFileString2.c_str());
+	remove(VehicleIn->RigidWallFileString2.c_str());
+	remove(VehicleIn->SecShellFileString.c_str());
+	remove(VehicleIn->RigidWallFileString.c_str());
+	remove(VehicleIn->ContactFileString.c_str());*/
 
 	delete VehicleIn;
 	VehicleIn = nullptr;
