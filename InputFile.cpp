@@ -346,6 +346,21 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				(*IADate).inputAllRigidBody.insert(make_pair((*InRigidBody).RigidBodyID, (*InRigidBody)));
 				delete InRigidBody;
 			}
+			IADate->inputAllRigidBody[29].HumanID = "Part_human001";
+			IADate->inputAllRigidBody[27].HumanID = "Part_human002";
+			IADate->inputAllRigidBody[17].HumanID = "Part_human003";
+			IADate->inputAllRigidBody[23].HumanID = "Part_human004";
+			IADate->inputAllRigidBody[15].HumanID = "Part_human005";
+			IADate->inputAllRigidBody[21].HumanID = "Part_human006";
+			IADate->inputAllRigidBody[13].HumanID = "Part_human007";
+			IADate->inputAllRigidBody[19].HumanID = "Part_human008";
+			IADate->inputAllRigidBody[5].HumanID = "Part_human009";
+			IADate->inputAllRigidBody[3].HumanID = "Part_human010";
+			IADate->inputAllRigidBody[11].HumanID = "Part_human011";
+			IADate->inputAllRigidBody[9].HumanID = "Part_human012";
+			IADate->inputAllRigidBody[7].HumanID = "Part_human013";
+			IADate->inputAllRigidBody[1].HumanID = "Part_human014";
+			IADate->inputAllRigidBody[25].HumanID = "Part_human";
 		};
 
 		// 柱铰信息

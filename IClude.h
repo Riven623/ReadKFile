@@ -14,6 +14,6 @@
 #include <sstream>
 #include <set>
 #include <QString>
-
+#include <Eigen/Sparse>
 using namespace Eigen;
 using namespace std;

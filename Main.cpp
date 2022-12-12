@@ -17,7 +17,7 @@ int main()
 
 	IAD= pInputFile->inputFunction("D:\\Cfile\\OriginalInputFile\\car1127.txt");
 
-	pInputFile->inputMBFunction("D:\\Cfile\\OriginalInputFile\\RenTi1205.txt", IAD);
+	//pInputFile->inputMBFunction("D:\\Cfile\\OriginalInputFile\\RenTi1205.txt", IAD);
 
 	//for (auto& it : IAD->InputAllContact[3].MasterContactNode)
 	//{
@@ -39,4 +39,6 @@ int main()
 	return 1;
 	
 }
+
+
 

@@ -127,6 +127,7 @@ public:
 class inputRigidBody
 {
 public:
+    string HumanID;
     int RigidBodySetID;
 	int RigidBodyType;//1代表
 	int RigidBodyID;
