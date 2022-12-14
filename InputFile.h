@@ -76,6 +76,8 @@ public:
 	//假人
 	int inputMBFunction(const std::string& MBfileToOpen, InputAllDate*IADate);
 
+	//	DynamicCalculation* setTimeParameters();
+
 };
 
 //车辆模型读取信息

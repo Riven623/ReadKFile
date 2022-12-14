@@ -3454,3 +3454,40 @@ MBSetSegmentNode::MBSetSegmentNode()
 	SetSegmentId = 0;
 	SetSegmentNodeID.fill(0);
 };
+
+//DynamicCalculation* InputFileProject::setTimeParameters()
+//{
+//	DynamicCalculation* DC = new DynamicCalculation;
+//
+//	QString FilePath = QLatin1String("D:/MSTMMSim/MSTMMSimCenter/src/Mod/VehicleCollision/Gui/Parameters.xml");
+//	QDomDocument XmlDoc;				///<将XML文件加载到内存中
+//	double ComputingTime;					///<计算时间
+//	double TimeIncrement;					///<时间步长
+//
+//	XmlDoc.clear();
+//	QFile XmlFile(FilePath);
+//	if (!XmlFile.open(QIODevice::ReadOnly))
+//	{
+//		XmlFile.close();
+//	}
+//	if (!XmlDoc.setContent(&XmlFile))
+//	{
+//		XmlFile.close();
+//	}
+//	XmlFile.close();
+//
+//	//找到节点
+//	QDomElement TimeParametersElement = XmlDoc.documentElement().firstChildElement(QLatin1String("TimeParameters"));
+//	QDomElement ComputingTimeElement = TimeParametersElement.firstChildElement(QLatin1String("ComputingTime"));
+//	QDomElement TimeIncreElement = TimeParametersElement.firstChildElement(QLatin1String("TimeIncre"));
+//
+//	//读取节点数据并转换类型
+//	ComputingTime = ComputingTimeElement.text().toDouble();
+//	TimeIncrement = TimeIncreElement.text().toDouble();
+//
+//	DC->ComputingTime = ComputingTime;
+//	DC->TimeIncrement = TimeIncrement;
+//
+//	cout << "读文件DC->ComputingTime=" << DC->ComputingTime << endl;
+//	return DC;
+//};
