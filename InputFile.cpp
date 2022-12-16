@@ -7,8 +7,8 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 {
 	DummyInformation* DummyIn = new DummyInformation;
 	DummyIn->InMB.open(MBfileToOpen);
-	DummyIn->InMB.seekg(0, ios::end); //将文件指针指向文件末端
-	streampos fp = DummyIn->InMB.tellg(); //fp 为文件指针的偏移量
+	(void)DummyIn->InMB.seekg(0, ios::end); //将文件指针指向文件末端
+     fp = DummyIn->InMB.tellg(); //fp 为文件指针的偏移量
 	if (int(fp) <= 0) // 偏移量为0，证明文件为空，为首次进入系统
 	{
 		return 0;
@@ -25,7 +25,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				DummyIn->MBNodeFile.close();
 				DummyIn->BallJointFile.close();
 				DummyIn->MBContactFile.close();
-				DummyIn->LineMB.erase(0, 1);
+				(void)DummyIn->LineMB.erase(0, 1);
 				DummyIn->RigidBodyFileString = getFileName(DummyIn->LineMB);
 				DummyIn->RigidBodyFile.open(getFileName(DummyIn->LineMB));
 			}
@@ -40,7 +40,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				DummyIn->BallJointFile.close();
 				DummyIn->MBNodeFile.close();
 				DummyIn->MBContactFile.close();
-				DummyIn->LineMB.erase(0, 1);
+				(void)DummyIn->LineMB.erase(0, 1);
 				DummyIn->ColumHingeFileString = getFileName(DummyIn->LineMB);
 				DummyIn->ColumHingeFile.open(getFileName(DummyIn->LineMB));
 			}
@@ -55,7 +55,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				DummyIn->RigidBodyFile.close();
 				DummyIn->MBNodeFile.close();
 				DummyIn->MBContactFile.close();
-				DummyIn->LineMB.erase(0, 1);
+				(void)DummyIn->LineMB.erase(0, 1);
 				DummyIn->BallJointFileString = getFileName(DummyIn->LineMB);
 				DummyIn->BallJointFile.open(getFileName(DummyIn->LineMB));
 			}
@@ -71,7 +71,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				DummyIn->RigidBodyFile.close();
 				DummyIn->BallJointFile.close();
 				DummyIn->MBContactFile.close();
-				DummyIn->LineMB.erase(0, 1);
+				(void)DummyIn->LineMB.erase(0, 1);
 				DummyIn->MBNodeFileString = getFileName2(DummyIn->Multibody, DummyIn->LineMB);
 				DummyIn->MBNodeFile.open(DummyIn->MBNodeFileString);
 			}
@@ -87,7 +87,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				DummyIn->RigidBodyFile.close();
 				DummyIn->BallJointFile.close();
 				DummyIn->MBNodeFile.close();
-				DummyIn->LineMB.erase(0, 1);
+				(void)DummyIn->LineMB.erase(0, 1);
 				DummyIn->MBContactFileString = "MBContact.txt";
 				DummyIn->MBContactFileString2 = "MBContactTemp.txt";
 				DummyIn->MBContactFile.open(DummyIn->MBContactFileString2);
@@ -199,7 +199,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 			ofstream SegmentSetFile2(DummyIn->SegmentSetFile2String);
 			if (' ' == LineSegmentSet2[0])
 			{
-				LineSegmentSet2.erase(50, 4);
+				(void)LineSegmentSet2.erase(50, 4);
 				SegmentSetFile2 << LineSegmentSet2 << flush;
 				panduanneirongSegmentSet = 1;
 			}
@@ -267,15 +267,15 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 			ofstream SetNodeFile2(DummyIn->SetNodeFile2String);
 			if (' ' == LineSetNode2[0])
 			{
-				LineSetNode2.erase(50, 4);
+				(void)LineSetNode2.erase(50, 4);
 				SetNodeFile2 << LineSetNode2 << flush;
 				panduanneirong = 1;
 			}
 			if ((panduanneirong == 1) && (1 == isFileExists(DummyIn->SetNodeFile2String)))
 			{
-				Matrix<int, Dynamic, Dynamic>SetNode = LinearMSTMMSolver::openDataInt(DummyIn->SetNodeFile2String);
-				pMBSetNode->SetId = SetNode(0, 0);
-				pMBSetNode->SetNodeID = SetNode.rightCols(SetNode.size() - 1);
+				Matrix<int, Dynamic, Dynamic>SetNodeMatrix = LinearMSTMMSolver::openDataInt(DummyIn->SetNodeFile2String);
+				pMBSetNode->SetId = SetNodeMatrix(0, 0);
+				pMBSetNode->SetNodeID = SetNodeMatrix.rightCols(SetNodeMatrix.size() - 1);
 				(void)mbls->AllMBSetNode.insert(make_pair(pMBSetNode->SetId, (*pMBSetNode)));
 			};
 		}
@@ -310,7 +310,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				(*InRigidBody).RC(0, 0) = RigidBodyImformation2(i, 13);
 				(*InRigidBody).RC(1, 0) = RigidBodyImformation2(i, 14);
 				(*InRigidBody).RC(2, 0) = RigidBodyImformation2(i, 15);
-				(*InRigidBody).J.setZero(3, 3);
+				(void)(*InRigidBody).J.setZero(3, 3);
 				(*InRigidBody).J(0, 0) = RigidBodyImformation2(i, 16);
 				(*InRigidBody).J(1, 1) = RigidBodyImformation2(i, 17);
 				(*InRigidBody).J(2, 2) = RigidBodyImformation2(i, 18);
@@ -341,9 +341,9 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				for (int j = 0; j < mbls->AllMBSetNode[InRigidBody->RigidBodySetID].SetNodeID.cols(); j++)
 				{
 
-					InRigidBody->MeshCoor.insert(make_pair(mbls->AllMBSetNode[InRigidBody->RigidBodySetID].SetNodeID(0, j), mbls->AllMBNode[mbls->AllMBSetNode[InRigidBody->RigidBodySetID].SetNodeID(0, j)].NodeCoordinates));
+					(void)InRigidBody->MeshCoor.insert(make_pair(mbls->AllMBSetNode[InRigidBody->RigidBodySetID].SetNodeID(0, j), mbls->AllMBNode[mbls->AllMBSetNode[InRigidBody->RigidBodySetID].SetNodeID(0, j)].NodeCoordinates));
 				}
-				(*IADate).inputAllRigidBody.insert(make_pair((*InRigidBody).RigidBodyID, (*InRigidBody)));
+				(void)(*IADate).inputAllRigidBody.insert(make_pair((*InRigidBody).RigidBodyID, (*InRigidBody)));
 				delete InRigidBody;
 			}
 			IADate->inputAllRigidBody[29].HumanID = "Part_human001";
@@ -384,7 +384,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				(*InColumnHinge).C(0, 0) = ColumHingeImformation2(i, 10);
 				(*InColumnHinge).C(0, 1) = ColumHingeImformation2(i, 11);
 				(*InColumnHinge).C(0, 2) = ColumHingeImformation2(i, 12);
-				(*IADate).inputAllColumnHinge.insert(make_pair((*InColumnHinge).ColumnHingeID, (*InColumnHinge)));
+				(void)(*IADate).inputAllColumnHinge.insert(make_pair((*InColumnHinge).ColumnHingeID, (*InColumnHinge)));
 			}
 			delete InColumnHinge;
 		};
@@ -404,18 +404,18 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				(*InBallJoint).WR(0, 0) = BallJointImformation2(i, 13);
 				(*InBallJoint).WR(1, 0) = BallJointImformation2(i, 14);
 				(*InBallJoint).WR(2, 0) = BallJointImformation2(i, 15);
-				(*InBallJoint).K.setZero(3, 3);
+				(void)(*InBallJoint).K.setZero(3, 3);
 				(*InBallJoint).K(0, 0) = BallJointImformation2(i, 1);
 				(*InBallJoint).K(1, 1) = BallJointImformation2(i, 2);
 				(*InBallJoint).K(2, 2) = BallJointImformation2(i, 3);
-				(*InBallJoint).C.setZero(3, 3);
+				(void)(*InBallJoint).C.setZero(3, 3);
 				(*InBallJoint).C(0, 0) = BallJointImformation2(i, 4);
 				(*InBallJoint).C(1, 1) = BallJointImformation2(i, 5);
 				(*InBallJoint).C(2, 2) = BallJointImformation2(i, 6);
 				(*InBallJoint).Md(0, 0) = BallJointImformation2(i, 7);
 				(*InBallJoint).Md(1, 0) = BallJointImformation2(i, 8);
 				(*InBallJoint).Md(2, 0) = BallJointImformation2(i, 9);
-				(*IADate).inputAllBallJoint.insert(make_pair((*InBallJoint).BallJointID, (*InBallJoint)));
+				(void)(*IADate).inputAllBallJoint.insert(make_pair((*InBallJoint).BallJointID, (*InBallJoint)));
 			}
 			delete InBallJoint;
 		};
@@ -432,7 +432,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				InputFEMtoMBContact* MBInCta = new InputFEMtoMBContact;
 				MBInCta->ContactNumber = MBContactImformation2(i, 0);
 				MBInCta->ContactType = 1;
-				if ((0 == MBContactImformation(i, 5)) && (0 == MBContactImformation(i, 6)))
+				if (( MBContactImformation(i, 5)<1e-5) && ( MBContactImformation(i, 6) < 1e-5))
 				{
 					MBInCta->FrictionJudgment = 1;
 				}
@@ -448,15 +448,15 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				MBInCta->DynamicFrictionCoefficient = MBContactImformation(i, 6);
 				int k = 1;
 				//主从面节点号
-				for (int j = 0; j < (mbls->AllMBSetSegmentNode[MBInCta->MasterNodeSetId].SetSegmentNodeID.cols() - 1) / 4; j++)
+				for (int j = 0; j < ((mbls->AllMBSetSegmentNode[MBInCta->MasterNodeSetId].SetSegmentNodeID.cols() - 1) / 4); j++)
 				{
 					Matrix<int, 4, 1> SetSegmentRow = mbls->AllMBSetSegmentNode[MBInCta->MasterNodeSetId].SetSegmentNodeID.block<1, 4>(0, k).adjoint();
 					(void)MBInCta->MasterContactNode.insert(make_pair((j + 1), SetSegmentRow));
 					k += 4;
 				};
-				for (int k = 0; k < mbls->AllMBSetNode[MBInCta->SlaveNodeSetId].SetNodeID.rows(); k++)
+				for (int n = 0; n < mbls->AllMBSetNode[MBInCta->SlaveNodeSetId].SetNodeID.rows(); n++)
 				{
-					(void)MBInCta->SlaveContactNode.insert(make_pair((k + 1), mbls->AllMBSetNode[MBInCta->SlaveNodeSetId].SetNodeID.row(k).adjoint()));
+					(void)MBInCta->SlaveContactNode.insert(make_pair((n + 1), mbls->AllMBSetNode[MBInCta->SlaveNodeSetId].SetNodeID.row(n).adjoint()));
 				};
 				(void)IADate->InputAllFEMtoMBContact.insert(make_pair(MBInCta->ContactNumber, (*MBInCta)));
 				delete MBInCta;
@@ -478,17 +478,17 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		mbls = nullptr;
 
 		//删除文件
-	/*	remove(DummyIn->MBContactFileString.c_str());
-		remove(DummyIn->MBNodeFileString.c_str());
-		remove(DummyIn->RigidBodyFileString.c_str());
-		remove(DummyIn->ColumHingeFileString.c_str());
-		remove(DummyIn->BallJointFileString.c_str());
-		remove(DummyIn->MBContactFileString2.c_str());
-		remove(DummyIn->ConnectNodeFileString.c_str());
-		remove(DummyIn->SegmentSetFile2String.c_str());
-		remove(DummyIn->SetNodeFile2String.c_str());
-		remove(DummyIn->SegmentSetFile1String.c_str());
-		remove(DummyIn->SetNodeFile1String.c_str());*/
+		(void)remove(DummyIn->MBContactFileString.c_str());
+		(void)remove(DummyIn->MBNodeFileString.c_str());
+		(void)remove(DummyIn->RigidBodyFileString.c_str());
+		(void)remove(DummyIn->ColumHingeFileString.c_str());
+		(void)remove(DummyIn->BallJointFileString.c_str());
+		(void)remove(DummyIn->MBContactFileString2.c_str());
+		(void)remove(DummyIn->ConnectNodeFileString.c_str());
+		(void)remove(DummyIn->SegmentSetFile2String.c_str());
+		(void)remove(DummyIn->SetNodeFile2String.c_str());
+		(void)remove(DummyIn->SegmentSetFile1String.c_str());
+		(void)remove(DummyIn->SetNodeFile1String.c_str());
 
 		delete DummyIn;
 		DummyIn = nullptr;
@@ -1674,7 +1674,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 		ofstream SegmentSetFile2(VehicleIn->SegmentSetFile2String);
 		if (' ' == LineSegmentSet2[0])
 		{
-			LineSegmentSet2.erase(50, 4);
+			(void)LineSegmentSet2.erase(50, 4);
 			SegmentSetFile2 << LineSegmentSet2 << flush;
 			panduanneirongSegmentSet = 1;
 		}
@@ -1732,15 +1732,15 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 		ofstream SetNodeFile2(VehicleIn->SetNodeFile2String);
 		if (' ' == LineSetNode2[0])
 		{
-			LineSetNode2.erase(50, 4);
+			(void)LineSetNode2.erase(50, 4);
 			SetNodeFile2 << LineSetNode2 << flush;
 			panduanneirong = 1;
 		}
 		if ((panduanneirong == 1) && (1 == isFileExists(VehicleIn->SetNodeFile2String)))
 		{
-			Matrix<int, Dynamic, Dynamic>SetNode = LinearMSTMMSolver::openDataInt(VehicleIn->SetNodeFile2String);
-			pSetNode->SetId = SetNode(0, 0);
-			pSetNode->SetNodeID = SetNode.rightCols(SetNode.size() - 1);
+			Matrix<int, Dynamic, Dynamic>SetNodeMatrix = LinearMSTMMSolver::openDataInt(VehicleIn->SetNodeFile2String);
+			pSetNode->SetId = SetNodeMatrix(0, 0);
+			pSetNode->SetNodeID = SetNodeMatrix.rightCols(SetNodeMatrix.size() - 1);
 			(void)ls->AllSetNode.insert(make_pair(pSetNode->SetId, (*pSetNode)));
 		};
 	}
@@ -1837,7 +1837,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     if ( 1==isFileExists(VehicleIn->PartFileString) )
     {
         Matrix<int, Dynamic, Dynamic>PartImformation = LinearMSTMMSolver::openDataInt(VehicleIn->PartFileString);
-        Part* IP = new Part;
+		KFilePart* IP = new KFilePart;
         for (int i = 0; i < PartImformation.rows(); i++)
         {
 			IP->Pid = PartImformation(i, 0);
@@ -2198,7 +2198,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             InputContact* InCta = new InputContact;
 			InCta->ContactNumber = ContactImformation2(i, 0);
 			InCta->ContactType = 0;
-            if ( (0==ContactImformation(i, 5))  &&  (0==ContactImformation(i, 6)) )
+            if ( (ContactImformation(i, 5)<1e-5)  &&  (ContactImformation(i, 6)<1e-5) )
             {
                 InCta->FrictionJudgment = 1;
             }
@@ -2216,15 +2216,15 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			InCta->DynamicFrictionCoefficient = ContactImformation(i, 6);
 			int k = 1;
             //主从面节点号
-            for (int j = 0; j < (ls->AllSetSegment[InCta->MasterNodeSetId].SetSegmentNodeID.cols()-1)/4; j++)
+            for (int j = 0; j < ((ls->AllSetSegment[InCta->MasterNodeSetId].SetSegmentNodeID.cols()-1)/4); j++)
             {
 				Matrix<int, 4, 1> SetSegmentRow = ls->AllSetSegment[InCta->MasterNodeSetId].SetSegmentNodeID.block<1, 4>(0, k).adjoint();
 				(void)InCta->MasterContactNode.insert(make_pair((j + 1), SetSegmentRow));
 				k += 4;
             };
-            for (int k = 0; k < ls->AllSetNode[InCta->SlaveNodeSetId].SetNodeID.rows(); k++)
+            for (int n = 0; n < ls->AllSetNode[InCta->SlaveNodeSetId].SetNodeID.rows(); n++)
             {
-				(void)InCta->SlaveContactNode.insert(make_pair((k + 1), ls->AllSetNode[InCta->SlaveNodeSetId].SetNodeID.row(k).adjoint()));
+				(void)InCta->SlaveContactNode.insert(make_pair((n + 1), ls->AllSetNode[InCta->SlaveNodeSetId].SetNodeID.row(n).adjoint()));
             };
 			(void)IAD->InputAllContact.insert(make_pair(InCta->ContactNumber, (*InCta)));
             delete InCta;
@@ -3216,7 +3216,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			InputRigidWallContact* InRigidWall = new InputRigidWallContact;
             InRigidWall->ContactNumber = RigidWallImformation2(i, 0);
             InRigidWall->NodeSetID = RigidWallImformation2(i, 1);
-            if ( 0==RigidWallImformation1(i, 8)  )
+            if ( RigidWallImformation1(i, 8) <1e-5 )
             {
                 InRigidWall->FrictionJudgment = 1;
             }
@@ -3314,39 +3314,39 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     ls = nullptr;
 
     //删除文件
-   /* remove(VehicleIn->DefineCurveFileString.c_str());
-	remove(VehicleIn->HourglassFileString.c_str());
-	remove(VehicleIn->SecBeamFileString.c_str());
-	remove(VehicleIn->EleShFileString.c_str());
-	remove(VehicleIn->EleBFileString.c_str());
-	remove(VehicleIn->BoundaryFileString.c_str());
-	remove(VehicleIn->SetFileString.c_str());
-	remove(VehicleIn->SlaveNodeFileString.c_str());
-	remove(VehicleIn->EleSoFileString.c_str());
-	remove(VehicleIn->MasterNodeFileString.c_str());
-	remove(VehicleIn->NodeVelocityFileString.c_str());
-	remove(VehicleIn->SecSolidFileString.c_str());
-	remove(VehicleIn->PartFileString.c_str());
-	remove(VehicleIn->NodeFileString.c_str());
-	remove(VehicleIn->TimeIncrementFileString.c_str());
-	remove(VehicleIn->ComputingTimeFileString.c_str());
-	remove(VehicleIn->PlaFileString.c_str());
-	remove(VehicleIn->ElaFileString.c_str());
-	remove(VehicleIn->BoundarySetFileString.c_str());
-	remove(VehicleIn->WallSlaveNodeFileString.c_str());
-	remove(VehicleIn->LoadNodeFileString.c_str());
-	remove(VehicleIn->SetNodeFile1String.c_str());
-	remove(VehicleIn->SetNodeFile2String.c_str());
-	remove(VehicleIn->SegmentSetFile1String.c_str());
-	remove(VehicleIn->SegmentSetFile2String.c_str());
-	remove(VehicleIn->LoadBodyYFileString.c_str());
-	remove(VehicleIn->LoadBodyZFileString.c_str());
-	remove(VehicleIn->ContactFileString2.c_str());
-	remove(VehicleIn->SecShellFileString2.c_str());
-	remove(VehicleIn->RigidWallFileString2.c_str());
-	remove(VehicleIn->SecShellFileString.c_str());
-	remove(VehicleIn->RigidWallFileString.c_str());
-	remove(VehicleIn->ContactFileString.c_str());*/
+	(void)remove(VehicleIn->DefineCurveFileString.c_str());
+	(void)remove(VehicleIn->HourglassFileString.c_str());
+	(void)remove(VehicleIn->SecBeamFileString.c_str());
+	(void)remove(VehicleIn->EleShFileString.c_str());
+	(void)remove(VehicleIn->EleBFileString.c_str());
+	(void)remove(VehicleIn->BoundaryFileString.c_str());
+	(void)remove(VehicleIn->SetFileString.c_str());
+	(void)remove(VehicleIn->SlaveNodeFileString.c_str());
+	(void)remove(VehicleIn->EleSoFileString.c_str());
+	(void)remove(VehicleIn->MasterNodeFileString.c_str());
+	(void)remove(VehicleIn->NodeVelocityFileString.c_str());
+	(void)remove(VehicleIn->SecSolidFileString.c_str());
+	(void)remove(VehicleIn->PartFileString.c_str());
+	(void)remove(VehicleIn->NodeFileString.c_str());
+	(void)remove(VehicleIn->TimeIncrementFileString.c_str());
+	(void)remove(VehicleIn->ComputingTimeFileString.c_str());
+	(void)remove(VehicleIn->PlaFileString.c_str());
+	(void)remove(VehicleIn->ElaFileString.c_str());
+	(void)remove(VehicleIn->BoundarySetFileString.c_str());
+	(void)remove(VehicleIn->WallSlaveNodeFileString.c_str());
+	(void)remove(VehicleIn->LoadNodeFileString.c_str());
+	(void)remove(VehicleIn->SetNodeFile1String.c_str());
+	(void)remove(VehicleIn->SetNodeFile2String.c_str());
+	(void)remove(VehicleIn->SegmentSetFile1String.c_str());
+	(void)remove(VehicleIn->SegmentSetFile2String.c_str());
+	(void)remove(VehicleIn->LoadBodyYFileString.c_str());
+	(void)remove(VehicleIn->LoadBodyZFileString.c_str());
+	(void)remove(VehicleIn->ContactFileString2.c_str());
+	(void)remove(VehicleIn->SecShellFileString2.c_str());
+	(void)remove(VehicleIn->RigidWallFileString2.c_str());
+	(void)remove(VehicleIn->SecShellFileString.c_str());
+	(void)remove(VehicleIn->RigidWallFileString.c_str());
+	(void)remove(VehicleIn->ContactFileString.c_str());
 
 	delete VehicleIn;
 	VehicleIn = nullptr;
@@ -3354,7 +3354,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     return IAD;
 }
 
-VehicleInformation::VehicleInformation()
+VehicleInformation::VehicleInformation(void)
 {
 	SetNodeId1 = 0;
 	SetNodeId2 = 0;
@@ -3364,23 +3364,23 @@ VehicleInformation::VehicleInformation()
 	AdditionalDigit = "1";
 	PanduanSecondpart = 0;
 };
-DummyInformation::DummyInformation()
+DummyInformation::DummyInformation(void)
 {
 	Multibody = "MB";
 };
-Part::Part()
+KFilePart::KFilePart(void)
 {
 	Pid = 0;
 	SectionID = 0;
 	Mid = 0;
 };
-sectionbeam::sectionbeam()
+sectionbeam::sectionbeam(void)
 {
 	secidbeam = 0;
 	TS = 0;
 	TT = 0;
 };
-sectionshell::sectionshell()
+sectionshell::sectionshell(void)
 {
 	secidshell = 0;
 	T1 = 0;
@@ -3388,7 +3388,7 @@ sectionshell::sectionshell()
 	T3 = 0;
 	T4 = 0;
 };
-Velocity::Velocity()
+Velocity::Velocity(void)
 {
 	SetType = 3;     // 1: part set ID
 				// 2: part ID
@@ -3398,29 +3398,29 @@ Velocity::Velocity()
 	YVelocity = 0;
 	ZVelocity = 0;
 };
-SetNode::SetNode()
+SetNode::SetNode(void)
 {
 	SetType = 4;
 	SetId = 0; //set 集号
 	(void)SetNodeID.setZero();  //set 集节点号
 };
-SetSegmentNode::SetSegmentNode()
+SetSegmentNode::SetSegmentNode(void)
 {
 	SetType = 0;
 	SetSegmentId = 0; //SetSegment集号
 	(void)SetSegmentNodeID.setZero();  //SetSegment集节点号
 };
-LoadBodyZ::LoadBodyZ()
+LoadBodyZ::LoadBodyZ(void)
 {
 	LoadBodyZCurveID = 0;
 	LoadCurveScaleFactor = 0;
 };
-LoadBodyY::LoadBodyY()
+LoadBodyY::LoadBodyY(void)
 {
 	LoadBodyYCurveID = 0;
 	LoadCurveScaleFactor = 0;
 };
-LoadBodyX::LoadBodyX()
+LoadBodyX::LoadBodyX(void)
 {
 	LoadBodyXCurveID = 0;
 	LoadCurveScaleFactor = 0;
@@ -3439,18 +3439,20 @@ FilenameCombine2::FilenameCombine2(string file1, string file2, string file3)
 	m_file3 = file3;
 }
 
-MBNode::MBNode()
+MBNode::MBNode(void)
 {
 	NodeID = 0;
 	NodeCoordinates.fill(0);
 };
-MBSetNode::MBSetNode()
+MBSetNode::MBSetNode(void)
 {
+	SetType = 0;
 	SetId = 0;
 	SetNodeID.fill(0);
 };
-MBSetSegmentNode::MBSetSegmentNode()
+MBSetSegmentNode::MBSetSegmentNode(void)
 {
+	SetType = 0;
 	SetSegmentId = 0;
 	SetSegmentNodeID.fill(0);
 };
@@ -3491,3 +3493,7 @@ MBSetSegmentNode::MBSetSegmentNode()
 //	cout << "读文件DC->ComputingTime=" << DC->ComputingTime << endl;
 //	return DC;
 //};
+InputFileProject::InputFileProject(void)
+{
+	fp = 0;
+};

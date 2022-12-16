@@ -3,16 +3,16 @@
 #include"InputDate.h"
 
 //写入数据函数(内联)
-inline void getdigit3(ofstream& ObjectiveFile, const string inputLine, const int lineID)
-{
-	if (lineID < inputLine.length())
-	{
-		if ((' ' == inputLine[0]) && isdigit(inputLine.at(lineID)))
-		{
-			ObjectiveFile << inputLine << endl;
-		}
-	}
-};
+//inline void getdigit3(ofstream& ObjectiveFile, const string inputLine, const unsigned long long lineID)
+//{
+//	if (lineID < inputLine.length())
+//	{
+//		if ((' ' == inputLine[0]) && isdigit(inputLine.at(lineID)))
+//		{
+//			ObjectiveFile << inputLine << endl;
+//		}
+//	}
+//};
 
 inline void getdigit2(ofstream& ObjectiveFile, const string inputLine)
 {
@@ -75,16 +75,16 @@ public:
 	InputAllDate* inputFunction(const std::string& fileToOpen);
 	//假人
 	int inputMBFunction(const std::string& MBfileToOpen, InputAllDate*IADate);
-
 	//	DynamicCalculation* setTimeParameters();
-
+	streampos fp;
+	InputFileProject(void);
 };
 
 //车辆模型读取信息
 class VehicleInformation
 {
 public:
-	VehicleInformation();
+	VehicleInformation(void);
 	//第一次总的读取
 	ifstream In;
 	string line;
@@ -212,7 +212,7 @@ public:
 class DummyInformation
 {
 public:
-	DummyInformation();
+	DummyInformation(void);
 	//人体模型
 	ifstream InMB;
 	string LineMB;
@@ -265,10 +265,10 @@ public:
 };
 
 //汇总Part, Section，Velocity，SetNode，SetSegmentNode 信息
-class Part
+class KFilePart
 {
 public:
-	Part();
+	KFilePart(void);
 	int Pid;
 	int SectionID;
 	int Mid;
@@ -276,7 +276,7 @@ public:
 class sectionbeam
 {
 public:
-	sectionbeam();
+	sectionbeam(void);
 	int secidbeam;
 	double TS;
 	double TT;
@@ -284,7 +284,7 @@ public:
 class sectionshell
 {
 public:
-	sectionshell();
+	sectionshell(void);
 	int secidshell;
 	double T1;
 	double T2;
@@ -294,7 +294,7 @@ public:
 class Velocity
 {
 public:
-	Velocity();
+	Velocity(void);
 	int SetType;     // 1: part set ID
 					 // 2: part ID
 					 // 3: node set ID
@@ -306,7 +306,7 @@ public:
 class SetNode
 {
 public:
-	SetNode();
+	SetNode(void);
 	int SetType ;
 	int SetId ; //set 集号
 	Matrix<int, Dynamic, Dynamic> SetNodeID;  //set 集节点号
@@ -314,7 +314,7 @@ public:
 class SetSegmentNode
 {
 public:
-	SetSegmentNode();
+	SetSegmentNode(void);
 	int SetType ;
 	int SetSegmentId; //SetSegment集号
 	Matrix<int, Dynamic, Dynamic> SetSegmentNodeID;  //SetSegment集节点号
@@ -322,28 +322,28 @@ public:
 class LoadBodyZ
 {
 public:
-	LoadBodyZ();
+	LoadBodyZ(void);
 	int LoadBodyZCurveID;
 	double LoadCurveScaleFactor;
 };
 class LoadBodyY
 {
 public:
-	LoadBodyY();
+	LoadBodyY(void);
 	int LoadBodyYCurveID;
 	double LoadCurveScaleFactor;
 };
 class LoadBodyX
 {
 public:
-	LoadBodyX();
+	LoadBodyX(void);
 	int LoadBodyXCurveID;
 	double LoadCurveScaleFactor;
 };
 class lsmap   //所有临时信息汇总的类
 {
 public:
-	map<int, Part > AllPart;
+	map<int, KFilePart > AllPart;
 	map<int, sectionbeam>AllSectionbeam;
 	map<int, sectionshell>AllSectionshell;
 	map<int, Velocity > AllVelocity;
@@ -358,14 +358,14 @@ public:
 class MBNode
 {
 public:
-	MBNode();
+	MBNode(void);
 	int NodeID;//节点编号
 	Matrix<double, 1, 3> NodeCoordinates;//坐标（x,y,z）的值
 };
 class MBSetNode
 {
 public:
-	MBSetNode();
+	MBSetNode(void);
 	int SetType;
 	int SetId; //set 集号
 	Matrix<int, Dynamic, Dynamic> SetNodeID;  //set 集节点号
@@ -373,7 +373,7 @@ public:
 class MBSetSegmentNode
 {
 public:
-	MBSetSegmentNode();
+	MBSetSegmentNode(void);
 	int SetType;
 	int SetSegmentId; //SetSegment集号
 	Matrix<int, Dynamic, Dynamic> SetSegmentNodeID;  //SetSegment集节点号

@@ -10,14 +10,14 @@ using namespace Eigen;
 int main() 
 {
 
-	 //hdfread("BIGcar_1.h5",157774,87);
+	 hdfread("wujiechucar11.h5",157781,51);
 	
 	InputFileProject* pInputFile = new InputFileProject;
 	InputAllDate* IAD = new InputAllDate;
 
-	IAD= pInputFile->inputFunction("D:\\Cfile\\OriginalInputFile\\car1127.txt");
+	//IAD= pInputFile->inputFunction("D:\\Cfile\\OriginalInputFile\\car1127.txt");
 
-	pInputFile->inputMBFunction("D:\\Cfile\\OriginalInputFile\\RenTi1205.txt", IAD);
+	//pInputFile->inputMBFunction("D:\\Cfile\\OriginalInputFile\\RenTi1205.txt", IAD);
 
 	//for (auto& it : IAD->InputAllContact[3].MasterContactNode)
 	//{
