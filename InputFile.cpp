@@ -478,7 +478,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		mbls = nullptr;
 
 		//删除文件
-		(void)remove(DummyIn->MBContactFileString.c_str());
+		/*(void)remove(DummyIn->MBContactFileString.c_str());
 		(void)remove(DummyIn->MBNodeFileString.c_str());
 		(void)remove(DummyIn->RigidBodyFileString.c_str());
 		(void)remove(DummyIn->ColumHingeFileString.c_str());
@@ -488,7 +488,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		(void)remove(DummyIn->SegmentSetFile2String.c_str());
 		(void)remove(DummyIn->SetNodeFile2String.c_str());
 		(void)remove(DummyIn->SegmentSetFile1String.c_str());
-		(void)remove(DummyIn->SetNodeFile1String.c_str());
+		(void)remove(DummyIn->SetNodeFile1String.c_str());*/
 
 		delete DummyIn;
 		DummyIn = nullptr;
@@ -940,7 +940,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->ElaFile.clear();
             continue;
         }
-        if (VehicleIn->ElaFile.is_open() && (VehicleIn->line[0] != '*'))
+        if (VehicleIn->ElaFile.is_open() && (VehicleIn->line[0] != '*')&&(isdigit(VehicleIn->line.at(10))))
         {
                 VehicleIn->line = VehicleIn->line.insert(10, " ");
 				VehicleIn->line = VehicleIn->line.insert(21, " ");
@@ -979,7 +979,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->PlaFile.clear();
             continue;
         }
-        if (VehicleIn->PlaFile.is_open() && (VehicleIn->line[0] != '*'))
+        if (VehicleIn->PlaFile.is_open() && (VehicleIn->line[0] != '*') && (isdigit(VehicleIn->line.at(10))))
         {
                 VehicleIn->line = VehicleIn->line.insert(10, " ");
                 VehicleIn->PlaFile << VehicleIn->line << endl;
@@ -3314,7 +3314,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     ls = nullptr;
 
     //删除文件
-	(void)remove(VehicleIn->DefineCurveFileString.c_str());
+	/*(void)remove(VehicleIn->DefineCurveFileString.c_str());
 	(void)remove(VehicleIn->HourglassFileString.c_str());
 	(void)remove(VehicleIn->SecBeamFileString.c_str());
 	(void)remove(VehicleIn->EleShFileString.c_str());
@@ -3346,7 +3346,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	(void)remove(VehicleIn->RigidWallFileString2.c_str());
 	(void)remove(VehicleIn->SecShellFileString.c_str());
 	(void)remove(VehicleIn->RigidWallFileString.c_str());
-	(void)remove(VehicleIn->ContactFileString.c_str());
+	(void)remove(VehicleIn->ContactFileString.c_str());*/
 
 	delete VehicleIn;
 	VehicleIn = nullptr;
@@ -3493,6 +3493,7 @@ MBSetSegmentNode::MBSetSegmentNode(void)
 //	cout << "读文件DC->ComputingTime=" << DC->ComputingTime << endl;
 //	return DC;
 //};
+
 InputFileProject::InputFileProject(void)
 {
 	fp = 0;

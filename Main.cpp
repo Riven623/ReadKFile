@@ -10,12 +10,12 @@ using namespace Eigen;
 int main() 
 {
 
-	 hdfread("wujiechucar11.h5",157781,51);
+	 //hdfread("wujiechucar11.h5",157781,51);
 	
 	InputFileProject* pInputFile = new InputFileProject;
 	InputAllDate* IAD = new InputAllDate;
 
-	//IAD= pInputFile->inputFunction("D:\\Cfile\\OriginalInputFile\\car1127.txt");
+	IAD= pInputFile->inputFunction("D:\\Cfile\\OriginalInputFile\\car1127.txt");
 
 	//pInputFile->inputMBFunction("D:\\Cfile\\OriginalInputFile\\RenTi1205.txt", IAD);
 
@@ -36,7 +36,7 @@ int main()
 	IAD = nullptr;
 	pInputFile = nullptr;
 
-	return 1;
+	return 0;
 	
 }
 
