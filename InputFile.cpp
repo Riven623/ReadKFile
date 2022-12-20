@@ -504,12 +504,16 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	VehicleIn->In.open(fileToOpen);
     while (getline(VehicleIn->In, VehicleIn->line))
     {
-		//跳过注释行
+		size_t pos = VehicleIn->line.find_first_not_of(" ");
+		//跳过注释行和空行
 		if (VehicleIn->line[0] == '$')
 		{
 			continue;
 		}
-
+		if (pos == std::string::npos)
+		{
+			continue;
+		}
         //*LOAD_BODY_PARTS
         if ("*LOAD_BODY_PARTS" ==VehicleIn->line )
         {
@@ -940,7 +944,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->ElaFile.clear();
             continue;
         }
-        if (VehicleIn->ElaFile.is_open() && (VehicleIn->line[0] != '*')&&(isdigit(VehicleIn->line.at(10))))
+        if (VehicleIn->ElaFile.is_open() && (VehicleIn->line[0] != '*')/*&&(isdigit(VehicleIn->line.at(10)))*/)
         {
                 VehicleIn->line = VehicleIn->line.insert(10, " ");
 				VehicleIn->line = VehicleIn->line.insert(21, " ");
@@ -979,7 +983,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->PlaFile.clear();
             continue;
         }
-        if (VehicleIn->PlaFile.is_open() && (VehicleIn->line[0] != '*') && (isdigit(VehicleIn->line.at(10))))
+        if (VehicleIn->PlaFile.is_open() && (VehicleIn->line[0] != '*') /*&& (isdigit(VehicleIn->line.at(10)))*/)
         {
                 VehicleIn->line = VehicleIn->line.insert(10, " ");
                 VehicleIn->PlaFile << VehicleIn->line << endl;

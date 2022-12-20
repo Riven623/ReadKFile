@@ -9,13 +9,13 @@ using namespace Eigen;
 
 int main() 
 {
+	 //hdfReadAnimation("wujiechucar11.h5",157781,51);
+	//hdfReadCurve("smallshell144su.h5", 4368, 1001);
 
-	 //hdfread("wujiechucar11.h5",157781,51);
-	
 	InputFileProject* pInputFile = new InputFileProject;
 	InputAllDate* IAD = new InputAllDate;
 
-	IAD= pInputFile->inputFunction("D:\\Cfile\\OriginalInputFile\\car1127.txt");
+	IAD= pInputFile->inputFunction("dache12.6.k");
 
 	//pInputFile->inputMBFunction("D:\\Cfile\\OriginalInputFile\\RenTi1205.txt", IAD);
 
