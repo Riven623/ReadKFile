@@ -950,7 +950,6 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				VehicleIn->line = VehicleIn->line.insert(21, " ");
 				VehicleIn->ElaFile << VehicleIn->line << endl;
         }
-
         if ( "*MAT_PLASTIC_KINEMATIC"==VehicleIn->line )
 		{
 			VehicleIn->LoadBodyYFile.close();
@@ -1097,11 +1096,12 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->line = VehicleIn->line.erase(0, 1);
 			VehicleIn->NodeVelocityFileString = getFileName(VehicleIn->line);
             VehicleIn->NodeVelocityFile.open(getFileName(VehicleIn->line));
+			VehicleIn->NodeVelocityFile.clear();
 			continue;
         }
         if (VehicleIn->NodeVelocityFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-             VehicleIn->NodeVelocityFile << VehicleIn->line << " ";
+             VehicleIn->NodeVelocityFile << VehicleIn->line << endl;
         }
 
         //*BOUNDARY_SPC_SET
@@ -2112,7 +2112,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				}
 			}
         }
-        //cout << IAD->InputAllNode[108552].NodeVelocity;
+        //cout << IAD->InputAllNode[190].NodeVelocity;
     }	
     //赋加速度
 	if (1 ==isFileExists(VehicleIn->LoadBodyZFileString) )
@@ -3318,39 +3318,39 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     ls = nullptr;
 
     //删除文件
-	/*(void)remove(VehicleIn->DefineCurveFileString.c_str());
-	(void)remove(VehicleIn->HourglassFileString.c_str());
-	(void)remove(VehicleIn->SecBeamFileString.c_str());
-	(void)remove(VehicleIn->EleShFileString.c_str());
-	(void)remove(VehicleIn->EleBFileString.c_str());
-	(void)remove(VehicleIn->BoundaryFileString.c_str());
-	(void)remove(VehicleIn->SetFileString.c_str());
-	(void)remove(VehicleIn->SlaveNodeFileString.c_str());
-	(void)remove(VehicleIn->EleSoFileString.c_str());
-	(void)remove(VehicleIn->MasterNodeFileString.c_str());
-	(void)remove(VehicleIn->NodeVelocityFileString.c_str());
-	(void)remove(VehicleIn->SecSolidFileString.c_str());
-	(void)remove(VehicleIn->PartFileString.c_str());
-	(void)remove(VehicleIn->NodeFileString.c_str());
-	(void)remove(VehicleIn->TimeIncrementFileString.c_str());
-	(void)remove(VehicleIn->ComputingTimeFileString.c_str());
-	(void)remove(VehicleIn->PlaFileString.c_str());
-	(void)remove(VehicleIn->ElaFileString.c_str());
-	(void)remove(VehicleIn->BoundarySetFileString.c_str());
-	(void)remove(VehicleIn->WallSlaveNodeFileString.c_str());
-	(void)remove(VehicleIn->LoadNodeFileString.c_str());
-	(void)remove(VehicleIn->SetNodeFile1String.c_str());
-	(void)remove(VehicleIn->SetNodeFile2String.c_str());
-	(void)remove(VehicleIn->SegmentSetFile1String.c_str());
-	(void)remove(VehicleIn->SegmentSetFile2String.c_str());
-	(void)remove(VehicleIn->LoadBodyYFileString.c_str());
-	(void)remove(VehicleIn->LoadBodyZFileString.c_str());
-	(void)remove(VehicleIn->ContactFileString2.c_str());
-	(void)remove(VehicleIn->SecShellFileString2.c_str());
-	(void)remove(VehicleIn->RigidWallFileString2.c_str());
-	(void)remove(VehicleIn->SecShellFileString.c_str());
-	(void)remove(VehicleIn->RigidWallFileString.c_str());
-	(void)remove(VehicleIn->ContactFileString.c_str());*/
+	//(void)remove(VehicleIn->DefineCurveFileString.c_str());
+	//(void)remove(VehicleIn->HourglassFileString.c_str());
+	//(void)remove(VehicleIn->SecBeamFileString.c_str());
+	//(void)remove(VehicleIn->EleShFileString.c_str());
+	//(void)remove(VehicleIn->EleBFileString.c_str());
+	//(void)remove(VehicleIn->BoundaryFileString.c_str());
+	//(void)remove(VehicleIn->SetFileString.c_str());
+	//(void)remove(VehicleIn->SlaveNodeFileString.c_str());
+	//(void)remove(VehicleIn->EleSoFileString.c_str());
+	//(void)remove(VehicleIn->MasterNodeFileString.c_str());
+	//(void)remove(VehicleIn->NodeVelocityFileString.c_str());
+	//(void)remove(VehicleIn->SecSolidFileString.c_str());
+	//(void)remove(VehicleIn->PartFileString.c_str());
+	//(void)remove(VehicleIn->NodeFileString.c_str());
+	//(void)remove(VehicleIn->TimeIncrementFileString.c_str());
+	//(void)remove(VehicleIn->ComputingTimeFileString.c_str());
+	//(void)remove(VehicleIn->PlaFileString.c_str());
+	//(void)remove(VehicleIn->ElaFileString.c_str());
+	//(void)remove(VehicleIn->BoundarySetFileString.c_str());
+	//(void)remove(VehicleIn->WallSlaveNodeFileString.c_str());
+	//(void)remove(VehicleIn->LoadNodeFileString.c_str());
+	//(void)remove(VehicleIn->SetNodeFile1String.c_str());
+	//(void)remove(VehicleIn->SetNodeFile2String.c_str());
+	//(void)remove(VehicleIn->SegmentSetFile1String.c_str());
+	//(void)remove(VehicleIn->SegmentSetFile2String.c_str());
+	//(void)remove(VehicleIn->LoadBodyYFileString.c_str());
+	//(void)remove(VehicleIn->LoadBodyZFileString.c_str());
+	//(void)remove(VehicleIn->ContactFileString2.c_str());
+	//(void)remove(VehicleIn->SecShellFileString2.c_str());
+	//(void)remove(VehicleIn->RigidWallFileString2.c_str());
+	//(void)remove(VehicleIn->SecShellFileString.c_str());
+	//(void)remove(VehicleIn->RigidWallFileString.c_str());
+	//(void)remove(VehicleIn->ContactFileString.c_str());
 
 	delete VehicleIn;
 	VehicleIn = nullptr;

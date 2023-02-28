@@ -15,7 +15,7 @@ int main()
 	InputFileProject* pInputFile = new InputFileProject;
 	InputAllDate* IAD = new InputAllDate;
 
-	IAD= pInputFile->inputFunction("dache12.6.k");
+	IAD= pInputFile->inputFunction("gan(1).k");
 
 	//pInputFile->inputMBFunction("D:\\Cfile\\OriginalInputFile\\RenTi1205.txt", IAD);
 
