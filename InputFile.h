@@ -228,6 +228,8 @@ public:
 	string TestEleSo;
 	string TestSecBeam;
 	string TestContact;
+
+	ofstream testfile;
 };
 
 //人体模型读取信息
