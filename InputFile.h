@@ -2,6 +2,7 @@
 #include "IClude.h"
 #include"InputDate.h"
 
+
 //写入数据函数(内联)
 //inline void getdigit3(ofstream& ObjectiveFile, const string inputLine, const unsigned long long lineID)
 //{
@@ -57,6 +58,14 @@ inline string getFileName2(string& Line1, string& Line2)
 	FilenameCombine2 p1(Line1, Line2, ".txt ");
 	sss << p1.m_file1 << p1.m_file2 << p1.m_file3;
 	return sss.str();
+}
+
+inline string getFileName3(string& Line)
+{
+	stringstream ss;
+	FilenameCombine p1(Line, "test.txt ");
+	ss << p1.m_file1 << p1.m_file2;
+	return ss.str();
 }
 
 //判断文件是否存在函数(内联)
@@ -206,6 +215,19 @@ public:
 	int PanduanSetNode;
 	int PanduanSegmentSetNode;
 	int PanduanSecondpart;
+
+	//文件合法
+	string TestPart ;
+	string TestNode;
+	string TestEla;
+	string TestPla;
+	string TestSecShell;
+	string TestNodeVelocity;
+	string TestRigidWall;
+	string TestEleSh;
+	string TestEleSo;
+	string TestSecBeam;
+	string TestContact;
 };
 
 //人体模型读取信息
@@ -386,3 +408,19 @@ public:
 	map<int, MBSetNode>AllMBSetNode;
 	map<int, MBSetSegmentNode>AllMBSetSegmentNode;
 };
+
+//void estimateKfile(string& Line, string& KeyWord, const int& a)
+//{
+//	ofstream testfile;
+//	testfile.open(KeyWord);
+//	testfile << Line << endl;
+//	Matrix<int, Dynamic, Dynamic>Test = LinearMSTMMSolver::openDataInt(KeyWord);
+//	if (Test.cols() != a)
+//	{
+//		cerr << "ERRO" << endl;
+//		testfile.close();
+//		(void)remove(KeyWord.c_str());
+//		exit(1);
+//	}
+//
+//}

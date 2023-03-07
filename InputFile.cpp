@@ -1,7 +1,6 @@
 #include "InputFile.h"
 #include"csv_MatrixXd_IO.h"
 
-
 //读人体模型文件函数
 int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllDate* IADate)
 {
@@ -903,10 +902,22 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->NodeFileString = getFileName(VehicleIn->line);
             VehicleIn->NodeFile.open(VehicleIn->NodeFileString);
             VehicleIn->NodeFile.clear();
+			VehicleIn->TestNode = getFileName3(VehicleIn->line);
             continue;
         }
         if (VehicleIn->NodeFile.is_open() && (VehicleIn->line[0] != '*'))
         {
+			ofstream testfile;
+			testfile.open(VehicleIn->TestNode);
+			testfile << VehicleIn->line << endl;
+			Matrix<int, Dynamic, Dynamic>Test = LinearMSTMMSolver::openDataInt(VehicleIn->TestNode);
+			if (Test.cols() != 4)
+			{
+				cerr << "ERRO" << endl;
+				testfile.close();
+				(void)remove(VehicleIn->TestNode.c_str());
+				exit(1);
+			}
 			VehicleIn->NodeFile << VehicleIn->line << endl;
         }
 
@@ -942,12 +953,24 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->ElaFileString = getFileName(VehicleIn->line);
 			VehicleIn->ElaFile.open(getFileName(VehicleIn->line));
 			VehicleIn->ElaFile.clear();
+			VehicleIn->TestEla = getFileName3(VehicleIn->line);
             continue;
         }
         if (VehicleIn->ElaFile.is_open() && (VehicleIn->line[0] != '*')/*&&(isdigit(VehicleIn->line.at(10)))*/)
         {
                 VehicleIn->line = VehicleIn->line.insert(10, " ");
 				VehicleIn->line = VehicleIn->line.insert(21, " ");
+				ofstream testfile;
+				testfile.open(VehicleIn->TestEla);
+				testfile << VehicleIn->line << endl;
+				Matrix<int, Dynamic, Dynamic>Test = LinearMSTMMSolver::openDataInt(VehicleIn->TestEla);
+				if (Test.cols() != 4)
+				{
+					cerr << "ERRO" << endl;
+					testfile.close();
+					(void)remove(VehicleIn->TestEla.c_str());
+					exit(1);
+				}
 				VehicleIn->ElaFile << VehicleIn->line << endl;
         }
         if ( "*MAT_PLASTIC_KINEMATIC"==VehicleIn->line )
@@ -980,11 +1003,23 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->PlaFileString = getFileName(VehicleIn->line);
             VehicleIn->PlaFile.open(getFileName(VehicleIn->line));
             VehicleIn->PlaFile.clear();
+			VehicleIn->TestPla = getFileName3(VehicleIn->line);
             continue;
         }
         if (VehicleIn->PlaFile.is_open() && (VehicleIn->line[0] != '*') /*&& (isdigit(VehicleIn->line.at(10)))*/)
         {
                 VehicleIn->line = VehicleIn->line.insert(10, " ");
+				ofstream testfile;
+				testfile.open(VehicleIn->TestPla);
+				testfile << VehicleIn->line << endl;
+				Matrix<int, Dynamic, Dynamic>Test = LinearMSTMMSolver::openDataInt(VehicleIn->TestPla);
+				if (Test.cols() < 7)
+				{
+					cerr << "ERRO" << endl;
+					testfile.close();
+					(void)remove(VehicleIn->TestPla.c_str());
+					exit(1);
+				}
                 VehicleIn->PlaFile << VehicleIn->line << endl;
         }
 
@@ -1019,11 +1054,23 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->line = VehicleIn->line.erase(0, 1);
 			VehicleIn->PartFileString = getFileName(VehicleIn->line);
             VehicleIn->PartFile.open(getFileName(VehicleIn->line));
+			VehicleIn->TestPart = getFileName3(VehicleIn->line);
             continue;
         }
         if (VehicleIn->PartFile.is_open()&&(' ' == VehicleIn->line[0]))
         {
 				VehicleIn->line = VehicleIn->line.erase(49, 2);
+				ofstream testfile;
+				testfile.open(VehicleIn->TestPart);
+				testfile << VehicleIn->line << endl;
+				Matrix<int, Dynamic, Dynamic>Test = LinearMSTMMSolver::openDataInt(VehicleIn->TestPart);
+				if (Test.cols() != 3)
+				{
+					cerr << "ERRO" << endl;
+					testfile.close();
+					(void)remove(VehicleIn->TestPart.c_str());
+					exit(1);
+				}
                 VehicleIn->PartFile << VehicleIn->line << endl;
         };
 
@@ -1097,10 +1144,22 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->NodeVelocityFileString = getFileName(VehicleIn->line);
             VehicleIn->NodeVelocityFile.open(getFileName(VehicleIn->line));
 			VehicleIn->NodeVelocityFile.clear();
+			VehicleIn->TestNodeVelocity = getFileName3(VehicleIn->line);
 			continue;
         }
         if (VehicleIn->NodeVelocityFile.is_open() && (VehicleIn->line[0] != '*'))
         {
+			ofstream testfile;
+			testfile.open(VehicleIn->TestNodeVelocity);
+			testfile << VehicleIn->line << endl;
+			Matrix<int, Dynamic, Dynamic>Test = LinearMSTMMSolver::openDataInt(VehicleIn->TestNodeVelocity);
+			if (Test.cols() != 5)
+			{
+				cerr << "ERRO" << endl;
+				testfile.close();
+				(void)remove(VehicleIn->TestNodeVelocity.c_str());
+				exit(1);
+			}
              VehicleIn->NodeVelocityFile << VehicleIn->line << endl;
         }
 
@@ -1204,6 +1263,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->ContactFile.open(VehicleIn->ContactFileString2);
             VehicleIn->ContactFile.clear();
             VehicleIn->ContactFile << endl;
+			VehicleIn->TestContact = getFileName3(VehicleIn->line);
             continue;
         }
         if (VehicleIn->ContactFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -1243,10 +1303,22 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->EleSoFileString = getFileName(VehicleIn->line);
             VehicleIn->EleSoFile.open(getFileName(VehicleIn->line));
 			VehicleIn->EleSoFile.clear();
+			VehicleIn->TestEleSo = getFileName3(VehicleIn->line);
             continue;
         }
         if (VehicleIn->EleSoFile.is_open() && (VehicleIn->line[0] != '*'))
         {
+			ofstream testfile;
+			testfile.open(VehicleIn->TestEleSo);
+			testfile << VehicleIn->line << endl;
+			Matrix<int, Dynamic, Dynamic>Test = LinearMSTMMSolver::openDataInt(VehicleIn->TestEleSo);
+			if (Test.cols() != 10)
+			{
+				cerr << "ERRO" << endl;
+				testfile.close();
+				(void)remove(VehicleIn->TestEleSo.c_str());
+				exit(1);
+			}
 			VehicleIn->EleSoFile << VehicleIn->line << endl;
         }
 
@@ -1350,6 +1422,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->RigidWallFile.open(VehicleIn->RigidWallFileString2);
             VehicleIn->RigidWallFile.clear();
             VehicleIn->RigidWallFile << endl;
+			VehicleIn->TestRigidWall = getFileName3(VehicleIn->line);
 			continue;
         }
         if (VehicleIn->RigidWallFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -1429,10 +1502,22 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->EleShFileString = getFileName(VehicleIn->line);
             VehicleIn->EleShFile.open(getFileName(VehicleIn->line));
             VehicleIn->EleShFile.clear();
+			VehicleIn->TestEleSh = getFileName3(VehicleIn->line);
             continue;
         }
         if (VehicleIn->EleShFile.is_open() && (VehicleIn->line[0] != '*'))
         {
+			ofstream testfile;
+			testfile.open(VehicleIn->TestEleSh);
+			testfile << VehicleIn->line << endl;
+			Matrix<int, Dynamic, Dynamic>Test = LinearMSTMMSolver::openDataInt(VehicleIn->TestEleSh);
+			if (Test.cols() != 6)
+			{
+				cerr << "ERRO" << endl;
+				testfile.close();
+				(void)remove(VehicleIn->TestEleSh.c_str());
+				exit(1);
+			}
 			VehicleIn->EleShFile << VehicleIn->line << endl;
         }
 
@@ -1467,11 +1552,23 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->line = VehicleIn->line.erase(0, 1);
 			VehicleIn->SecBeamFileString = getFileName(VehicleIn->line);
             VehicleIn->SecBeamFile.open(getFileName(VehicleIn->line));
+			VehicleIn->TestSecBeam = getFileName3(VehicleIn->line);
             continue;
         }
         if (VehicleIn->SecBeamFile.is_open() && (VehicleIn->line[0] != '*'))
         {
                 VehicleIn->line = VehicleIn->line.insert(0, VehicleIn->AdditionalDigit);
+			/*	ofstream testfile;
+				testfile.open(VehicleIn->TestSecBeam);
+				testfile << VehicleIn->line << endl;
+				Matrix<int, Dynamic, Dynamic>Test = LinearMSTMMSolver::openDataInt(VehicleIn->TestSecBeam);
+				if (Test.cols() != 7)
+				{
+					cerr << "ERRO" << endl;
+					testfile.close();
+					(void)remove(VehicleIn->TestSecBeam.c_str());
+					exit(1);
+				}*/
                 VehicleIn->SecBeamFile << VehicleIn->line << " ";
         }
 
@@ -1509,6 +1606,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SecShellFile.open(VehicleIn->SecShellFileString2);
             VehicleIn->SecShellFile.clear();
             VehicleIn->SecShellFile << endl;
+			VehicleIn->TestSecShell = getFileName3(VehicleIn->line);
             continue;
         }
         if (VehicleIn->SecShellFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -1594,6 +1692,17 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
         {
             if ( ' '== VehicleIn->LineSecShell[0] )
             {
+				ofstream testfile;
+				testfile.open(VehicleIn->TestSecShell);
+				testfile << VehicleIn->LineSecShell << endl;
+				Matrix<int, Dynamic, Dynamic>Test = LinearMSTMMSolver::openDataInt(VehicleIn->TestSecShell);
+				if (Test.cols() < 5)
+				{
+					cerr << "ERRO" << endl;
+					testfile.close();
+					(void)remove(VehicleIn->TestSecShell.c_str());
+					exit(1);
+				}
 				VehicleIn->SecShellFile2 << VehicleIn->LineSecShell << endl;
             }
         }
@@ -1611,6 +1720,17 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
         {
             if (  ' '== VehicleIn->LineContact[0])
             {
+				ofstream testfile;
+				testfile.open(VehicleIn->TestContact);
+				testfile << VehicleIn->LineContact << endl;
+				Matrix<int, Dynamic, Dynamic>Test = LinearMSTMMSolver::openDataInt(VehicleIn->TestContact);
+				if (Test.cols() !=8)
+				{
+					cerr << "ERRO" << endl;
+					testfile.close();
+					(void)remove(VehicleIn->TestContact.c_str());
+					exit(1);
+				}
 				VehicleIn->ContactFile2 << VehicleIn->LineContact << endl;
             }
         }
@@ -1627,6 +1747,17 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 		{
 			if ( ' '== VehicleIn->LineRigidwall[0] )
 			{
+				ofstream testfile;
+				testfile.open(VehicleIn->TestRigidWall);
+				testfile << VehicleIn->LineRigidwall << endl;
+				Matrix<int, Dynamic, Dynamic>Test = LinearMSTMMSolver::openDataInt(VehicleIn->TestRigidWall);
+				if (Test.cols() != 14)
+				{
+					cerr << "ERRO" << endl;
+					testfile.close();
+					(void)remove(VehicleIn->TestRigidWall.c_str());
+					exit(1);
+				}
 				VehicleIn->RigidWallFile2 << VehicleIn->LineRigidwall << endl;
 			}
 		}
@@ -3318,39 +3449,39 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     ls = nullptr;
 
     //删除文件
-	//(void)remove(VehicleIn->DefineCurveFileString.c_str());
-	//(void)remove(VehicleIn->HourglassFileString.c_str());
-	//(void)remove(VehicleIn->SecBeamFileString.c_str());
-	//(void)remove(VehicleIn->EleShFileString.c_str());
-	//(void)remove(VehicleIn->EleBFileString.c_str());
-	//(void)remove(VehicleIn->BoundaryFileString.c_str());
-	//(void)remove(VehicleIn->SetFileString.c_str());
-	//(void)remove(VehicleIn->SlaveNodeFileString.c_str());
-	//(void)remove(VehicleIn->EleSoFileString.c_str());
-	//(void)remove(VehicleIn->MasterNodeFileString.c_str());
-	//(void)remove(VehicleIn->NodeVelocityFileString.c_str());
-	//(void)remove(VehicleIn->SecSolidFileString.c_str());
-	//(void)remove(VehicleIn->PartFileString.c_str());
-	//(void)remove(VehicleIn->NodeFileString.c_str());
-	//(void)remove(VehicleIn->TimeIncrementFileString.c_str());
-	//(void)remove(VehicleIn->ComputingTimeFileString.c_str());
-	//(void)remove(VehicleIn->PlaFileString.c_str());
-	//(void)remove(VehicleIn->ElaFileString.c_str());
-	//(void)remove(VehicleIn->BoundarySetFileString.c_str());
-	//(void)remove(VehicleIn->WallSlaveNodeFileString.c_str());
-	//(void)remove(VehicleIn->LoadNodeFileString.c_str());
-	//(void)remove(VehicleIn->SetNodeFile1String.c_str());
-	//(void)remove(VehicleIn->SetNodeFile2String.c_str());
-	//(void)remove(VehicleIn->SegmentSetFile1String.c_str());
-	//(void)remove(VehicleIn->SegmentSetFile2String.c_str());
-	//(void)remove(VehicleIn->LoadBodyYFileString.c_str());
-	//(void)remove(VehicleIn->LoadBodyZFileString.c_str());
-	//(void)remove(VehicleIn->ContactFileString2.c_str());
-	//(void)remove(VehicleIn->SecShellFileString2.c_str());
-	//(void)remove(VehicleIn->RigidWallFileString2.c_str());
-	//(void)remove(VehicleIn->SecShellFileString.c_str());
-	//(void)remove(VehicleIn->RigidWallFileString.c_str());
-	//(void)remove(VehicleIn->ContactFileString.c_str());
+	/*(void)remove(VehicleIn->DefineCurveFileString.c_str());
+	(void)remove(VehicleIn->HourglassFileString.c_str());
+	(void)remove(VehicleIn->SecBeamFileString.c_str());
+	(void)remove(VehicleIn->EleShFileString.c_str());
+	(void)remove(VehicleIn->EleBFileString.c_str());
+	(void)remove(VehicleIn->BoundaryFileString.c_str());
+	(void)remove(VehicleIn->SetFileString.c_str());
+	(void)remove(VehicleIn->SlaveNodeFileString.c_str());
+	(void)remove(VehicleIn->EleSoFileString.c_str());
+	(void)remove(VehicleIn->MasterNodeFileString.c_str());
+	(void)remove(VehicleIn->NodeVelocityFileString.c_str());
+	(void)remove(VehicleIn->SecSolidFileString.c_str());
+	(void)remove(VehicleIn->PartFileString.c_str());
+	(void)remove(VehicleIn->NodeFileString.c_str());
+	(void)remove(VehicleIn->TimeIncrementFileString.c_str());
+	(void)remove(VehicleIn->ComputingTimeFileString.c_str());
+	(void)remove(VehicleIn->PlaFileString.c_str());
+	(void)remove(VehicleIn->ElaFileString.c_str());
+	(void)remove(VehicleIn->BoundarySetFileString.c_str());
+	(void)remove(VehicleIn->WallSlaveNodeFileString.c_str());
+	(void)remove(VehicleIn->LoadNodeFileString.c_str());
+	(void)remove(VehicleIn->SetNodeFile1String.c_str());
+	(void)remove(VehicleIn->SetNodeFile2String.c_str());
+	(void)remove(VehicleIn->SegmentSetFile1String.c_str());
+	(void)remove(VehicleIn->SegmentSetFile2String.c_str());
+	(void)remove(VehicleIn->LoadBodyYFileString.c_str());
+	(void)remove(VehicleIn->LoadBodyZFileString.c_str());
+	(void)remove(VehicleIn->ContactFileString2.c_str());
+	(void)remove(VehicleIn->SecShellFileString2.c_str());
+	(void)remove(VehicleIn->RigidWallFileString2.c_str());
+	(void)remove(VehicleIn->SecShellFileString.c_str());
+	(void)remove(VehicleIn->RigidWallFileString.c_str());
+	(void)remove(VehicleIn->ContactFileString.c_str());*/
 
 	delete VehicleIn;
 	VehicleIn = nullptr;

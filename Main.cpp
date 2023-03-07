@@ -15,7 +15,7 @@ int main()
 	InputFileProject* pInputFile = new InputFileProject;
 	InputAllDate* IAD = new InputAllDate;
 
-	IAD= pInputFile->inputFunction("gan(1).k");
+	IAD= pInputFile->inputFunction("car1127.txt");
 
 	//pInputFile->inputMBFunction("D:\\Cfile\\OriginalInputFile\\RenTi1205.txt", IAD);
 
