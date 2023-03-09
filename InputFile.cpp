@@ -1,7 +1,16 @@
 #include "InputFile.h"
 #include"csv_MatrixXd_IO.h"
 
-//读人体模型文件函数
+	 /**
+	  * @file InputFile.cpp
+	  * @brief 文件读取的函数代码。
+	  * @details 定义了读文件函数的具体实现。
+	  * @author ZhaoRui riven_zhao@njust.edu.cn
+	  * @date 2023-03-09
+	  */
+
+///@note 模型文件应当为符合要求的文本文件
+///@attention 模型文件路径建议使用完整路径
 int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllDate* IADate)
 {
 	DummyInformation* DummyIn = new DummyInformation;
@@ -496,7 +505,8 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 	}
 };
 
-//读文件主函数
+///@note 模型文件应当为符合要求的K文件
+///@attention 模型文件路径建议使用完整路径
 InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 {
 	VehicleInformation* VehicleIn = new VehicleInformation;
@@ -741,7 +751,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->ComputingTimeFileString = getFileName(VehicleIn->line);
             VehicleIn->ComputingTimeFile.open(VehicleIn->ComputingTimeFileString);
 			continue;
-        }
+        } 
         if (VehicleIn->ComputingTimeFile.is_open() && (VehicleIn->line[0] != '*'))
         {
 			VehicleIn->ComputingTimeFile << VehicleIn->line << endl;
@@ -912,7 +922,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestNode);
 			if (Test.cols() != 4)
 			{
-				cerr << "ERRO" << endl;
+				cerr << VehicleIn->TestNode << "ERRO" << endl;
 				VehicleIn->testfile.close();
 				(void)remove(VehicleIn->TestNode.c_str());
 				exit(1);
@@ -966,7 +976,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestEla);
 				if (Test.cols() != 4)
 				{
-					cerr << "ERRO" << endl;
+					cerr << VehicleIn->TestEla << "ERRO" << endl;
 					VehicleIn->testfile.close();
 					(void)remove(VehicleIn->TestEla.c_str());
 					exit(1);
@@ -1016,7 +1026,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestPla);
 				if (Test.cols() < 7)
 				{
-					cerr << "ERRO" << endl;
+					cerr << VehicleIn->TestPla << "ERRO" << endl;
 					VehicleIn->testfile.close();
 					(void)remove(VehicleIn->TestPla.c_str());
 					exit(1);
@@ -1068,7 +1078,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestPart);
 				if (Test.cols() != 3)
 				{
-					cerr << "ERRO" << endl;
+					cerr << VehicleIn->TestPart << "ERRO" << endl;
 					VehicleIn->testfile.close();
 					(void)remove(VehicleIn->TestPart.c_str());
 					exit(1);
@@ -1158,7 +1168,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestNodeVelocity);
 			if (Test.cols() != 5)
 			{
-				cerr << "ERRO" << endl;
+				cerr << VehicleIn->TestNodeVelocity << "ERRO" << endl;
 				VehicleIn->testfile.close();
 				(void)remove(VehicleIn->TestNodeVelocity.c_str());
 				exit(1);
@@ -1318,7 +1328,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestEleSo);
 			if (Test.cols() != 10)
 			{
-				cerr << "ERRO" << endl;
+				cerr << VehicleIn->TestEleSo << "ERRO" << endl;
 				VehicleIn->testfile.close();
 				(void)remove(VehicleIn->TestEleSo.c_str());
 				exit(1);
@@ -1519,7 +1529,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestEleSh);
 			if (Test.cols() != 6)
 			{
-				cerr << "ERRO" << endl;
+				cerr << VehicleIn->TestEleSh << "ERRO" << endl;
 				VehicleIn->testfile.close();
 				(void)remove(VehicleIn->TestEleSh.c_str());
 				exit(1);
@@ -1705,7 +1715,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestSecShell);
 				if (Test.cols() < 5)
 				{
-					cerr << "ERRO" << endl;
+					cerr << VehicleIn->TestSecShell << "ERRO" << endl;
 					VehicleIn->testfile.close();
 					(void)remove(VehicleIn->TestSecShell.c_str());
 					exit(1);
@@ -1734,7 +1744,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestContact);
 				if (Test.cols() !=8)
 				{
-					cerr << "ERRO" << endl;
+					cerr << VehicleIn->TestContact << "ERRO" << endl;
 					VehicleIn->testfile.close();
 					(void)remove(VehicleIn->TestContact.c_str());
 					exit(1);
@@ -1762,7 +1772,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestRigidWall);
 				if (Test.cols() != 14)
 				{
-					cerr << "ERRO" << endl;
+					cerr << VehicleIn->TestRigidWall << "ERRO" << endl;
 					VehicleIn->testfile.close();
 					(void)remove(VehicleIn->TestRigidWall.c_str());
 					exit(1);
