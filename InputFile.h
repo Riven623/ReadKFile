@@ -157,6 +157,7 @@ public:
 	int inputMBFunction(const std::string& MBfileToOpen, InputAllDate*IADate);
 	//	DynamicCalculation* setTimeParameters();
 	streampos fp;
+	///构造函数
 	InputFileProject(void);
 };
 
@@ -169,6 +170,7 @@ public:
 class VehicleInformation
 {
 public:
+	///构造函数
 	VehicleInformation(void);
 	ifstream In; ///< 这是第一次总的读取
 	string line; ///< 这是总读取每行信息存放的string
@@ -314,6 +316,7 @@ public:
 class DummyInformation
 {
 public:
+	///构造函数
 	DummyInformation(void);
 	//人体模型
 	ifstream InMB; ///< 这是第一次总的读取
@@ -366,15 +369,17 @@ public:
 class KFilePart
 {
 public:
+	///构造函数
 	KFilePart(void);
 	int Pid;
 	int SectionID;
 	int Mid;
 };
-///K文梁信息类
+///K文件梁信息类
 class sectionbeam
 {
 public:
+	///构造函数
 	sectionbeam(void);
 	int secidbeam;
 	double TS;
@@ -384,6 +389,7 @@ public:
 class sectionshell
 {
 public:
+	///构造函数
 	sectionshell(void);
 	int secidshell;
 	double T1;
@@ -395,6 +401,7 @@ public:
 class Velocity
 {
 public:
+	///构造函数
 	Velocity(void);
 	int SetType;     // 1: part set ID
 					 // 2: part ID
@@ -408,6 +415,7 @@ public:
 class SetNode
 {
 public:
+	///构造函数
 	SetNode(void);
 	int SetType ;
 	int SetId ; ///<set 集号
@@ -417,6 +425,7 @@ public:
 class SetSegmentNode
 {
 public:
+	///构造函数
 	SetSegmentNode(void);
 	int SetType ;
 	int SetSegmentId; ///<SetSegment集号
@@ -426,6 +435,7 @@ public:
 class LoadBodyZ
 {
 public:
+	///构造函数
 	LoadBodyZ(void);
 	int LoadBodyZCurveID;
 	double LoadCurveScaleFactor;
@@ -434,6 +444,7 @@ public:
 class LoadBodyY
 {
 public:
+	///构造函数
 	LoadBodyY(void);
 	int LoadBodyYCurveID;
 	double LoadCurveScaleFactor;
@@ -442,6 +453,7 @@ public:
 class LoadBodyX
 {
 public:
+	///构造函数
 	LoadBodyX(void);
 	int LoadBodyXCurveID;
 	double LoadCurveScaleFactor;
@@ -474,6 +486,7 @@ public:
 class MBNode
 {
 public:
+	///构造函数
 	MBNode(void);
 	int NodeID;///<节点编号
 	Matrix<double, 1, 3> NodeCoordinates;///<坐标（x,y,z）的值
@@ -482,6 +495,7 @@ public:
 class MBSetNode
 {
 public:
+	///构造函数
 	MBSetNode(void);
 	int SetType;
 	int SetId; ///<set 集号
@@ -491,6 +505,7 @@ public:
 class MBSetSegmentNode
 {
 public:
+	///构造函数
 	MBSetSegmentNode(void);
 	int SetType;
 	int SetSegmentId; ///<SetSegment集号

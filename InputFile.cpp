@@ -967,11 +967,12 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->TestEla = getFileName3(VehicleIn->line);
             continue;
         }
-        if (VehicleIn->ElaFile.is_open() && (VehicleIn->line[0] != '*')/*&&(isdigit(VehicleIn->line.at(10)))*/)
+        if (VehicleIn->ElaFile.is_open() && (VehicleIn->line[0] != '*') && (' ' == VehicleIn->line[0])/*&&(isdigit(VehicleIn->line.at(10)))*/)
         {
                 VehicleIn->line = VehicleIn->line.insert(10, " ");
 				VehicleIn->line = VehicleIn->line.insert(21, " ");
 				VehicleIn->testfile.open(VehicleIn->TestEla);
+				//getdigit2(VehicleIn->testfile, VehicleIn->line);
 				VehicleIn->testfile << VehicleIn->line << endl;
 				Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestEla);
 				if (Test.cols() != 4)
@@ -3470,7 +3471,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     ls = nullptr;
 
     //删除文件
-	(void)remove(VehicleIn->DefineCurveFileString.c_str());
+	/*(void)remove(VehicleIn->DefineCurveFileString.c_str());
 	(void)remove(VehicleIn->HourglassFileString.c_str());
 	(void)remove(VehicleIn->SecBeamFileString.c_str());
 	(void)remove(VehicleIn->EleShFileString.c_str());
@@ -3502,7 +3503,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	(void)remove(VehicleIn->RigidWallFileString2.c_str());
 	(void)remove(VehicleIn->SecShellFileString.c_str());
 	(void)remove(VehicleIn->RigidWallFileString.c_str());
-	(void)remove(VehicleIn->ContactFileString.c_str());
+	(void)remove(VehicleIn->ContactFileString.c_str());*/
 
 	delete VehicleIn;
 	VehicleIn = nullptr;

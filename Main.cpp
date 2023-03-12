@@ -1,7 +1,6 @@
 
 #pragma comment(lib,"Shlwapi.lib")
 #include "InputFile.h"
-#include "hdf.h"
 
 using namespace std;
 using namespace Eigen;
