@@ -1,8 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include <Eigen/Core>
-#include <Eigen/Dense>
+#include <Eigen>
 #include <fstream>
 #include <vector>
 #include <string>
@@ -45,7 +44,11 @@ namespace LinearMSTMMSolver
 		}
 
 		// here the matrixEntries.data() is the pointer to the first memory location at which entries of the vector matrixEntries are stored;
-		return Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>(matrixEntries.data(), matrixRowNumber, matrixEntries.size() / matrixRowNumber);
+		if (matrixRowNumber != 0)
+		{
+			return Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>(matrixEntries.data(), matrixRowNumber, matrixEntries.size() / matrixRowNumber);
+
+		};
 
 	}
 
@@ -71,8 +74,10 @@ namespace LinearMSTMMSolver
 		}
 
 		// here the matrixEntries.data() is the pointer to the first memory location at which entries of the vector matrixEntries are stored;
-		return Eigen::Map<Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>(matrixEntries.data(), matrixRowNumber, matrixEntries.size() / matrixRowNumber);
-
+		if (matrixRowNumber != 0)
+		{
+			return Eigen::Map<Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>(matrixEntries.data(), matrixRowNumber, matrixEntries.size() / matrixRowNumber);
+		};
 	}
 
 

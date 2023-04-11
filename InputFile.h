@@ -3,18 +3,6 @@
 #include"InputDate.h"
 
 
-//写入数据函数(内联)
-//inline void getdigit3(ofstream& ObjectiveFile, const string inputLine, const unsigned long long lineID)
-//{
-//	if (lineID < inputLine.length())
-//	{
-//		if ((' ' == inputLine[0]) && isdigit(inputLine.at(lineID)))
-//		{
-//			ObjectiveFile << inputLine << endl;
-//		}
-//	}
-//};
-
 	 /**
 	  * @file InputFile.h
 	  * @brief 文件读取的头文件。
@@ -156,7 +144,7 @@ public:
 	 */
 	int inputMBFunction(const std::string& MBfileToOpen, InputAllDate*IADate);
 	//	DynamicCalculation* setTimeParameters();
-	streampos fp;
+	streampos fp; ///<文件指针的偏移量,用以判断文件是否为空。
 	///构造函数
 	InputFileProject(void);
 };
@@ -233,20 +221,17 @@ public:
 
 	string AdditionalDigit;
 
-	int SetNodeId1;
-	int SetNodeId2;
 
-	int SegmentSetId1;
 
 	//FORCE
 	ifstream InForce;///< 读取力
 	string LineForce;
 	ofstream ForceFile;///< 力文件
 	ofstream ForceSetNodeFile;///< 力Set文件
-	ofstream ForceBOUNDARYFile;///< 力边界文件
-	string ForceFileString;
-	string ForceSetNodeFileString;
-	string ForceBOUNDARYFileString;
+	ofstream ForceBOUNDARYFile;///< 力约束文件
+	string ForceFileString;///< 力文件名
+	string ForceSetNodeFileString;///< 力set文件名
+	string ForceBOUNDARYFileString;///< 力约束文件名
 
 	int PanduanForce;
 
@@ -287,9 +272,6 @@ public:
 
 	string SetNodeFile1String;
 	string SetNodeFile2String;
-	int PanduanSetNode;
-	int PanduanSegmentSetNode;
-	int PanduanSecondpart;
 
 	//文件合法
 	string TestPart;///< 判断part文件合法的文件名
@@ -477,6 +459,7 @@ public:
 	map<int, LoadBodyZ > AllLoadBodyZ;///<所有Z体力信息
 	map<int, LoadBodyX > AllLoadBodyX;///<所有X体力信息
 	map<int, LoadBodyY > AllLoadBodyY;///<所有Y体力信息
+	lsmap(void);
 };
 
 
@@ -524,6 +507,7 @@ public:
 	map<int, MBNode > AllMBNode;///<所有假人节点信息
 	map<int, MBSetNode>AllMBSetNode;///<所有假人SetNode信息
 	map<int, MBSetSegmentNode>AllMBSetSegmentNode;///<所有假人SetSegmentNode信息
+	MBlsmap(void);
 };
 
 //void estimateKfile(string& Line, string& KeyWord, const int& a)

@@ -9,15 +9,16 @@
 	  * @date 2023-03-09
 	  */
 
-///@note 模型文件应当为符合要求的文本文件
-///@attention 模型文件路径建议使用完整路径
+///@note 模型文件应当为符合要求的文本文件。
+/// @note 人体模型文件为空时函数返回1，读取完成返回0。
+///@attention 模型文件路径建议使用完整路径。
 int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllDate* IADate)
 {
 	DummyInformation* DummyIn = new DummyInformation;
 	DummyIn->InMB.open(MBfileToOpen);
 	(void)DummyIn->InMB.seekg(0, ios::end); //将文件指针指向文件末端
      fp = DummyIn->InMB.tellg(); //fp 为文件指针的偏移量
-	if (int(fp) <= 0) // 偏移量为0，证明文件为空，为首次进入系统
+	if (int(fp) <= 0) // 偏移量为0，证明文件为空。
 	{
 		return 0;
 	}
@@ -33,7 +34,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				DummyIn->MBNodeFile.close();
 				DummyIn->BallJointFile.close();
 				DummyIn->MBContactFile.close();
-				(void)DummyIn->LineMB.erase(0, 1);
+				(void)DummyIn->LineMB.erase((unsigned long long)0, (unsigned long long)1);
 				DummyIn->RigidBodyFileString = getFileName(DummyIn->LineMB);
 				DummyIn->RigidBodyFile.open(getFileName(DummyIn->LineMB));
 			}
@@ -48,7 +49,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				DummyIn->BallJointFile.close();
 				DummyIn->MBNodeFile.close();
 				DummyIn->MBContactFile.close();
-				(void)DummyIn->LineMB.erase(0, 1);
+				(void)DummyIn->LineMB.erase((unsigned long long)0, (unsigned long long) 1);
 				DummyIn->ColumHingeFileString = getFileName(DummyIn->LineMB);
 				DummyIn->ColumHingeFile.open(getFileName(DummyIn->LineMB));
 			}
@@ -63,7 +64,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				DummyIn->RigidBodyFile.close();
 				DummyIn->MBNodeFile.close();
 				DummyIn->MBContactFile.close();
-				(void)DummyIn->LineMB.erase(0, 1);
+				(void)DummyIn->LineMB.erase((unsigned long long)0, (unsigned long long)1);
 				DummyIn->BallJointFileString = getFileName(DummyIn->LineMB);
 				DummyIn->BallJointFile.open(getFileName(DummyIn->LineMB));
 			}
@@ -79,7 +80,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				DummyIn->RigidBodyFile.close();
 				DummyIn->BallJointFile.close();
 				DummyIn->MBContactFile.close();
-				(void)DummyIn->LineMB.erase(0, 1);
+				(void)DummyIn->LineMB.erase((unsigned long long)0, (unsigned long long)1);
 				DummyIn->MBNodeFileString = getFileName2(DummyIn->Multibody, DummyIn->LineMB);
 				DummyIn->MBNodeFile.open(DummyIn->MBNodeFileString);
 			}
@@ -95,7 +96,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				DummyIn->RigidBodyFile.close();
 				DummyIn->BallJointFile.close();
 				DummyIn->MBNodeFile.close();
-				(void)DummyIn->LineMB.erase(0, 1);
+				(void)DummyIn->LineMB.erase((unsigned long long)0, (unsigned long long)1);
 				DummyIn->MBContactFileString = "MBContact.txt";
 				DummyIn->MBContactFileString2 = "MBContactTemp.txt";
 				DummyIn->MBContactFile.open(DummyIn->MBContactFileString2);
@@ -136,7 +137,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 			}
 			if ("*ConnectNode" == DummyIn->LineMB)
 			{
-				DummyIn->LineMB = DummyIn->LineMB.erase(0, 1);
+				DummyIn->LineMB = DummyIn->LineMB.erase((unsigned long long)0, (unsigned long long) 1);
 				DummyIn->ConnectNodeFileString = getFileName(DummyIn->LineMB);
 				DummyIn->ConnectNodeFile.open(DummyIn->ConnectNodeFileString);
 			}
@@ -167,6 +168,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		DummyIn->MBContactFile2.close();
 		DummyIn->MBInContact.close();
 
+
 		//SegmentSet 文件
 		MBlsmap* mbls = new MBlsmap;
 		MBSetSegmentNode* pMBSetSegmentNode = new MBSetSegmentNode;
@@ -176,7 +178,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 			//主面节点
 			if ("*SET_SEGMENT" == DummyIn->LineSegmentSet)
 			{
-				DummyIn->LineSegmentSet = ("MB") + (DummyIn->LineSegmentSet.erase(0, 1));
+				DummyIn->LineSegmentSet = ("MB") + (DummyIn->LineSegmentSet.erase((unsigned long long)0, (unsigned long long) 1));
 				DummyIn->SegmentSetFile1String = getFileName(DummyIn->LineSegmentSet);
 				DummyIn->SegmentSetFile1.open(DummyIn->SegmentSetFile1String);
 				DummyIn->SegmentSetFile1.clear();
@@ -199,7 +201,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		DummyIn->InSegmentSet.close();
 		ifstream InSegmentSet2;
 		InSegmentSet2.open(DummyIn->SegmentSetFile1String);
-		DummyIn->SegmentSetFile2String = "MBSegmentSet.txt";
+		DummyIn->SegmentSetFile2String = "MBSETSEGMENT.txt";
 		string LineSegmentSet2;
 		int panduanneirongSegmentSet = 0;
 		while (getline(InSegmentSet2, LineSegmentSet2))
@@ -246,7 +248,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		{
 			if ("*SET_NODE_LIST" == DummyIn->LineSetNode)
 			{
-				DummyIn->LineSetNode = ("MB") + (DummyIn->LineSetNode.erase(0, 1));
+				DummyIn->LineSetNode = ("MB") + (DummyIn->LineSetNode.erase((unsigned long long)0, (unsigned long long) 1));
 				DummyIn->SetNodeFile1String = getFileName(DummyIn->LineSetNode);
 				DummyIn->SetNodeFile1.open(DummyIn->SetNodeFile1String);
 				DummyIn->SetNodeFile1.clear();
@@ -275,7 +277,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 			ofstream SetNodeFile2(DummyIn->SetNodeFile2String);
 			if (' ' == LineSetNode2[0])
 			{
-				(void)LineSetNode2.erase(50, 4);
+				(void)LineSetNode2.erase((unsigned long long)50, (unsigned long long)4);
 				SetNodeFile2 << LineSetNode2 << flush;
 				panduanneirong = 1;
 			}
@@ -318,7 +320,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				(*InRigidBody).RC(0, 0) = RigidBodyImformation2(i, 13);
 				(*InRigidBody).RC(1, 0) = RigidBodyImformation2(i, 14);
 				(*InRigidBody).RC(2, 0) = RigidBodyImformation2(i, 15);
-				(void)(*InRigidBody).J.setZero(3, 3);
+				(void)(*InRigidBody).J.setZero((long long)3, (long long)3);
 				(*InRigidBody).J(0, 0) = RigidBodyImformation2(i, 16);
 				(*InRigidBody).J(1, 1) = RigidBodyImformation2(i, 17);
 				(*InRigidBody).J(2, 2) = RigidBodyImformation2(i, 18);
@@ -412,11 +414,11 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				(*InBallJoint).WR(0, 0) = BallJointImformation2(i, 13);
 				(*InBallJoint).WR(1, 0) = BallJointImformation2(i, 14);
 				(*InBallJoint).WR(2, 0) = BallJointImformation2(i, 15);
-				(void)(*InBallJoint).K.setZero(3, 3);
+				(void)(*InBallJoint).K.setZero((long long)3, (long long)3);
 				(*InBallJoint).K(0, 0) = BallJointImformation2(i, 1);
 				(*InBallJoint).K(1, 1) = BallJointImformation2(i, 2);
 				(*InBallJoint).K(2, 2) = BallJointImformation2(i, 3);
-				(void)(*InBallJoint).C.setZero(3, 3);
+				(void)(*InBallJoint).C.setZero((long long)3, (long long)3);
 				(*InBallJoint).C(0, 0) = BallJointImformation2(i, 4);
 				(*InBallJoint).C(1, 1) = BallJointImformation2(i, 5);
 				(*InBallJoint).C(2, 2) = BallJointImformation2(i, 6);
@@ -439,10 +441,10 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 			{
 				InputFEMtoMBContact* MBInCta = new InputFEMtoMBContact;
 				MBInCta->ContactNumber = MBContactImformation2(i, 0);
-				MBInCta->ContactType = 1;
+				MBInCta->ContactType =(int) 1;
 				if (( MBContactImformation(i, 5)<1e-5) && ( MBContactImformation(i, 6) < 1e-5))
 				{
-					MBInCta->FrictionJudgment = 1;
+					MBInCta->FrictionJudgment = (int)1;
 				}
 				else
 				{
@@ -458,13 +460,13 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				//主从面节点号
 				for (int j = 0; j < ((mbls->AllMBSetSegmentNode[MBInCta->MasterNodeSetId].SetSegmentNodeID.cols() - 1) / 4); j++)
 				{
-					Matrix<int, 4, 1> SetSegmentRow = mbls->AllMBSetSegmentNode[MBInCta->MasterNodeSetId].SetSegmentNodeID.block<1, 4>(0, k).adjoint();
+					Matrix<int, 4, 1> SetSegmentRow = mbls->AllMBSetSegmentNode[MBInCta->MasterNodeSetId].SetSegmentNodeID.block<1, 4>((long long)0, (long long)k).adjoint();
 					(void)MBInCta->MasterContactNode.insert(make_pair((j + 1), SetSegmentRow));
 					k += 4;
 				};
 				for (int n = 0; n < mbls->AllMBSetNode[MBInCta->SlaveNodeSetId].SetNodeID.rows(); n++)
 				{
-					(void)MBInCta->SlaveContactNode.insert(make_pair((n + 1), mbls->AllMBSetNode[MBInCta->SlaveNodeSetId].SetNodeID.row(n).adjoint()));
+					(void)MBInCta->SlaveContactNode.insert(make_pair((n + 1), mbls->AllMBSetNode[MBInCta->SlaveNodeSetId].SetNodeID.row((long long)n).adjoint()));
 				};
 				(void)IADate->InputAllFEMtoMBContact.insert(make_pair(MBInCta->ContactNumber, (*MBInCta)));
 				delete MBInCta;
@@ -486,7 +488,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		mbls = nullptr;
 
 		//删除文件
-		/*(void)remove(DummyIn->MBContactFileString.c_str());
+		(void)remove(DummyIn->MBContactFileString.c_str());
 		(void)remove(DummyIn->MBNodeFileString.c_str());
 		(void)remove(DummyIn->RigidBodyFileString.c_str());
 		(void)remove(DummyIn->ColumHingeFileString.c_str());
@@ -496,7 +498,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		(void)remove(DummyIn->SegmentSetFile2String.c_str());
 		(void)remove(DummyIn->SetNodeFile2String.c_str());
 		(void)remove(DummyIn->SegmentSetFile1String.c_str());
-		(void)remove(DummyIn->SetNodeFile1String.c_str());*/
+		(void)remove(DummyIn->SetNodeFile1String.c_str());
 
 		delete DummyIn;
 		DummyIn = nullptr;
@@ -505,8 +507,8 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 	}
 };
 
-///@note 模型文件应当为符合要求的K文件
-///@attention 模型文件路径建议使用完整路径
+///@note 模型文件应当为符合要求的K文件。
+///@attention 模型文件路径建议使用完整路径。
 InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 {
 	VehicleInformation* VehicleIn = new VehicleInformation;
@@ -604,7 +606,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->ComputingTimeFile.close();
             VehicleIn->LoadNodeFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
             VehicleIn->LoadBodyYFileString = getFileName(VehicleIn->line);
             VehicleIn->LoadBodyYFile.open(VehicleIn->LoadBodyYFileString);
 			continue;
@@ -639,7 +641,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->SetFile.close();
 			VehicleIn->ComputingTimeFile.close();
 			VehicleIn->LoadNodeFile.close();
-			VehicleIn->line=VehicleIn->line.erase(0, 1);
+			VehicleIn->line=VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
             VehicleIn->LoadBodyZFileString = getFileName(VehicleIn->line);
             VehicleIn->LoadBodyZFile.open(VehicleIn->LoadBodyZFileString);
 			continue;
@@ -675,7 +677,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->ComputingTimeFile.close();
             VehicleIn->LoadNodeFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
             VehicleIn->DefineCurveFileString = getFileName(VehicleIn->line);
             VehicleIn->DefineCurveFile.open(VehicleIn->DefineCurveFileString);
 			continue;
@@ -711,7 +713,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->ComputingTimeFile.close();
             VehicleIn->DefineCurveFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->LoadNodeFileString = getFileName(VehicleIn->line);
             VehicleIn->LoadNodeFile.open(VehicleIn->LoadNodeFileString);
 			continue;
@@ -747,7 +749,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->LoadNodeFile.close();
             VehicleIn->DefineCurveFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->ComputingTimeFileString = getFileName(VehicleIn->line);
             VehicleIn->ComputingTimeFile.open(VehicleIn->ComputingTimeFileString);
 			continue;
@@ -783,7 +785,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->LoadNodeFile.close();
             VehicleIn->DefineCurveFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->TimeIncrementFileString = getFileName(VehicleIn->line);
             VehicleIn->TimeIncrementFile.open(getFileName(VehicleIn->line));
 			continue;
@@ -908,7 +910,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->LoadNodeFile.close();
             VehicleIn->DefineCurveFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->NodeFileString = getFileName(VehicleIn->line);
             VehicleIn->NodeFile.open(VehicleIn->NodeFileString);
             VehicleIn->NodeFile.clear();
@@ -917,7 +919,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
         }
         if (VehicleIn->NodeFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-			VehicleIn->testfile.open(VehicleIn->TestNode);
+			/*VehicleIn->testfile.open(VehicleIn->TestNode);
 			VehicleIn->testfile << VehicleIn->line << endl;
 			Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestNode);
 			if (Test.cols() != 4)
@@ -928,7 +930,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				exit(1);
 			}
 			VehicleIn->testfile.close();
-			(void)remove(VehicleIn->TestNode.c_str());
+			(void)remove(VehicleIn->TestNode.c_str());*/
 			VehicleIn->NodeFile << VehicleIn->line << endl;
         }
 
@@ -960,7 +962,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->LoadNodeFile.close();
             VehicleIn->DefineCurveFile.close();
-            VehicleIn->line=VehicleIn->line.erase(0, 1);
+            VehicleIn->line=VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->ElaFileString = getFileName(VehicleIn->line);
 			VehicleIn->ElaFile.open(getFileName(VehicleIn->line));
 			VehicleIn->ElaFile.clear();
@@ -979,11 +981,17 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				{
 					cerr << VehicleIn->TestEla << "ERRO" << endl;
 					VehicleIn->testfile.close();
-					(void)remove(VehicleIn->TestEla.c_str());
+					if (VehicleIn->TestEla.empty()==false)
+					{
+						(void)remove(VehicleIn->TestEla.c_str());
+					}
 					exit(1);
 				}
 				VehicleIn->testfile.close();
-				(void)remove(VehicleIn->TestEla.c_str());
+				if (VehicleIn->TestEla.empty() == false)
+				{
+                    (void)remove(VehicleIn->TestEla.c_str());
+				}
 				VehicleIn->ElaFile << VehicleIn->line << endl;
         }
         if ( "*MAT_PLASTIC_KINEMATIC"==VehicleIn->line )
@@ -1012,7 +1020,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->LoadNodeFile.close();
             VehicleIn->DefineCurveFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->PlaFileString = getFileName(VehicleIn->line);
             VehicleIn->PlaFile.open(getFileName(VehicleIn->line));
             VehicleIn->PlaFile.clear();
@@ -1029,12 +1037,18 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				{
 					cerr << VehicleIn->TestPla << "ERRO" << endl;
 					VehicleIn->testfile.close();
-					(void)remove(VehicleIn->TestPla.c_str());
+					if (VehicleIn->TestPla.empty() == false)
+					{
+						(void)remove(VehicleIn->TestPla.c_str());
+					}
 					exit(1);
 				}
 				VehicleIn->testfile.close();
-				(void)remove(VehicleIn->TestPla.c_str());
-                VehicleIn->PlaFile << VehicleIn->line << endl;
+				if (VehicleIn->TestPla.empty() == false)
+				{
+					(void)remove(VehicleIn->TestPla.c_str());
+				}
+				VehicleIn->PlaFile << VehicleIn->line << endl;
         }
 
         //Part
@@ -1065,7 +1079,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->LoadNodeFile.close();
             VehicleIn->DefineCurveFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->PartFileString = getFileName(VehicleIn->line);
             VehicleIn->PartFile.open(getFileName(VehicleIn->line));
 			VehicleIn->TestPart = getFileName3(VehicleIn->line);
@@ -1081,12 +1095,18 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				{
 					cerr << VehicleIn->TestPart << "ERRO" << endl;
 					VehicleIn->testfile.close();
-					(void)remove(VehicleIn->TestPart.c_str());
+					if (VehicleIn->TestPart.empty() == false)
+					{
+						(void)remove(VehicleIn->TestPart.c_str());
+					}
 					exit(1);
 				}
 				VehicleIn->testfile.close();
-				(void)remove(VehicleIn->TestPart.c_str());
-                VehicleIn->PartFile << VehicleIn->line << endl;
+				if (VehicleIn->TestPart.empty() == false)
+				{
+					(void)remove(VehicleIn->TestPart.c_str());
+				}
+				VehicleIn->PartFile << VehicleIn->line << endl;
         };
 
         //沙漏
@@ -1117,7 +1137,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->LoadNodeFile.close();
             VehicleIn->DefineCurveFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->HourglassFileString = getFileName(VehicleIn->line);
             VehicleIn->HourglassFile.open(getFileName(VehicleIn->line));
             continue;
@@ -1155,7 +1175,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->LoadNodeFile.close();
             VehicleIn->DefineCurveFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->NodeVelocityFileString = getFileName(VehicleIn->line);
             VehicleIn->NodeVelocityFile.open(getFileName(VehicleIn->line));
 			VehicleIn->NodeVelocityFile.clear();
@@ -1171,12 +1191,18 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			{
 				cerr << VehicleIn->TestNodeVelocity << "ERRO" << endl;
 				VehicleIn->testfile.close();
-				(void)remove(VehicleIn->TestNodeVelocity.c_str());
+				if (VehicleIn->TestNodeVelocity.empty() == false)
+				{
+					(void)remove(VehicleIn->TestNodeVelocity.c_str());
+				}
 				exit(1);
 			}
 			VehicleIn->testfile.close();
-			(void)remove(VehicleIn->TestNodeVelocity.c_str());
-             VehicleIn->NodeVelocityFile << VehicleIn->line << endl;
+			if (VehicleIn->TestNodeVelocity.empty() == false)
+			{
+				(void)remove(VehicleIn->TestNodeVelocity.c_str());
+			}
+			VehicleIn->NodeVelocityFile << VehicleIn->line << endl;
         }
 
         //*BOUNDARY_SPC_SET
@@ -1205,7 +1231,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->LoadNodeFile.close();
             VehicleIn->DefineCurveFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->BoundarySetFileString = getFileName(VehicleIn->line);
             VehicleIn->BoundarySetFile.open(getFileName(VehicleIn->line));
             continue;
@@ -1273,7 +1299,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->LoadNodeFile.close();
             VehicleIn->DefineCurveFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->ContactFileString = "Contact.txt";
 			VehicleIn->ContactFileString2 = "ContactTemp.txt";
             VehicleIn->ContactFile.open(VehicleIn->ContactFileString2);
@@ -1315,7 +1341,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->LoadNodeFile.close();
             VehicleIn->DefineCurveFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->EleSoFileString = getFileName(VehicleIn->line);
             VehicleIn->EleSoFile.open(getFileName(VehicleIn->line));
 			VehicleIn->EleSoFile.clear();
@@ -1324,7 +1350,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
         }
         if (VehicleIn->EleSoFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-			VehicleIn->testfile.open(VehicleIn->TestEleSo);
+			/*VehicleIn->testfile.open(VehicleIn->TestEleSo);
 			VehicleIn->testfile << VehicleIn->line << endl;
 			Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestEleSo);
 			if (Test.cols() != 10)
@@ -1335,7 +1361,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				exit(1);
 			}
 			VehicleIn->testfile.close();
-			(void)remove(VehicleIn->TestEleSo.c_str());
+			(void)remove(VehicleIn->TestEleSo.c_str());*/
 
 			VehicleIn->EleSoFile << VehicleIn->line << endl;
         }
@@ -1396,7 +1422,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->LoadNodeFile.close();
             VehicleIn->DefineCurveFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->BoundaryFileString = getFileName(VehicleIn->line);
             VehicleIn->BoundaryFile.open(getFileName(VehicleIn->line));
             continue;
@@ -1434,7 +1460,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->LoadNodeFile.close();
             VehicleIn->DefineCurveFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->RigidWallFileString2 = getFileName2(VehicleIn->line, VehicleIn->AdditionalDigit);
 			VehicleIn->RigidWallFileString = getFileName(VehicleIn->line);
             VehicleIn->RigidWallFile.open(VehicleIn->RigidWallFileString2);
@@ -1445,8 +1471,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
         }
         if (VehicleIn->RigidWallFile.is_open() && (VehicleIn->line[0] != '*'))
         {
-                VehicleIn->line = VehicleIn->line.insert(20, " ");
-                VehicleIn->line = VehicleIn->line.insert(51, " ");
+                VehicleIn->line = VehicleIn->line.insert((unsigned long long)20, " ");
+                VehicleIn->line = VehicleIn->line.insert((unsigned long long)51, " ");
                 VehicleIn->RigidWallFile << VehicleIn->line << " ";
         }
 
@@ -1478,7 +1504,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->RigidWallFile.close();
             VehicleIn->LoadNodeFile.close();
             VehicleIn->DefineCurveFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->EleBFileString = getFileName(VehicleIn->line);
             VehicleIn->EleBFile.open(getFileName(VehicleIn->line));
             continue;
@@ -1516,7 +1542,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->LoadNodeFile.close();
             VehicleIn->DefineCurveFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->EleShFileString = getFileName(VehicleIn->line);
             VehicleIn->EleShFile.open(getFileName(VehicleIn->line));
             VehicleIn->EleShFile.clear();
@@ -1532,14 +1558,19 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			{
 				cerr << VehicleIn->TestEleSh << "ERRO" << endl;
 				VehicleIn->testfile.close();
-				(void)remove(VehicleIn->TestEleSh.c_str());
+				if (VehicleIn->TestEleSh.empty() == false)
+				{
+					(void)remove(VehicleIn->TestEleSh.c_str());
+				}
 				exit(1);
 			}
 			VehicleIn->testfile.close();
-			(void)remove(VehicleIn->TestEleSh.c_str());
+			if (VehicleIn->TestEleSh.empty() == false)
+			{
+				(void)remove(VehicleIn->TestEleSh.c_str());
+			}
 			VehicleIn->EleShFile << VehicleIn->line << endl;
         }
-
         //SECTION梁
         if ( "*SECTION_BEAM"==VehicleIn->line )
 		{
@@ -1568,7 +1599,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->LoadNodeFile.close();
             VehicleIn->DefineCurveFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->SecBeamFileString = getFileName(VehicleIn->line);
             VehicleIn->SecBeamFile.open(getFileName(VehicleIn->line));
 			VehicleIn->TestSecBeam = getFileName3(VehicleIn->line);
@@ -1619,7 +1650,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->LoadNodeFile.close();
             VehicleIn->DefineCurveFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->SecShellFileString = getFileName(VehicleIn->line);
 			VehicleIn->SecShellFileString2 = getFileName2(VehicleIn->line, VehicleIn->AdditionalDigit);
             VehicleIn->SecShellFile.open(VehicleIn->SecShellFileString2);
@@ -1661,7 +1692,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SetFile.close();
             VehicleIn->LoadNodeFile.close();
             VehicleIn->DefineCurveFile.close();
-			VehicleIn->line = VehicleIn->line.erase(0, 1);
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->SecSolidFileString = getFileName(VehicleIn->line);
             VehicleIn->SecSolidFile.open(getFileName(VehicleIn->line));
             continue;
@@ -1718,11 +1749,17 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				{
 					cerr << VehicleIn->TestSecShell << "ERRO" << endl;
 					VehicleIn->testfile.close();
-					(void)remove(VehicleIn->TestSecShell.c_str());
+					if (VehicleIn->TestSecShell.empty() == false)
+					{
+						(void)remove(VehicleIn->TestSecShell.c_str());
+					}
 					exit(1);
 				}
 				VehicleIn->testfile.close();
-				(void)remove(VehicleIn->TestSecShell.c_str());
+				if (VehicleIn->TestSecShell.empty() == false)
+				{
+					(void)remove(VehicleIn->TestSecShell.c_str());
+				}
 				VehicleIn->SecShellFile2 << VehicleIn->LineSecShell << endl;
             }
         }
@@ -1743,15 +1780,21 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				VehicleIn->testfile.open(VehicleIn->TestContact);
 				VehicleIn->testfile << VehicleIn->LineContact << endl;
 				Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestContact);
-				if (Test.cols() !=8)
+				if (Test.cols() <7)
 				{
 					cerr << VehicleIn->TestContact << "ERRO" << endl;
 					VehicleIn->testfile.close();
-					(void)remove(VehicleIn->TestContact.c_str());
+					if (VehicleIn->TestContact.empty() == false)
+					{
+						(void)remove(VehicleIn->TestContact.c_str());
+					}
 					exit(1);
 				}
 				VehicleIn->testfile.close();
-				(void)remove(VehicleIn->TestContact.c_str());
+				if (VehicleIn->TestContact.empty() == false)
+				{
+					(void)remove(VehicleIn->TestContact.c_str());
+				}
 				VehicleIn->ContactFile2 << VehicleIn->LineContact << endl;
             }
         }
@@ -1775,11 +1818,17 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				{
 					cerr << VehicleIn->TestRigidWall << "ERRO" << endl;
 					VehicleIn->testfile.close();
-					(void)remove(VehicleIn->TestRigidWall.c_str());
+					if (VehicleIn->TestRigidWall.empty() == false)
+					{
+						(void)remove(VehicleIn->TestRigidWall.c_str());
+					}
 					exit(1);
 				}
 				VehicleIn->testfile.close();
-				(void)remove(VehicleIn->TestRigidWall.c_str());
+				if (VehicleIn->TestRigidWall.empty() == false)
+				{
+					(void)remove(VehicleIn->TestRigidWall.c_str());
+				}
 				VehicleIn->RigidWallFile2 << VehicleIn->LineRigidwall << endl;
 			}
 		}
@@ -1802,7 +1851,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 		//主面节点
 		if ("*SET_SEGMENT" == VehicleIn->LineSegmentSet)
 		{
-			VehicleIn->SetSegment = VehicleIn->LineSegmentSet.erase(0, 1);
+			VehicleIn->SetSegment = VehicleIn->LineSegmentSet.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->SegmentSetFile1String = getFileName(VehicleIn->LineSegmentSet);
 			VehicleIn->SegmentSetFile1.open(VehicleIn->SegmentSetFile1String);
 			VehicleIn->SegmentSetFile1.clear();
@@ -1823,7 +1872,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	VehicleIn->InSegmentSet.close();
 	ifstream InSegmentSet2;
 	InSegmentSet2.open(VehicleIn->SegmentSetFile1String);
-	VehicleIn->SegmentSetFile2String = "SegmentSet.txt";
+	VehicleIn->SegmentSetFile2String = "SETSEGMENT.txt";
 	string LineSegmentSet2;
 	int panduanneirongSegmentSet = 0;
 	while (getline(InSegmentSet2, LineSegmentSet2))
@@ -1831,7 +1880,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 		ofstream SegmentSetFile2(VehicleIn->SegmentSetFile2String);
 		if (' ' == LineSegmentSet2[0])
 		{
-			(void)LineSegmentSet2.erase(50, 4);
+			(void)LineSegmentSet2.erase((unsigned long long)50, (unsigned long long)4);
 			SegmentSetFile2 << LineSegmentSet2 << flush;
 			panduanneirongSegmentSet = 1;
 		}
@@ -1860,12 +1909,11 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 		}
 		if ("*SET_NODE_LIST" == VehicleIn->LineSetNode)
 		{
-			VehicleIn->Setnodelist = VehicleIn->LineSetNode.erase(0, 1);
+			VehicleIn->Setnodelist = VehicleIn->LineSetNode.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->SetNodeFile1String = getFileName(VehicleIn->LineSetNode);
 			VehicleIn->SetNodeFile1.open(VehicleIn->SetNodeFile1String);
 			VehicleIn->SetNodeFile1.clear();
 			VehicleIn->SetNodeFile1 << endl;
-			VehicleIn->PanduanSetNode = 1;
 			continue;
 		}
 		if (VehicleIn->SetNodeFile1.is_open() && (VehicleIn->LineSetNode[0] != '*'))
@@ -1875,7 +1923,6 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 		if (("*END" == VehicleIn->LineSetNode) || ("*DEFINE_CURVE" == VehicleIn->LineSetNode) || ("*BOUNDARY_SPC_NODE" == VehicleIn->LineSetNode) || ("*SET_PART_LIST" == VehicleIn->LineSetNode) || ("*CONTACT_NODES_TO_SURFACE_ID" == VehicleIn->LineSetNode))
 		{
 			VehicleIn->SetNodeFile1.close();
-			VehicleIn->PanduanSetNode = 0;
 		}
 	}
 	VehicleIn->InSetNode.close();
@@ -1889,7 +1936,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 		ofstream SetNodeFile2(VehicleIn->SetNodeFile2String);
 		if (' ' == LineSetNode2[0])
 		{
-			(void)LineSetNode2.erase(50, 4);
+			(void)LineSetNode2.erase((unsigned long long)50, (unsigned long long)4);
 			SetNodeFile2 << LineSetNode2 << flush;
 			panduanneirong = 1;
 		}
@@ -1917,7 +1964,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 		}
 		if (("*BOUNDARY_FORCE_SET" == VehicleIn->LineForce)&&(VehicleIn->PanduanForce == 1))
 		{
-			VehicleIn->LineForce = VehicleIn->LineForce.erase(0, 1);
+			VehicleIn->LineForce = VehicleIn->LineForce.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->ForceBOUNDARYFileString = getFileName(VehicleIn->LineForce);
 			VehicleIn->ForceBOUNDARYFile.open(VehicleIn->ForceBOUNDARYFileString);
 		}
@@ -1928,7 +1975,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 		if (("*SET_NODE_LIST_FORCE" == VehicleIn->LineForce) && (VehicleIn->PanduanForce == 1))
 		{
 			VehicleIn->ForceBOUNDARYFile.close();
-			VehicleIn->LineForce = VehicleIn->LineForce.erase(0, 1);
+			VehicleIn->LineForce = VehicleIn->LineForce.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->ForceSetNodeFileString = getFileName(VehicleIn->LineForce);
 			VehicleIn->ForceSetNodeFile.open(VehicleIn->ForceSetNodeFileString);
 		}
@@ -1943,7 +1990,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 		{
 			VehicleIn->ForceBOUNDARYFile.close();
 			VehicleIn->ForceSetNodeFile.close();
-			VehicleIn->LineForce = VehicleIn->LineForce.erase(0, 1);
+			VehicleIn->LineForce = VehicleIn->LineForce.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->ForceFileString = getFileName(VehicleIn->LineForce);
 			VehicleIn->ForceFile.open(VehicleIn->ForceFileString);
 		}
@@ -2100,7 +2147,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
         for (int i = 0; i < NodeImformation1.rows(); i++)
         {
             INN->NodeID = NodeImformation2(i, 0);
-            INN->NodeCoordinates = NodeImformation1.row(i).rightCols(3).adjoint();
+            INN->NodeCoordinates = NodeImformation1.row((long long)i).rightCols(3).adjoint();
 			(void)IAD->InputAllNode.insert(make_pair(INN->NodeID, (*INN)));
         };
         //cout << (*IAD).InputAllNode[5].NodeCoordinates;
@@ -2122,12 +2169,12 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             (*InESo).ElementID = EleSoImformation(i, 0);      /* cout << (*INE_SO).ElementID << endl;*/
             (*InESo).ElementTypeID = 0;
             (*InESo).MaterialID = (*ls).AllPart[EleSoImformation(i, 1)].Mid;
-            (*InESo).ElementNodeID.resize(8, 1);
-            (*InESo).ElementNodeID = EleSoImformation.row(i).rightCols(8).adjoint();
-            (*InESo).ElementNodeCoordinates.resize(8, 3);
+            (*InESo).ElementNodeID.resize((long long)8, (long long)1);
+            (*InESo).ElementNodeID = EleSoImformation.row((long long)i).rightCols(8).adjoint();
+            (*InESo).ElementNodeCoordinates.resize((long long)8, (long long)3);
             for (int J = 0; J < 8; J++)
             {
-                (*InESo).ElementNodeCoordinates.row(J) = (*IAD).InputAllNode[(*InESo).ElementNodeID(J, 0)].NodeCoordinates.adjoint();
+                (*InESo).ElementNodeCoordinates.row((long long)J) = (*IAD).InputAllNode[(*InESo).ElementNodeID(J, 0)].NodeCoordinates.adjoint();
             }
             /* cout << (*InESo).ElementNodeCoordinates<<endl ;*/
 
@@ -2149,12 +2196,12 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             (*InESh).ElementID = EleShImformation(i, 0);
             (*InESh).ElementTypeID = 1;
             (*InESh).MaterialID = (*ls).AllPart[EleShImformation(i, 1)].Mid;
-            (*InESh).ElementNodeID.resize(4, 1);
-            (*InESh).ElementNodeID = EleShImformation.row(i).rightCols(4).adjoint();
-            (*InESh).ElementNodeCoordinates.resize(4, 3);
+            (*InESh).ElementNodeID.resize((long long)4, (long long)1);
+            (*InESh).ElementNodeID = EleShImformation.row((long long)i).rightCols(4).adjoint();
+            (*InESh).ElementNodeCoordinates.resize((long long)4, (long long)3);
 			for (int A = {0}; A < 4; A++)
             {
-                (*InESh).ElementNodeCoordinates.row(A) = (*IAD).InputAllNode[(*InESh).ElementNodeID(A, 0)].NodeCoordinates.adjoint();
+                (*InESh).ElementNodeCoordinates.row((long long)A) = (*IAD).InputAllNode[(*InESh).ElementNodeID(A, 0)].NodeCoordinates.adjoint();
             }
             (*InESh).ShellGeometricParameter(0, 0) = (*ls).AllSectionshell[(*ls).AllPart[EleShImformation(i, 1)].SectionID].T1;
             (*InESh).ShellGeometricParameter(1, 0) = (*ls).AllSectionshell[(*ls).AllPart[EleShImformation(i, 1)].SectionID].T2;
@@ -2180,14 +2227,14 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             (*InEB).ElementID = EleBImformation(i, 0);      /* cout << (*INE).ElementID << endl;*/
             (*InEB).ElementTypeID = 2;
             (*InEB).MaterialID = (*ls).AllPart[EleBImformation(i, 1)].Mid;
-            (*InEB).ElementNodeID.resize(2, 1);
+            (*InEB).ElementNodeID.resize((long long)2, (long long)1);
             (*InEB).ElementNodeID(0, 0) = EleBImformation(i, 2);
             (*InEB).ElementNodeID(1, 0) = EleBImformation(i, 3);
             (*InEB).ReferencePoint = (*IAD).InputAllNode[EleBImformation(i, 4)].NodeCoordinates.adjoint();
-            (*InEB).ElementNodeCoordinates.resize(2, 3);
+            (*InEB).ElementNodeCoordinates.resize((long long)2, (long long)3);
             for (int j = 0; j < 2; j++)
             {
-                (*InEB).ElementNodeCoordinates.row(j) = (*IAD).InputAllNode[(*InEB).ElementNodeID(j, 0)].NodeCoordinates.adjoint();
+                (*InEB).ElementNodeCoordinates.row((long long)j) = (*IAD).InputAllNode[(*InEB).ElementNodeID(j, 0)].NodeCoordinates.adjoint();
             }
             (*InEB).ElementGeometricParameter(0, 0) = (*ls).AllSectionbeam[(*ls).AllPart[EleBImformation(i, 1)].SectionID].TS;   //只有宽和高目前，SECTION文件里， ts1和ts2是宽  
             (*InEB).ElementGeometricParameter(1, 0) = (*ls).AllSectionbeam[(*ls).AllPart[EleBImformation(i, 1)].SectionID].TT;
@@ -2236,31 +2283,31 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     {
         Matrix<int, Dynamic, 1> NodeIDq = IEDN.second.ElementNodeID;
         int Row = NodeIDq.rows();
-        (void)IEDN.second.ElementBodyForce.setZero(3, 1);
+        (void)IEDN.second.ElementBodyForce.setZero((long long)3, (long long)1);
         for (int NId = 0; NId < Row; NId++)
         {
-			(void)IAD->InputAllNode[NodeIDq(NId, 0)].NodeAcceleration.setZero(NodeNumber[NodeIDq(NId, 0)], 1);
-			(void)IAD->InputAllNode[NodeIDq(NId, 0)].NodeVelocity.setZero(NodeNumber[NodeIDq(NId, 0)], 1);
-			(void)IAD->InputAllNode[NodeIDq(NId, 0)].NodeDisplacement.setZero(NodeNumber[NodeIDq(NId, 0)], 1);
+			(void)IAD->InputAllNode[NodeIDq(NId, 0)].NodeAcceleration.setZero((long long)NodeNumber[NodeIDq(NId, 0)], (long long)1);
+			(void)IAD->InputAllNode[NodeIDq(NId, 0)].NodeVelocity.setZero((long long)NodeNumber[NodeIDq(NId, 0)], (long long)1);
+			(void)IAD->InputAllNode[NodeIDq(NId, 0)].NodeDisplacement.setZero((long long)NodeNumber[NodeIDq(NId, 0)], (long long)1);
         };
     };
      //赋速度
     if ( 1==isFileExists(VehicleIn->NodeVelocityFileString) )
     {
-        for (auto& it : ls->AllVelocity)
+        for (auto& itVelocity : ls->AllVelocity)
         {
-			const int setrow = ls->AllSetNode[it.first].SetNodeID.rows();
-			const int setcol = ls->AllSetNode[it.first].SetNodeID.cols();
+			const int setrow = ls->AllSetNode[itVelocity.first].SetNodeID.rows();
+			const int setcol = ls->AllSetNode[itVelocity.first].SetNodeID.cols();
 			// cout << setrow;
 			for (int i = 0; i < setrow; i++)
 			{
 				for (int j = 0; j < setcol; j++)
 				{
-					if (IAD->InputAllNode[ls->AllSetNode[it.second.SetNodeid].SetNodeID(i, j)].NodeVelocity.rows() != 0)
+					if (IAD->InputAllNode[ls->AllSetNode[itVelocity.second.SetNodeid].SetNodeID(i, j)].NodeVelocity.rows() != 0)
 					{
-					IAD->InputAllNode[ls->AllSetNode[it.second.SetNodeid].SetNodeID(i, j)].NodeVelocity(0, 0) = it.second.XVelocity;
-					IAD->InputAllNode[ls->AllSetNode[it.second.SetNodeid].SetNodeID(i, j)].NodeVelocity(1, 0) = it.second.YVelocity;
-					IAD->InputAllNode[ls->AllSetNode[it.second.SetNodeid].SetNodeID(i, j)].NodeVelocity(2, 0) = it.second.ZVelocity;
+					IAD->InputAllNode[ls->AllSetNode[itVelocity.second.SetNodeid].SetNodeID(i, j)].NodeVelocity(0, 0) = itVelocity.second.XVelocity;
+					IAD->InputAllNode[ls->AllSetNode[itVelocity.second.SetNodeid].SetNodeID(i, j)].NodeVelocity(1, 0) = itVelocity.second.YVelocity;
+					IAD->InputAllNode[ls->AllSetNode[itVelocity.second.SetNodeid].SetNodeID(i, j)].NodeVelocity(2, 0) = itVelocity.second.ZVelocity;
 					};
 				}
 			}
@@ -2272,9 +2319,9 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	{
 		for (auto& itLoad : ls->AllLoadBodyZ)
 		{
-			for (auto &it: IAD->InputAllElement)
+			for (auto &itElement : IAD->InputAllElement)
 			{
-                it.second.ElementBodyForce(2, 0)=itLoad.second.LoadCurveScaleFactor;			
+				itElement.second.ElementBodyForce(2, 0)=itLoad.second.LoadCurveScaleFactor;
 			} 
             							
 		}
@@ -2284,9 +2331,9 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	{
 		for (auto& itLoad : ls->AllLoadBodyY)
 		{
-			for (auto& it : IAD->InputAllElement)
+			for (auto& itAllElement : IAD->InputAllElement)
 		    {
-		    	it.second.ElementBodyForce(1, 0) = itLoad.second.LoadCurveScaleFactor;
+				itAllElement.second.ElementBodyForce(1, 0) = itLoad.second.LoadCurveScaleFactor;
 		    }		
 		}
         //cout << IAD->InputAllElement[2].ElementBodyForce;
@@ -2375,13 +2422,13 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             //主从面节点号
             for (int j = 0; j < ((ls->AllSetSegment[InCta->MasterNodeSetId].SetSegmentNodeID.cols()-1)/4); j++)
             {
-				Matrix<int, 4, 1> SetSegmentRow = ls->AllSetSegment[InCta->MasterNodeSetId].SetSegmentNodeID.block<1, 4>(0, k).adjoint();
+				Matrix<int, 4, 1> SetSegmentRow = ls->AllSetSegment[InCta->MasterNodeSetId].SetSegmentNodeID.block<1, 4>((long long)0, (long long)k).adjoint();
 				(void)InCta->MasterContactNode.insert(make_pair((j + 1), SetSegmentRow));
 				k += 4;
             };
             for (int n = 0; n < ls->AllSetNode[InCta->SlaveNodeSetId].SetNodeID.rows(); n++)
             {
-				(void)InCta->SlaveContactNode.insert(make_pair((n + 1), ls->AllSetNode[InCta->SlaveNodeSetId].SetNodeID.row(n).adjoint()));
+				(void)InCta->SlaveContactNode.insert(make_pair((n + 1), ls->AllSetNode[InCta->SlaveNodeSetId].SetNodeID.row((long long)n).adjoint()));
             };
 			(void)IAD->InputAllContact.insert(make_pair(InCta->ContactNumber, (*InCta)));
             delete InCta;
@@ -2408,51 +2455,51 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			{
 				if ((1 == BoundaryIntImformation(i, 1)) &&( 1== BoundaryIntImformation(i, 2) ) &&  (1== BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 2, 3;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) &&( 0== BoundaryIntImformation(i, 2) ) &&  (1== BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(2, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 3;
-					(*InConstraint).NodeExternalConstraint.resize(2, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) &&( 1== BoundaryIntImformation(i, 2) ) &&  (0== BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(2, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 2;
-					(*InConstraint).NodeExternalConstraint.resize(2, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) &&( 0== BoundaryIntImformation(i, 2) ) &&  (0== BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(1, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1;
-					(*InConstraint).NodeExternalConstraint.resize(1, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) &&( 1== BoundaryIntImformation(i, 2) ) &&  (1== BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(2, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 2, 3;
-					(*InConstraint).NodeExternalConstraint.resize(2, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) &&( 0== BoundaryIntImformation(i, 2) ) &&  (1== BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(1, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 3;
-					(*InConstraint).NodeExternalConstraint.resize(1, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) &&( 1== BoundaryIntImformation(i, 2) ) &&  (0== BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(1, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 2;
-					(*InConstraint).NodeExternalConstraint.resize(1, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0;
 				}
 				/* if (BoundaryIntImformation(i, 1) == 0 && BoundaryIntImformation(i, 2) == 0 && BoundaryIntImformation(i, 3) == 0)
@@ -2464,58 +2511,58 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			{
 				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(4, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 5;
-					(*InConstraint).NodeExternalConstraint.resize(4, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 3, 5;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 2, 5;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(2, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 5;
-					(*InConstraint).NodeExternalConstraint.resize(2, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 2, 3, 5;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(2, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 3, 5;
-					(*InConstraint).NodeExternalConstraint.resize(2, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(2, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 2, 5;
-					(*InConstraint).NodeExternalConstraint.resize(2, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1) )&& (0 == BoundaryIntImformation(i, 2)) &&( 0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(1, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 5;
-					(*InConstraint).NodeExternalConstraint.resize(1, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0;
 				}
 			}
@@ -2523,58 +2570,58 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			{
 				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(4, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 6;
-					(*InConstraint).NodeExternalConstraint.resize(4, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 3, 6;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 2, 6;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(2, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 6;
-					(*InConstraint).NodeExternalConstraint.resize(2, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 2, 3, 6;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(2, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 3, 6;
-					(*InConstraint).NodeExternalConstraint.resize(2, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(2, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 2, 6;
-					(*InConstraint).NodeExternalConstraint.resize(2, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(1, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 6;
-					(*InConstraint).NodeExternalConstraint.resize(1, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0;
 				}
 			}
@@ -2582,58 +2629,58 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			{
 				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(5, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize(5, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(4, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 3, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize(4, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(4, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 2, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize(4, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(4, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 2, 3, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize(4, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 3, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 2, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(2, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize(2, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0;
 				}
 			}
@@ -2641,58 +2688,58 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			{
 				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(4, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4;
-					(*InConstraint).NodeExternalConstraint.resize(4, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 3, 4;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 2, 4;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(2, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 4;
-					(*InConstraint).NodeExternalConstraint.resize(2, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 2, 3, 4;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(2, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 3, 4;
-					(*InConstraint).NodeExternalConstraint.resize(2, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(2, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 2, 4;
-					(*InConstraint).NodeExternalConstraint.resize(2, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(1, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 4;
-					(*InConstraint).NodeExternalConstraint.resize(1, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0;
 				}
 			}
@@ -2700,58 +2747,58 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			{
 				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(5, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4, 5;
-					(*InConstraint).NodeExternalConstraint.resize(5, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(4, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 3, 4, 5;
-					(*InConstraint).NodeExternalConstraint.resize(4, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(4, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 2, 4, 5;
-					(*InConstraint).NodeExternalConstraint.resize(4, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 4, 5;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(4, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 2, 3, 4, 5;
-					(*InConstraint).NodeExternalConstraint.resize(4, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 3, 4, 5;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 2, 4, 5;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(2, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 4, 5;
-					(*InConstraint).NodeExternalConstraint.resize(2, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0;
 				}
 			}
@@ -2759,58 +2806,58 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			{
 				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(6, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)6, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize(6, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)6, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(5, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 3, 4, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize(5, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(5, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 2, 4, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize(5, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(4, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 4, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize(4, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(5, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 2, 3, 4, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize(5, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(4, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 3, 4, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize(4, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(4, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 2, 4, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize(4, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 4, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 			}
@@ -2818,58 +2865,58 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             {
 				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(5, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4, 6;
-					(*InConstraint).NodeExternalConstraint.resize(5, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(4, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 3, 4, 6;
-					(*InConstraint).NodeExternalConstraint.resize(4, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(4, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 2, 4, 6;
-					(*InConstraint).NodeExternalConstraint.resize(4, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 				}
 				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 1, 4, 6;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(4, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 2, 3, 4, 6;
-					(*InConstraint).NodeExternalConstraint.resize(4, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 3, 4, 6;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
 				{
-					(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 					(*InConstraint).ConstraintNodeDofID << 2, 4, 6;
-					(*InConstraint).NodeExternalConstraint.resize(3, 1);
+					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
 				}
 				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
                 {
-                    (*InConstraint).ConstraintNodeDofID.resize(2, 1);
+                    (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
                     (*InConstraint).ConstraintNodeDofID << 4, 6;
-                    (*InConstraint).NodeExternalConstraint.resize(2, 1);
+                    (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
                     (*InConstraint).NodeExternalConstraint << 0, 0;
                 }
             }
@@ -2886,51 +2933,51 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				 {
 					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 2, 3;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(2, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 3;
-						 (*InConstraint).NodeExternalConstraint.resize(2, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(2, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 2;
-						 (*InConstraint).NodeExternalConstraint.resize(2, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(1, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1;
-						 (*InConstraint).NodeExternalConstraint.resize(1, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(2, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 2, 3;
-						 (*InConstraint).NodeExternalConstraint.resize(2, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(1, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 3;
-						 (*InConstraint).NodeExternalConstraint.resize(1, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(1, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 2;
-						 (*InConstraint).NodeExternalConstraint.resize(1, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0;
 					 }
 					 /* if (BoundaryIntImformation(i, 1) == 0 && BoundaryIntImformation(i, 2) == 0 && BoundaryIntImformation(i, 3) == 0)
@@ -2942,58 +2989,58 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				 {
 					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(4, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 2, 3, 5;
-						 (*InConstraint).NodeExternalConstraint.resize(4, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 3, 5;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 2, 5;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(2, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 5;
-						 (*InConstraint).NodeExternalConstraint.resize(2, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 2, 3, 5;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(2, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 3, 5;
-						 (*InConstraint).NodeExternalConstraint.resize(2, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(2, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 2, 5;
-						 (*InConstraint).NodeExternalConstraint.resize(2, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(1, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 5;
-						 (*InConstraint).NodeExternalConstraint.resize(1, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0;
 					 }
 				 }
@@ -3001,58 +3048,58 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				 {
 					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(4, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 2, 3, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(4, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 3, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 2, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(2, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(2, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 2, 3, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(2, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 3, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(2, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(2, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 2, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(2, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(1, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 6;
-						 (*InConstraint).NodeExternalConstraint.resize(1, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0;
 					 }
 				 }
@@ -3060,58 +3107,58 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				 {
 					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(5, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 2, 3, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(5, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(4, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 3, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(4, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(4, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 2, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(4, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(4, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 2, 3, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(4, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 3, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 2, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(2, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(2, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0;
 					 }
 				 }
@@ -3119,58 +3166,58 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				 {
 					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(4, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4;
-						 (*InConstraint).NodeExternalConstraint.resize(4, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 3, 4;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 2, 4;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(2, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 4;
-						 (*InConstraint).NodeExternalConstraint.resize(2, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 2, 3, 4;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(2, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 3, 4;
-						 (*InConstraint).NodeExternalConstraint.resize(2, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(2, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 2, 4;
-						 (*InConstraint).NodeExternalConstraint.resize(2, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(1, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 4;
-						 (*InConstraint).NodeExternalConstraint.resize(1, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0;
 					 }
 				 }
@@ -3178,58 +3225,58 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				 {
 					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(5, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4, 5;
-						 (*InConstraint).NodeExternalConstraint.resize(5, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(4, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 3, 4, 5;
-						 (*InConstraint).NodeExternalConstraint.resize(4, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(4, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 2, 4, 5;
-						 (*InConstraint).NodeExternalConstraint.resize(4, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 4, 5;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(4, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 2, 3, 4, 5;
-						 (*InConstraint).NodeExternalConstraint.resize(4, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 3, 4, 5;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 2, 4, 5;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(2, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 4, 5;
-						 (*InConstraint).NodeExternalConstraint.resize(2, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0;
 					 }
 				 }
@@ -3237,58 +3284,58 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				 {
 					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(6, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)6, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(6, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)6, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(5, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 3, 4, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(5, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(5, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 2, 4, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(5, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(4, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 4, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(4, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(5, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 2, 3, 4, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(5, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(4, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 3, 4, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(4, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(4, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 2, 4, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(4, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 4, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 				 }
@@ -3296,58 +3343,58 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
                  {
 					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(5, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(5, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(4, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 3, 4, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(4, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(4, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 2, 4, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(4, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 					 }
 					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 1, 4, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(4, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 2, 3, 4, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(4, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 3, 4, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
 					 {
-						 (*InConstraint).ConstraintNodeDofID.resize(3, 1);
+						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 						 (*InConstraint).ConstraintNodeDofID << 2, 4, 6;
-						 (*InConstraint).NodeExternalConstraint.resize(3, 1);
+						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
 					 }
 					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
                      {
-                         (*InConstraint).ConstraintNodeDofID.resize(2, 1);
+                         (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
                          (*InConstraint).ConstraintNodeDofID << 4, 6;
-                         (*InConstraint).NodeExternalConstraint.resize(2, 1);
+                         (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
                          (*InConstraint).NodeExternalConstraint << 0, 0;
                      }
                  }
@@ -3415,51 +3462,51 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			InConstraint->ConstraintNodeID = ForceSetNodeImformation(0, i);
 			if ((1 == ForceBOUNDARYImformation(0, 1)) && (1 == ForceBOUNDARYImformation(0, 2)) && (1 == ForceBOUNDARYImformation(0, 3)))
 			{
-				(*InConstraint).ConstraintNodeDofID.resize(3, 1);
+				(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
 				(*InConstraint).ConstraintNodeDofID << 1, 2, 3;
-				(*InConstraint).NodeExternalConstraint.resize(3, 1);
+				(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
 				(*InConstraint).NodeExternalConstraint << ForceFileImformation;
 			}
 			if ((1 == ForceBOUNDARYImformation(0, 1)) && (0 == ForceBOUNDARYImformation(0, 2)) && (1 == ForceBOUNDARYImformation(0, 3)))
 			{
-				(*InConstraint).ConstraintNodeDofID.resize(2, 1);
+				(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 				(*InConstraint).ConstraintNodeDofID << 1, 3;
-				(*InConstraint).NodeExternalConstraint.resize(2, 1);
+				(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 				(*InConstraint).NodeExternalConstraint << ForceFileImformation(0,0), ForceFileImformation(0, 2);
 			}
 			if ((1 == ForceBOUNDARYImformation(0, 1)) && (1 == ForceBOUNDARYImformation(0, 2)) && (0 == ForceBOUNDARYImformation(0, 3)))
 			{
-				(*InConstraint).ConstraintNodeDofID.resize(2, 1);
+				(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 				(*InConstraint).ConstraintNodeDofID << 1, 2;
-				(*InConstraint).NodeExternalConstraint.resize(2, 1);
+				(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 				(*InConstraint).NodeExternalConstraint << ForceFileImformation(0, 0), ForceFileImformation(0, 1);
 			}
 			if ((1 == ForceBOUNDARYImformation(0, 1)) && (0 == ForceBOUNDARYImformation(0, 2)) && (0 == ForceBOUNDARYImformation(0, 3)))
 			{
-				(*InConstraint).ConstraintNodeDofID.resize(1, 1);
+				(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
 				(*InConstraint).ConstraintNodeDofID << 1;
-				(*InConstraint).NodeExternalConstraint.resize(1, 1);
+				(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
 				(*InConstraint).NodeExternalConstraint << ForceFileImformation(0, 0);
 			}
 			if ((0 == ForceBOUNDARYImformation(0, 1)) && (1 == ForceBOUNDARYImformation(0, 2)) && (1 == ForceBOUNDARYImformation(0, 3)))
 			{
-				(*InConstraint).ConstraintNodeDofID.resize(2, 1);
+				(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 				(*InConstraint).ConstraintNodeDofID << 2, 3;
-				(*InConstraint).NodeExternalConstraint.resize(2, 1);
+				(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
 				(*InConstraint).NodeExternalConstraint << ForceFileImformation(0, 1), ForceFileImformation(0, 2);
 			}
 			if ((0 == ForceBOUNDARYImformation(0, 1)) && (0 == ForceBOUNDARYImformation(0, 2)) && (1 == ForceBOUNDARYImformation(0, 3)))
 			{
-				(*InConstraint).ConstraintNodeDofID.resize(1, 1);
+				(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
 				(*InConstraint).ConstraintNodeDofID << 3;
-				(*InConstraint).NodeExternalConstraint.resize(1, 1);
+				(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
 				(*InConstraint).NodeExternalConstraint << ForceFileImformation(0, 2);
 			}
 			if ((0 == ForceBOUNDARYImformation(0, 1)) && (1 == ForceBOUNDARYImformation(0, 2)) && (0 == ForceBOUNDARYImformation(0, 3)))
 			{
-				(*InConstraint).ConstraintNodeDofID.resize(1, 1);
+				(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
 				(*InConstraint).ConstraintNodeDofID << 2;
-				(*InConstraint).NodeExternalConstraint.resize(1, 1);
+				(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
 				(*InConstraint).NodeExternalConstraint << ForceFileImformation(0, 1);
 			}
 			(void)(*IAD).InputAllConstraint.insert(make_pair((*InConstraint).ConstraintNodeID, (*InConstraint)));
@@ -3471,39 +3518,139 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     ls = nullptr;
 
     //删除文件
-	/*(void)remove(VehicleIn->DefineCurveFileString.c_str());
-	(void)remove(VehicleIn->HourglassFileString.c_str());
-	(void)remove(VehicleIn->SecBeamFileString.c_str());
-	(void)remove(VehicleIn->EleShFileString.c_str());
-	(void)remove(VehicleIn->EleBFileString.c_str());
-	(void)remove(VehicleIn->BoundaryFileString.c_str());
-	(void)remove(VehicleIn->SetFileString.c_str());
-	(void)remove(VehicleIn->SlaveNodeFileString.c_str());
-	(void)remove(VehicleIn->EleSoFileString.c_str());
-	(void)remove(VehicleIn->MasterNodeFileString.c_str());
-	(void)remove(VehicleIn->NodeVelocityFileString.c_str());
-	(void)remove(VehicleIn->SecSolidFileString.c_str());
-	(void)remove(VehicleIn->PartFileString.c_str());
-	(void)remove(VehicleIn->NodeFileString.c_str());
-	(void)remove(VehicleIn->TimeIncrementFileString.c_str());
-	(void)remove(VehicleIn->ComputingTimeFileString.c_str());
-	(void)remove(VehicleIn->PlaFileString.c_str());
-	(void)remove(VehicleIn->ElaFileString.c_str());
-	(void)remove(VehicleIn->BoundarySetFileString.c_str());
-	(void)remove(VehicleIn->WallSlaveNodeFileString.c_str());
-	(void)remove(VehicleIn->LoadNodeFileString.c_str());
-	(void)remove(VehicleIn->SetNodeFile1String.c_str());
-	(void)remove(VehicleIn->SetNodeFile2String.c_str());
-	(void)remove(VehicleIn->SegmentSetFile1String.c_str());
-	(void)remove(VehicleIn->SegmentSetFile2String.c_str());
-	(void)remove(VehicleIn->LoadBodyYFileString.c_str());
-	(void)remove(VehicleIn->LoadBodyZFileString.c_str());
-	(void)remove(VehicleIn->ContactFileString2.c_str());
-	(void)remove(VehicleIn->SecShellFileString2.c_str());
-	(void)remove(VehicleIn->RigidWallFileString2.c_str());
-	(void)remove(VehicleIn->SecShellFileString.c_str());
-	(void)remove(VehicleIn->RigidWallFileString.c_str());
-	(void)remove(VehicleIn->ContactFileString.c_str());*/
+	if (VehicleIn->DefineCurveFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->DefineCurveFileString.c_str());
+	}
+	if (VehicleIn->HourglassFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->HourglassFileString.c_str());
+	}
+	if (VehicleIn->SecBeamFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->SecBeamFileString.c_str());
+	}
+	if (VehicleIn->EleShFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->EleShFileString.c_str());
+	}
+	if (VehicleIn->EleBFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->EleBFileString.c_str());
+	}
+	if (VehicleIn->BoundaryFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->BoundaryFileString.c_str());
+	}
+	if (VehicleIn->SetFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->SetFileString.c_str());
+	}
+	if (VehicleIn->SlaveNodeFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->SlaveNodeFileString.c_str());
+	}
+	if (VehicleIn->EleSoFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->EleSoFileString.c_str());
+	}
+	if (VehicleIn->MasterNodeFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->MasterNodeFileString.c_str());
+	}
+	if (VehicleIn->NodeVelocityFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->NodeVelocityFileString.c_str());
+	}
+	if (VehicleIn->SecSolidFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->SecSolidFileString.c_str());
+	}
+	if (VehicleIn->PartFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->PartFileString.c_str());
+	}
+	if (VehicleIn->NodeFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->NodeFileString.c_str());
+	}
+	if (VehicleIn->TimeIncrementFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->TimeIncrementFileString.c_str());
+	}
+	if (VehicleIn->ComputingTimeFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->ComputingTimeFileString.c_str());
+	}
+	if (VehicleIn->PlaFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->PlaFileString.c_str());
+	}
+	if (VehicleIn->ElaFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->ElaFileString.c_str());
+	}
+	if (VehicleIn->BoundarySetFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->BoundarySetFileString.c_str());
+	}
+	if (VehicleIn->WallSlaveNodeFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->WallSlaveNodeFileString.c_str());
+	}
+	if (VehicleIn->LoadNodeFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->LoadNodeFileString.c_str());
+	}
+	if (VehicleIn->SetNodeFile1String.empty() == false)
+	{
+		(void)remove(VehicleIn->SetNodeFile1String.c_str());
+	}
+	if (VehicleIn->SetNodeFile2String.empty() == false)
+	{
+		(void)remove(VehicleIn->SetNodeFile2String.c_str());
+	}
+	if (VehicleIn->SegmentSetFile1String.empty() == false)
+	{
+		(void)remove(VehicleIn->SegmentSetFile1String.c_str());
+	}
+	if (VehicleIn->SegmentSetFile2String.empty() == false)
+	{
+		(void)remove(VehicleIn->SegmentSetFile2String.c_str());
+	}
+	if (VehicleIn->LoadBodyYFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->LoadBodyYFileString.c_str());
+	}
+	if (VehicleIn->LoadBodyZFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->LoadBodyZFileString.c_str());
+	}
+	if (VehicleIn->ContactFileString2.empty() == false)
+	{
+		(void)remove(VehicleIn->ContactFileString2.c_str());
+	}
+	if (VehicleIn->SecShellFileString2.empty() == false)
+	{
+		(void)remove(VehicleIn->SecShellFileString2.c_str());
+	}
+	if (VehicleIn->RigidWallFileString2.empty() == false)
+	{
+		(void)remove(VehicleIn->RigidWallFileString2.c_str());
+	}
+	if (VehicleIn->SecShellFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->SecShellFileString.c_str());
+	}
+	if (VehicleIn->RigidWallFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->RigidWallFileString.c_str());
+	}
+	if (VehicleIn->ContactFileString.empty() == false)
+	{
+		(void)remove(VehicleIn->ContactFileString.c_str());
+	}
+
 
 	delete VehicleIn;
 	VehicleIn = nullptr;
@@ -3513,13 +3660,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 
 VehicleInformation::VehicleInformation(void)
 {
-	SetNodeId1 = 0;
-	SetNodeId2 = 0;
-	SegmentSetId1 = 0;
-	PanduanSetNode = 0;
-	PanduanSegmentSetNode = 0;
 	AdditionalDigit = "1";
-	PanduanSecondpart = 0;
+	PanduanForce = 0;
 };
 DummyInformation::DummyInformation(void)
 {
@@ -3614,44 +3756,16 @@ MBSetSegmentNode::MBSetSegmentNode(void)
 	SetSegmentNodeID.fill(0);
 };
 
-//DynamicCalculation* InputFileProject::setTimeParameters()
-//{
-//	DynamicCalculation* DC = new DynamicCalculation;
-//
-//	QString FilePath = QLatin1String("D:/MSTMMSim/MSTMMSimCenter/src/Mod/VehicleCollision/Gui/Parameters.xml");
-//	QDomDocument XmlDoc;				///<将XML文件加载到内存中
-//	double ComputingTime;					///<计算时间
-//	double TimeIncrement;					///<时间步长
-//
-//	XmlDoc.clear();
-//	QFile XmlFile(FilePath);
-//	if (!XmlFile.open(QIODevice::ReadOnly))
-//	{
-//		XmlFile.close();
-//	}
-//	if (!XmlDoc.setContent(&XmlFile))
-//	{
-//		XmlFile.close();
-//	}
-//	XmlFile.close();
-//
-//	//找到节点
-//	QDomElement TimeParametersElement = XmlDoc.documentElement().firstChildElement(QLatin1String("TimeParameters"));
-//	QDomElement ComputingTimeElement = TimeParametersElement.firstChildElement(QLatin1String("ComputingTime"));
-//	QDomElement TimeIncreElement = TimeParametersElement.firstChildElement(QLatin1String("TimeIncre"));
-//
-//	//读取节点数据并转换类型
-//	ComputingTime = ComputingTimeElement.text().toDouble();
-//	TimeIncrement = TimeIncreElement.text().toDouble();
-//
-//	DC->ComputingTime = ComputingTime;
-//	DC->TimeIncrement = TimeIncrement;
-//
-//	cout << "读文件DC->ComputingTime=" << DC->ComputingTime << endl;
-//	return DC;
-//};
-
 InputFileProject::InputFileProject(void)
 {
 	fp = 0;
+};
+
+lsmap::lsmap(void)
+{
+
+};
+MBlsmap::MBlsmap(void)
+{
+
 };
