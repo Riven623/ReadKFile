@@ -510,18 +510,22 @@ public:
 	MBlsmap(void);
 };
 
-//void estimateKfile(string& Line, string& KeyWord, const int& a)
-//{
-//	ofstream testfile;
-//	testfile.open(KeyWord);
-//	testfile << Line << endl;
-//	Matrix<int, Dynamic, Dynamic>Test = LinearMSTMMSolver::openDataInt(KeyWord);
-//	if (Test.cols() != a)
-//	{
-//		cerr << "ERRO" << endl;
-//		testfile.close();
-//		(void)remove(KeyWord.c_str());
-//		exit(1);
-//	}
-//
-//}
+/**
+ * @brief 删除中间文件函数
+ *
+ * 将计算过程中产生的中间文件删除。
+ *
+ * @param filename 文件名。
+ */
+inline void DeleteProcessFile(string& filename)
+{
+	if (filename.empty() == false)
+	{
+		char* c = new char[1000];
+		strcpy(c, filename.c_str());
+		(void)remove(c);
+		delete c;
+		c = nullptr;
+	}
+}
+

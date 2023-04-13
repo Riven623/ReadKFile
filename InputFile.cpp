@@ -14,6 +14,7 @@
 ///@attention 模型文件路径建议使用完整路径。
 int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllDate* IADate)
 {
+	vector<string> vFileName;
 	DummyInformation* DummyIn = new DummyInformation;
 	DummyIn->InMB.open(MBfileToOpen);
 	(void)DummyIn->InMB.seekg(0, ios::end); //将文件指针指向文件末端
@@ -37,6 +38,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				(void)DummyIn->LineMB.erase((unsigned long long)0, (unsigned long long)1);
 				DummyIn->RigidBodyFileString = getFileName(DummyIn->LineMB);
 				DummyIn->RigidBodyFile.open(getFileName(DummyIn->LineMB));
+				vFileName.push_back(DummyIn->RigidBodyFileString);
 			}
 			if (DummyIn->RigidBodyFile.is_open())
 			{
@@ -52,6 +54,8 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				(void)DummyIn->LineMB.erase((unsigned long long)0, (unsigned long long) 1);
 				DummyIn->ColumHingeFileString = getFileName(DummyIn->LineMB);
 				DummyIn->ColumHingeFile.open(getFileName(DummyIn->LineMB));
+				vFileName.push_back(DummyIn->ColumHingeFileString);
+
 			}
 			if (DummyIn->ColumHingeFile.is_open())
 			{
@@ -67,6 +71,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				(void)DummyIn->LineMB.erase((unsigned long long)0, (unsigned long long)1);
 				DummyIn->BallJointFileString = getFileName(DummyIn->LineMB);
 				DummyIn->BallJointFile.open(getFileName(DummyIn->LineMB));
+				vFileName.push_back(DummyIn->BallJointFileString);
 			}
 			if (DummyIn->BallJointFile.is_open())
 			{
@@ -83,6 +88,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				(void)DummyIn->LineMB.erase((unsigned long long)0, (unsigned long long)1);
 				DummyIn->MBNodeFileString = getFileName2(DummyIn->Multibody, DummyIn->LineMB);
 				DummyIn->MBNodeFile.open(DummyIn->MBNodeFileString);
+				vFileName.push_back(DummyIn->MBNodeFileString);
 			}
 			if (DummyIn->MBNodeFile.is_open())
 			{
@@ -102,6 +108,9 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				DummyIn->MBContactFile.open(DummyIn->MBContactFileString2);
 				DummyIn->MBContactFile.clear();
 				DummyIn->MBContactFile << endl;
+				vFileName.push_back(DummyIn->MBContactFileString);
+				vFileName.push_back(DummyIn->MBContactFileString2);
+
 			}
 			if (DummyIn->MBContactFile.is_open())
 			{
@@ -140,6 +149,8 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				DummyIn->LineMB = DummyIn->LineMB.erase((unsigned long long)0, (unsigned long long) 1);
 				DummyIn->ConnectNodeFileString = getFileName(DummyIn->LineMB);
 				DummyIn->ConnectNodeFile.open(DummyIn->ConnectNodeFileString);
+				vFileName.push_back(DummyIn->ConnectNodeFileString);
+
 			}
 			if (DummyIn->ConnectNodeFile.is_open())
 			{
@@ -221,6 +232,8 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				(void)mbls->AllMBSetSegmentNode.insert(make_pair(pMBSetSegmentNode->SetSegmentId, (*pMBSetSegmentNode)));
 			};
 		}
+		vFileName.push_back(DummyIn->SegmentSetFile2String);
+		vFileName.push_back(DummyIn->SegmentSetFile1String);
 		InSegmentSet2.close();
 		delete pMBSetSegmentNode;
 		pMBSetSegmentNode = nullptr;
@@ -289,6 +302,8 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				(void)mbls->AllMBSetNode.insert(make_pair(pMBSetNode->SetId, (*pMBSetNode)));
 			};
 		}
+		vFileName.push_back(DummyIn->SetNodeFile1String);
+		vFileName.push_back(DummyIn->SetNodeFile2String);
 		InSetNode2.close();
 		delete pMBSetNode;
 		pMBSetNode = nullptr;
@@ -488,18 +503,11 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		mbls = nullptr;
 
 		//删除文件
-		(void)remove(DummyIn->MBContactFileString.c_str());
-		(void)remove(DummyIn->MBNodeFileString.c_str());
-		(void)remove(DummyIn->RigidBodyFileString.c_str());
-		(void)remove(DummyIn->ColumHingeFileString.c_str());
-		(void)remove(DummyIn->BallJointFileString.c_str());
-		(void)remove(DummyIn->MBContactFileString2.c_str());
-		(void)remove(DummyIn->ConnectNodeFileString.c_str());
-		(void)remove(DummyIn->SegmentSetFile2String.c_str());
-		(void)remove(DummyIn->SetNodeFile2String.c_str());
-		(void)remove(DummyIn->SegmentSetFile1String.c_str());
-		(void)remove(DummyIn->SetNodeFile1String.c_str());
+		for (int i = 0; i < vFileName.size(); i++) 
+		{
+			(void)DeleteProcessFile(vFileName[i]);
 
+		}
 		delete DummyIn;
 		DummyIn = nullptr;
 		return 1;
@@ -511,6 +519,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 ///@attention 模型文件路径建议使用完整路径。
 InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 {
+	vector<string> vFileName;
 	VehicleInformation* VehicleIn = new VehicleInformation;
 	VehicleIn->In.open(fileToOpen);
     while (getline(VehicleIn->In, VehicleIn->line))
@@ -609,6 +618,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
             VehicleIn->LoadBodyYFileString = getFileName(VehicleIn->line);
             VehicleIn->LoadBodyYFile.open(VehicleIn->LoadBodyYFileString);
+			vFileName.push_back(VehicleIn->LoadBodyYFileString);
+
 			continue;
         }
         if (VehicleIn->LoadBodyYFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -644,6 +655,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->line=VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
             VehicleIn->LoadBodyZFileString = getFileName(VehicleIn->line);
             VehicleIn->LoadBodyZFile.open(VehicleIn->LoadBodyZFileString);
+			vFileName.push_back(VehicleIn->LoadBodyZFileString);
 			continue;
 		}
 		if (VehicleIn->LoadBodyZFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -680,6 +692,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
             VehicleIn->DefineCurveFileString = getFileName(VehicleIn->line);
             VehicleIn->DefineCurveFile.open(VehicleIn->DefineCurveFileString);
+			vFileName.push_back(VehicleIn->DefineCurveFileString);
+
 			continue;
         }
         if (VehicleIn->DefineCurveFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -716,6 +730,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->LoadNodeFileString = getFileName(VehicleIn->line);
             VehicleIn->LoadNodeFile.open(VehicleIn->LoadNodeFileString);
+			vFileName.push_back(VehicleIn->LoadNodeFileString);
+
 			continue;
         }
         if (VehicleIn->LoadNodeFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -752,6 +768,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->ComputingTimeFileString = getFileName(VehicleIn->line);
             VehicleIn->ComputingTimeFile.open(VehicleIn->ComputingTimeFileString);
+			vFileName.push_back(VehicleIn->ComputingTimeFileString);
+
 			continue;
         } 
         if (VehicleIn->ComputingTimeFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -788,6 +806,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->TimeIncrementFileString = getFileName(VehicleIn->line);
             VehicleIn->TimeIncrementFile.open(getFileName(VehicleIn->line));
+			vFileName.push_back(VehicleIn->TimeIncrementFileString);
+
 			continue;
         }
         if (VehicleIn->TimeIncrementFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -915,6 +935,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->NodeFile.open(VehicleIn->NodeFileString);
             VehicleIn->NodeFile.clear();
 			VehicleIn->TestNode = getFileName3(VehicleIn->line);
+			vFileName.push_back(VehicleIn->NodeFileString);
+
             continue;
         }
         if (VehicleIn->NodeFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -967,6 +989,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->ElaFile.open(getFileName(VehicleIn->line));
 			VehicleIn->ElaFile.clear();
 			VehicleIn->TestEla = getFileName3(VehicleIn->line);
+			vFileName.push_back(VehicleIn->ElaFileString);
+
             continue;
         }
         if (VehicleIn->ElaFile.is_open() && (VehicleIn->line[0] != '*') && (' ' == VehicleIn->line[0])/*&&(isdigit(VehicleIn->line.at(10)))*/)
@@ -981,17 +1005,11 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				{
 					cerr << VehicleIn->TestEla << "ERRO" << endl;
 					VehicleIn->testfile.close();
-					if (VehicleIn->TestEla.empty()==false)
-					{
-						(void)remove(VehicleIn->TestEla.c_str());
-					}
+					(void)DeleteProcessFile(VehicleIn->TestEla);
 					exit(1);
 				}
 				VehicleIn->testfile.close();
-				if (VehicleIn->TestEla.empty() == false)
-				{
-                    (void)remove(VehicleIn->TestEla.c_str());
-				}
+				(void)DeleteProcessFile(VehicleIn->TestEla);
 				VehicleIn->ElaFile << VehicleIn->line << endl;
         }
         if ( "*MAT_PLASTIC_KINEMATIC"==VehicleIn->line )
@@ -1025,6 +1043,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->PlaFile.open(getFileName(VehicleIn->line));
             VehicleIn->PlaFile.clear();
 			VehicleIn->TestPla = getFileName3(VehicleIn->line);
+			vFileName.push_back(VehicleIn->PlaFileString);
+
             continue;
         }
         if (VehicleIn->PlaFile.is_open() && (VehicleIn->line[0] != '*') /*&& (isdigit(VehicleIn->line.at(10)))*/)
@@ -1037,17 +1057,12 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				{
 					cerr << VehicleIn->TestPla << "ERRO" << endl;
 					VehicleIn->testfile.close();
-					if (VehicleIn->TestPla.empty() == false)
-					{
-						(void)remove(VehicleIn->TestPla.c_str());
-					}
+						(void)DeleteProcessFile(VehicleIn->TestPla);
+					
 					exit(1);
 				}
 				VehicleIn->testfile.close();
-				if (VehicleIn->TestPla.empty() == false)
-				{
-					(void)remove(VehicleIn->TestPla.c_str());
-				}
+				(void)DeleteProcessFile(VehicleIn->TestPla);
 				VehicleIn->PlaFile << VehicleIn->line << endl;
         }
 
@@ -1083,6 +1098,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->PartFileString = getFileName(VehicleIn->line);
             VehicleIn->PartFile.open(getFileName(VehicleIn->line));
 			VehicleIn->TestPart = getFileName3(VehicleIn->line);
+			vFileName.push_back(VehicleIn->PartFileString);
+
             continue;
         }
         if (VehicleIn->PartFile.is_open()&&(' ' == VehicleIn->line[0]))
@@ -1095,17 +1112,11 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				{
 					cerr << VehicleIn->TestPart << "ERRO" << endl;
 					VehicleIn->testfile.close();
-					if (VehicleIn->TestPart.empty() == false)
-					{
-						(void)remove(VehicleIn->TestPart.c_str());
-					}
+						(void)DeleteProcessFile(VehicleIn->TestPart);
 					exit(1);
 				}
 				VehicleIn->testfile.close();
-				if (VehicleIn->TestPart.empty() == false)
-				{
-					(void)remove(VehicleIn->TestPart.c_str());
-				}
+				(void)DeleteProcessFile(VehicleIn->TestPart);
 				VehicleIn->PartFile << VehicleIn->line << endl;
         };
 
@@ -1140,6 +1151,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->HourglassFileString = getFileName(VehicleIn->line);
             VehicleIn->HourglassFile.open(getFileName(VehicleIn->line));
+			vFileName.push_back(VehicleIn->HourglassFileString);
+
             continue;
         }
         if (VehicleIn->HourglassFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -1180,6 +1193,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->NodeVelocityFile.open(getFileName(VehicleIn->line));
 			VehicleIn->NodeVelocityFile.clear();
 			VehicleIn->TestNodeVelocity = getFileName3(VehicleIn->line);
+			vFileName.push_back(VehicleIn->NodeVelocityFileString);
 			continue;
         }
         if (VehicleIn->NodeVelocityFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -1191,17 +1205,11 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			{
 				cerr << VehicleIn->TestNodeVelocity << "ERRO" << endl;
 				VehicleIn->testfile.close();
-				if (VehicleIn->TestNodeVelocity.empty() == false)
-				{
-					(void)remove(VehicleIn->TestNodeVelocity.c_str());
-				}
+					(void)DeleteProcessFile(VehicleIn->TestNodeVelocity);
 				exit(1);
 			}
 			VehicleIn->testfile.close();
-			if (VehicleIn->TestNodeVelocity.empty() == false)
-			{
-				(void)remove(VehicleIn->TestNodeVelocity.c_str());
-			}
+			(void)DeleteProcessFile(VehicleIn->TestNodeVelocity);
 			VehicleIn->NodeVelocityFile << VehicleIn->line << endl;
         }
 
@@ -1234,6 +1242,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->BoundarySetFileString = getFileName(VehicleIn->line);
             VehicleIn->BoundarySetFile.open(getFileName(VehicleIn->line));
+			vFileName.push_back(VehicleIn->BoundarySetFileString);
+
             continue;
         }
         if (VehicleIn->BoundarySetFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -1306,6 +1316,9 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->ContactFile.clear();
             VehicleIn->ContactFile << endl;
 			VehicleIn->TestContact = getFileName3(VehicleIn->line);
+			vFileName.push_back(VehicleIn->ContactFileString);
+			vFileName.push_back(VehicleIn->ContactFileString2);
+
             continue;
         }
         if (VehicleIn->ContactFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -1346,6 +1359,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->EleSoFile.open(getFileName(VehicleIn->line));
 			VehicleIn->EleSoFile.clear();
 			VehicleIn->TestEleSo = getFileName3(VehicleIn->line);
+			vFileName.push_back(VehicleIn->EleSoFileString);
+
             continue;
         }
         if (VehicleIn->EleSoFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -1425,6 +1440,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->BoundaryFileString = getFileName(VehicleIn->line);
             VehicleIn->BoundaryFile.open(getFileName(VehicleIn->line));
+			vFileName.push_back(VehicleIn->BoundaryFileString);
             continue;
         }
         if (VehicleIn->BoundaryFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -1467,6 +1483,9 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->RigidWallFile.clear();
             VehicleIn->RigidWallFile << endl;
 			VehicleIn->TestRigidWall = getFileName3(VehicleIn->line);
+			vFileName.push_back(VehicleIn->RigidWallFileString2);
+			vFileName.push_back(VehicleIn->RigidWallFileString);
+
 			continue;
         }
         if (VehicleIn->RigidWallFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -1507,6 +1526,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->EleBFileString = getFileName(VehicleIn->line);
             VehicleIn->EleBFile.open(getFileName(VehicleIn->line));
+			vFileName.push_back(VehicleIn->EleBFileString);
+
             continue;
         }
         if (VehicleIn->EleBFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -1547,6 +1568,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->EleShFile.open(getFileName(VehicleIn->line));
             VehicleIn->EleShFile.clear();
 			VehicleIn->TestEleSh = getFileName3(VehicleIn->line);
+			vFileName.push_back(VehicleIn->EleShFileString);
+
             continue;
         }
         if (VehicleIn->EleShFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -1558,17 +1581,11 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			{
 				cerr << VehicleIn->TestEleSh << "ERRO" << endl;
 				VehicleIn->testfile.close();
-				if (VehicleIn->TestEleSh.empty() == false)
-				{
-					(void)remove(VehicleIn->TestEleSh.c_str());
-				}
+					(void)DeleteProcessFile(VehicleIn->TestEleSh);
 				exit(1);
 			}
 			VehicleIn->testfile.close();
-			if (VehicleIn->TestEleSh.empty() == false)
-			{
-				(void)remove(VehicleIn->TestEleSh.c_str());
-			}
+			(void)DeleteProcessFile(VehicleIn->TestEleSh);
 			VehicleIn->EleShFile << VehicleIn->line << endl;
         }
         //SECTION梁
@@ -1603,6 +1620,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->SecBeamFileString = getFileName(VehicleIn->line);
             VehicleIn->SecBeamFile.open(getFileName(VehicleIn->line));
 			VehicleIn->TestSecBeam = getFileName3(VehicleIn->line);
+			vFileName.push_back(VehicleIn->SecBeamFileString);
+
             continue;
         }
         if (VehicleIn->SecBeamFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -1657,6 +1676,9 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
             VehicleIn->SecShellFile.clear();
             VehicleIn->SecShellFile << endl;
 			VehicleIn->TestSecShell = getFileName3(VehicleIn->line);
+			vFileName.push_back(VehicleIn->SecShellFileString);
+			vFileName.push_back(VehicleIn->SecShellFileString2);
+
             continue;
         }
         if (VehicleIn->SecShellFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -1695,6 +1717,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->SecSolidFileString = getFileName(VehicleIn->line);
             VehicleIn->SecSolidFile.open(getFileName(VehicleIn->line));
+			vFileName.push_back(VehicleIn->SecSolidFileString);
+
             continue;
         }
         if (VehicleIn->SecSolidFile.is_open() && (VehicleIn->line[0] != '*'))
@@ -1749,17 +1773,11 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				{
 					cerr << VehicleIn->TestSecShell << "ERRO" << endl;
 					VehicleIn->testfile.close();
-					if (VehicleIn->TestSecShell.empty() == false)
-					{
-						(void)remove(VehicleIn->TestSecShell.c_str());
-					}
+						(void)DeleteProcessFile(VehicleIn->TestSecShell);
 					exit(1);
 				}
 				VehicleIn->testfile.close();
-				if (VehicleIn->TestSecShell.empty() == false)
-				{
-					(void)remove(VehicleIn->TestSecShell.c_str());
-				}
+				(void)DeleteProcessFile(VehicleIn->TestSecShell);
 				VehicleIn->SecShellFile2 << VehicleIn->LineSecShell << endl;
             }
         }
@@ -1784,17 +1802,11 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				{
 					cerr << VehicleIn->TestContact << "ERRO" << endl;
 					VehicleIn->testfile.close();
-					if (VehicleIn->TestContact.empty() == false)
-					{
-						(void)remove(VehicleIn->TestContact.c_str());
-					}
+						(void)DeleteProcessFile(VehicleIn->TestContact);
 					exit(1);
 				}
 				VehicleIn->testfile.close();
-				if (VehicleIn->TestContact.empty() == false)
-				{
-					(void)remove(VehicleIn->TestContact.c_str());
-				}
+				(void)DeleteProcessFile(VehicleIn->TestContact);
 				VehicleIn->ContactFile2 << VehicleIn->LineContact << endl;
             }
         }
@@ -1818,17 +1830,11 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				{
 					cerr << VehicleIn->TestRigidWall << "ERRO" << endl;
 					VehicleIn->testfile.close();
-					if (VehicleIn->TestRigidWall.empty() == false)
-					{
-						(void)remove(VehicleIn->TestRigidWall.c_str());
-					}
+						(void)DeleteProcessFile(VehicleIn->TestRigidWall);
 					exit(1);
 				}
 				VehicleIn->testfile.close();
-				if (VehicleIn->TestRigidWall.empty() == false)
-				{
-					(void)remove(VehicleIn->TestRigidWall.c_str());
-				}
+				(void)DeleteProcessFile(VehicleIn->TestRigidWall);
 				VehicleIn->RigidWallFile2 << VehicleIn->LineRigidwall << endl;
 			}
 		}
@@ -1856,6 +1862,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->SegmentSetFile1.open(VehicleIn->SegmentSetFile1String);
 			VehicleIn->SegmentSetFile1.clear();
 			VehicleIn->SegmentSetFile1 << endl;
+			vFileName.push_back(VehicleIn->SegmentSetFile1String);
+
 			continue;
 		}
 		if (VehicleIn->SegmentSetFile1.is_open() && (VehicleIn->LineSegmentSet[0] != '*'))
@@ -1873,6 +1881,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	ifstream InSegmentSet2;
 	InSegmentSet2.open(VehicleIn->SegmentSetFile1String);
 	VehicleIn->SegmentSetFile2String = "SETSEGMENT.txt";
+	vFileName.push_back(VehicleIn->SegmentSetFile2String);
+
 	string LineSegmentSet2;
 	int panduanneirongSegmentSet = 0;
 	while (getline(InSegmentSet2, LineSegmentSet2))
@@ -1911,6 +1921,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 		{
 			VehicleIn->Setnodelist = VehicleIn->LineSetNode.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->SetNodeFile1String = getFileName(VehicleIn->LineSetNode);
+			vFileName.push_back(VehicleIn->SetNodeFile1String);
+
 			VehicleIn->SetNodeFile1.open(VehicleIn->SetNodeFile1String);
 			VehicleIn->SetNodeFile1.clear();
 			VehicleIn->SetNodeFile1 << endl;
@@ -1929,6 +1941,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	ifstream InSetNode2;
 	InSetNode2.open(VehicleIn->SetNodeFile1String);
 	VehicleIn->SetNodeFile2String = "SETNODELIST.txt";
+	vFileName.push_back(VehicleIn->SetNodeFile2String);
+
 	string LineSetNode2;
 	int panduanneirong=0;
 	while (getline(InSetNode2, LineSetNode2))
@@ -1966,6 +1980,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 		{
 			VehicleIn->LineForce = VehicleIn->LineForce.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->ForceBOUNDARYFileString = getFileName(VehicleIn->LineForce);
+			vFileName.push_back(VehicleIn->ForceBOUNDARYFileString);
+
 			VehicleIn->ForceBOUNDARYFile.open(VehicleIn->ForceBOUNDARYFileString);
 		}
 		if (VehicleIn->ForceBOUNDARYFile.is_open())
@@ -1977,6 +1993,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->ForceBOUNDARYFile.close();
 			VehicleIn->LineForce = VehicleIn->LineForce.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->ForceSetNodeFileString = getFileName(VehicleIn->LineForce);
+			vFileName.push_back(VehicleIn->ForceSetNodeFileString);
+
 			VehicleIn->ForceSetNodeFile.open(VehicleIn->ForceSetNodeFileString);
 		}
 		if (VehicleIn->ForceSetNodeFile.is_open())
@@ -1992,6 +2010,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->ForceSetNodeFile.close();
 			VehicleIn->LineForce = VehicleIn->LineForce.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->ForceFileString = getFileName(VehicleIn->LineForce);
+			vFileName.push_back(VehicleIn->ForceFileString);
+
 			VehicleIn->ForceFile.open(VehicleIn->ForceFileString);
 		}
 		if (VehicleIn->ForceFile.is_open())
@@ -3518,139 +3538,11 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
     ls = nullptr;
 
     //删除文件
-	if (VehicleIn->DefineCurveFileString.empty() == false)
+	for (int i = 0; i < vFileName.size(); i++)
 	{
-		(void)remove(VehicleIn->DefineCurveFileString.c_str());
-	}
-	if (VehicleIn->HourglassFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->HourglassFileString.c_str());
-	}
-	if (VehicleIn->SecBeamFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->SecBeamFileString.c_str());
-	}
-	if (VehicleIn->EleShFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->EleShFileString.c_str());
-	}
-	if (VehicleIn->EleBFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->EleBFileString.c_str());
-	}
-	if (VehicleIn->BoundaryFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->BoundaryFileString.c_str());
-	}
-	if (VehicleIn->SetFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->SetFileString.c_str());
-	}
-	if (VehicleIn->SlaveNodeFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->SlaveNodeFileString.c_str());
-	}
-	if (VehicleIn->EleSoFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->EleSoFileString.c_str());
-	}
-	if (VehicleIn->MasterNodeFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->MasterNodeFileString.c_str());
-	}
-	if (VehicleIn->NodeVelocityFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->NodeVelocityFileString.c_str());
-	}
-	if (VehicleIn->SecSolidFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->SecSolidFileString.c_str());
-	}
-	if (VehicleIn->PartFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->PartFileString.c_str());
-	}
-	if (VehicleIn->NodeFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->NodeFileString.c_str());
-	}
-	if (VehicleIn->TimeIncrementFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->TimeIncrementFileString.c_str());
-	}
-	if (VehicleIn->ComputingTimeFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->ComputingTimeFileString.c_str());
-	}
-	if (VehicleIn->PlaFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->PlaFileString.c_str());
-	}
-	if (VehicleIn->ElaFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->ElaFileString.c_str());
-	}
-	if (VehicleIn->BoundarySetFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->BoundarySetFileString.c_str());
-	}
-	if (VehicleIn->WallSlaveNodeFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->WallSlaveNodeFileString.c_str());
-	}
-	if (VehicleIn->LoadNodeFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->LoadNodeFileString.c_str());
-	}
-	if (VehicleIn->SetNodeFile1String.empty() == false)
-	{
-		(void)remove(VehicleIn->SetNodeFile1String.c_str());
-	}
-	if (VehicleIn->SetNodeFile2String.empty() == false)
-	{
-		(void)remove(VehicleIn->SetNodeFile2String.c_str());
-	}
-	if (VehicleIn->SegmentSetFile1String.empty() == false)
-	{
-		(void)remove(VehicleIn->SegmentSetFile1String.c_str());
-	}
-	if (VehicleIn->SegmentSetFile2String.empty() == false)
-	{
-		(void)remove(VehicleIn->SegmentSetFile2String.c_str());
-	}
-	if (VehicleIn->LoadBodyYFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->LoadBodyYFileString.c_str());
-	}
-	if (VehicleIn->LoadBodyZFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->LoadBodyZFileString.c_str());
-	}
-	if (VehicleIn->ContactFileString2.empty() == false)
-	{
-		(void)remove(VehicleIn->ContactFileString2.c_str());
-	}
-	if (VehicleIn->SecShellFileString2.empty() == false)
-	{
-		(void)remove(VehicleIn->SecShellFileString2.c_str());
-	}
-	if (VehicleIn->RigidWallFileString2.empty() == false)
-	{
-		(void)remove(VehicleIn->RigidWallFileString2.c_str());
-	}
-	if (VehicleIn->SecShellFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->SecShellFileString.c_str());
-	}
-	if (VehicleIn->RigidWallFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->RigidWallFileString.c_str());
-	}
-	if (VehicleIn->ContactFileString.empty() == false)
-	{
-		(void)remove(VehicleIn->ContactFileString.c_str());
-	}
+		(void)DeleteProcessFile(vFileName[i]);
 
+	}
 
 	delete VehicleIn;
 	VehicleIn = nullptr;
