@@ -1,5 +1,5 @@
 #cmake软件要求的必要格式，设置cmake的最低版本
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.23)
 
 #生成的VS解决方案的名称
 project(CMakeProject)

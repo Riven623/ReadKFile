@@ -18,7 +18,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 	DummyInformation* DummyIn = new DummyInformation;
 	DummyIn->InMB.open(MBfileToOpen);
 	(void)DummyIn->InMB.seekg(0, ios::end); //将文件指针指向文件末端
-     fp = DummyIn->InMB.tellg(); //fp 为文件指针的偏移量
+	fp = DummyIn->InMB.tellg(); //fp 为文件指针的偏移量
 	if (int(fp) <= 0) // 偏移量为0，证明文件为空。
 	{
 		return 0;
@@ -371,21 +371,21 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 				(void)(*IADate).inputAllRigidBody.insert(make_pair((*InRigidBody).RigidBodyID, (*InRigidBody)));
 				delete InRigidBody;
 			}
-			IADate->inputAllRigidBody[29].HumanID = "Part_human001";
-			IADate->inputAllRigidBody[27].HumanID = "Part_human002";
-			IADate->inputAllRigidBody[17].HumanID = "Part_human003";
-			IADate->inputAllRigidBody[23].HumanID = "Part_human004";
-			IADate->inputAllRigidBody[15].HumanID = "Part_human005";
-			IADate->inputAllRigidBody[21].HumanID = "Part_human006";
-			IADate->inputAllRigidBody[13].HumanID = "Part_human007";
-			IADate->inputAllRigidBody[19].HumanID = "Part_human008";
-			IADate->inputAllRigidBody[5].HumanID = "Part_human009";
-			IADate->inputAllRigidBody[3].HumanID = "Part_human010";
-			IADate->inputAllRigidBody[11].HumanID = "Part_human011";
-			IADate->inputAllRigidBody[9].HumanID = "Part_human012";
-			IADate->inputAllRigidBody[7].HumanID = "Part_human013";
-			IADate->inputAllRigidBody[1].HumanID = "Part_human014";
-			IADate->inputAllRigidBody[25].HumanID = "Part_human";
+			IADate->inputAllRigidBody[29].HumanID = "Part_Fusion";
+			IADate->inputAllRigidBody[27].HumanID = "Part_Part_Feature001";
+			IADate->inputAllRigidBody[17].HumanID = "Part_zheng001";
+			IADate->inputAllRigidBody[23].HumanID = "Part_zheng002";
+			IADate->inputAllRigidBody[15].HumanID = "Part_zheng007";
+			IADate->inputAllRigidBody[21].HumanID = "Part_zheng010";
+			IADate->inputAllRigidBody[13].HumanID = "Part_zheng008";
+			IADate->inputAllRigidBody[19].HumanID = "Part_zheng011";
+			IADate->inputAllRigidBody[5].HumanID = "Part_zheng003";
+			IADate->inputAllRigidBody[3].HumanID = "Part_zheng005";
+			IADate->inputAllRigidBody[11].HumanID = "Part_zheng004";
+			IADate->inputAllRigidBody[9].HumanID = "Part_zheng006";
+			IADate->inputAllRigidBody[7].HumanID = "Part_zheng014";
+			IADate->inputAllRigidBody[1].HumanID = "Part_zheng013";
+			IADate->inputAllRigidBody[25].HumanID = "Part_zheng";
 		};
 
 		// 柱铰信息
@@ -456,8 +456,8 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 			{
 				InputFEMtoMBContact* MBInCta = new InputFEMtoMBContact;
 				MBInCta->ContactNumber = MBContactImformation2(i, 0);
-				MBInCta->ContactType =(int) 1;
-				if (( MBContactImformation(i, 5)<1e-5) && ( MBContactImformation(i, 6) < 1e-5))
+				MBInCta->ContactType = (int)1;
+				if ((MBContactImformation(i, 5) < 1e-5) && (MBContactImformation(i, 6) < 1e-5))
 				{
 					MBInCta->FrictionJudgment = (int)1;
 				}
@@ -503,9 +503,9 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		mbls = nullptr;
 
 		//删除文件
-		for (int i = 0; i < vFileName.size(); i++) 
+		for (unsigned long long i = 0; i < vFileName.size(); i++)
 		{
-			(void)DeleteProcessFile(vFileName[i]);
+			DeleteProcessFile(vFileName[i]);
 
 		}
 		delete DummyIn;
@@ -522,8 +522,8 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	vector<string> vFileName;
 	VehicleInformation* VehicleIn = new VehicleInformation;
 	VehicleIn->In.open(fileToOpen);
-    while (getline(VehicleIn->In, VehicleIn->line))
-    {
+	while (getline(VehicleIn->In, VehicleIn->line))
+	{
 		size_t pos = VehicleIn->line.find_first_not_of(" ");
 		//跳过注释行和空行
 		if (VehicleIn->line[0] == '$')
@@ -534,103 +534,10 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 		{
 			continue;
 		}
-        //*LOAD_BODY_PARTS
-        if ("*LOAD_BODY_PARTS" ==VehicleIn->line )
-        {
-            VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->LoadBodyYFile.close();
-        }
-
-        //*SET_PART_LIST
-        if ( "*SET_PART_LIST"==VehicleIn->line )
-        {
-            VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->LoadBodyYFile.close();
-        }
-
-        //*LOAD_BODY_Y
-        if ( "*LOAD_BODY_Y"== VehicleIn->line)
-        {
-            VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->LoadNodeFile.close();
-			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
-            VehicleIn->LoadBodyYFileString = getFileName(VehicleIn->line);
-            VehicleIn->LoadBodyYFile.open(VehicleIn->LoadBodyYFileString);
-			vFileName.push_back(VehicleIn->LoadBodyYFileString);
-
-			continue;
-        }
-        if (VehicleIn->LoadBodyYFile.is_open() && (VehicleIn->line[0] != '*'))
-        {
-			VehicleIn->LoadBodyYFile << VehicleIn->line << endl;
-        };
-
-        //*LOAD_BODY_Z
-		if ( "*LOAD_BODY_Z"==VehicleIn->line )
+		//*LOAD_BODY_PARTS
+		if ("*LOAD_BODY_PARTS" == VehicleIn->line)
 		{
-			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->LoadBodyZFile.close();
 			VehicleIn->WallSlaveNodeFile.close();
 			VehicleIn->BoundarySetFile.close();
 			VehicleIn->HourglassFile.close();
@@ -643,7 +550,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->MasterNodeFile.close();
 			VehicleIn->ContactFile.close();
 			VehicleIn->EleSoFile.close();
-			VehicleIn-> SlaveNodeFile.close();
+			VehicleIn->SlaveNodeFile.close();
 			VehicleIn->BoundaryFile.close();
 			VehicleIn->EleBFile.close();
 			VehicleIn->EleShFile.close();
@@ -652,9 +559,102 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->SetFile.close();
 			VehicleIn->ComputingTimeFile.close();
 			VehicleIn->LoadNodeFile.close();
-			VehicleIn->line=VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
-            VehicleIn->LoadBodyZFileString = getFileName(VehicleIn->line);
-            VehicleIn->LoadBodyZFile.open(VehicleIn->LoadBodyZFileString);
+			VehicleIn->LoadBodyYFile.close();
+		}
+
+		//*SET_PART_LIST
+		if ("*SET_PART_LIST" == VehicleIn->line)
+		{
+			VehicleIn->LoadBodyZFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->LoadBodyYFile.close();
+		}
+
+		//*LOAD_BODY_Y
+		if ("*LOAD_BODY_Y" == VehicleIn->line)
+		{
+			VehicleIn->LoadBodyZFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
+			VehicleIn->LoadBodyYFileString = getFileName(VehicleIn->line);
+			VehicleIn->LoadBodyYFile.open(VehicleIn->LoadBodyYFileString);
+			vFileName.push_back(VehicleIn->LoadBodyYFileString);
+
+			continue;
+		}
+		if (VehicleIn->LoadBodyYFile.is_open() && (VehicleIn->line[0] != '*'))
+		{
+			VehicleIn->LoadBodyYFile << VehicleIn->line << endl;
+		};
+
+		//*LOAD_BODY_Z
+		if ("*LOAD_BODY_Z" == VehicleIn->line)
+		{
+			VehicleIn->LoadBodyYFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
+			VehicleIn->LoadBodyZFileString = getFileName(VehicleIn->line);
+			VehicleIn->LoadBodyZFile.open(VehicleIn->LoadBodyZFileString);
 			vFileName.push_back(VehicleIn->LoadBodyZFileString);
 			continue;
 		}
@@ -663,159 +663,159 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->LoadBodyZFile << VehicleIn->line << endl;
 		};
 
-        //*DEFINE_CURVE
-        if ( "*DEFINE_CURVE"==VehicleIn->line )
+		//*DEFINE_CURVE
+		if ("*DEFINE_CURVE" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
-            VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->LoadNodeFile.close();
+			VehicleIn->LoadBodyZFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->LoadNodeFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
-            VehicleIn->DefineCurveFileString = getFileName(VehicleIn->line);
-            VehicleIn->DefineCurveFile.open(VehicleIn->DefineCurveFileString);
+			VehicleIn->DefineCurveFileString = getFileName(VehicleIn->line);
+			VehicleIn->DefineCurveFile.open(VehicleIn->DefineCurveFileString);
 			vFileName.push_back(VehicleIn->DefineCurveFileString);
 
 			continue;
-        }
-        if (VehicleIn->DefineCurveFile.is_open() && (VehicleIn->line[0] != '*'))
-        {
+		}
+		if (VehicleIn->DefineCurveFile.is_open() && (VehicleIn->line[0] != '*'))
+		{
 			VehicleIn->DefineCurveFile << VehicleIn->line << endl;
-        };
+		};
 
-        //*LOAD_NODE_SET
-        if ( "*LOAD_NODE_SET"==VehicleIn->line )
+		//*LOAD_NODE_SET
+		if ("*LOAD_NODE_SET" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->DefineCurveFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->DefineCurveFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->LoadNodeFileString = getFileName(VehicleIn->line);
-            VehicleIn->LoadNodeFile.open(VehicleIn->LoadNodeFileString);
+			VehicleIn->LoadNodeFile.open(VehicleIn->LoadNodeFileString);
 			vFileName.push_back(VehicleIn->LoadNodeFileString);
 
 			continue;
-        }
-        if (VehicleIn->LoadNodeFile.is_open() && (VehicleIn->line[0] != '*'))
-        {
+		}
+		if (VehicleIn->LoadNodeFile.is_open() && (VehicleIn->line[0] != '*'))
+		{
 			VehicleIn->LoadNodeFile << VehicleIn->line << endl;
-        };
+		};
 
-        //计算时长
-        if ( "*CONTROL_TERMINATION"==VehicleIn->line )
+		//计算时长
+		if ("*CONTROL_TERMINATION" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->ComputingTimeFileString = getFileName(VehicleIn->line);
-            VehicleIn->ComputingTimeFile.open(VehicleIn->ComputingTimeFileString);
+			VehicleIn->ComputingTimeFile.open(VehicleIn->ComputingTimeFileString);
 			vFileName.push_back(VehicleIn->ComputingTimeFileString);
 
 			continue;
-        } 
-        if (VehicleIn->ComputingTimeFile.is_open() && (VehicleIn->line[0] != '*'))
-        {
+		}
+		if (VehicleIn->ComputingTimeFile.is_open() && (VehicleIn->line[0] != '*'))
+		{
 			VehicleIn->ComputingTimeFile << VehicleIn->line << endl;
-        };
+		};
 
-        //步长
-        if (  "*CONTROL_TIMESTEP"== VehicleIn->line)
+		//步长
+		if ("*CONTROL_TIMESTEP" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->TimeIncrementFileString = getFileName(VehicleIn->line);
-            VehicleIn->TimeIncrementFile.open(getFileName(VehicleIn->line));
+			VehicleIn->TimeIncrementFile.open(getFileName(VehicleIn->line));
 			vFileName.push_back(VehicleIn->TimeIncrementFileString);
 
 			continue;
-        }
-        if (VehicleIn->TimeIncrementFile.is_open() && (VehicleIn->line[0] != '*'))
-        {
-			VehicleIn->TimeIncrementFile<< VehicleIn->line << endl;
-        };
+		}
+		if (VehicleIn->TimeIncrementFile.is_open() && (VehicleIn->line[0] != '*'))
+		{
+			VehicleIn->TimeIncrementFile << VehicleIn->line << endl;
+		};
 
-		if ( "*DATABASE_BINARY_D3PLOT"==VehicleIn->line )
+		if ("*DATABASE_BINARY_D3PLOT" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
@@ -832,7 +832,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->MasterNodeFile.close();
 			VehicleIn->ContactFile.close();
 			VehicleIn->EleSoFile.close();
-			VehicleIn-> SlaveNodeFile.close();
+			VehicleIn->SlaveNodeFile.close();
 			VehicleIn->BoundaryFile.close();
 			VehicleIn->EleBFile.close();
 			VehicleIn->EleShFile.close();
@@ -843,104 +843,104 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->DefineCurveFile.close();
 		};
 
-        if ( "*DATABASE_GLSTAT"== VehicleIn->line)
+		if ("*DATABASE_GLSTAT" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 
 			VehicleIn->LoadBodyZFile.close();
 
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
-        };
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
+		};
 
-        if ( "*CONTROL_IMPLICIT_EIGENVALUE"==VehicleIn->line )
+		if ("*CONTROL_IMPLICIT_EIGENVALUE" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 
 			VehicleIn->LoadBodyZFile.close();
 
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
-        };
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
+		};
 
-        //节点
-        if ( "*NODE"==VehicleIn->line )
+		//节点
+		if ("*NODE" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->NodeFileString = getFileName(VehicleIn->line);
-            VehicleIn->NodeFile.open(VehicleIn->NodeFileString);
-            VehicleIn->NodeFile.clear();
+			VehicleIn->NodeFile.open(VehicleIn->NodeFileString);
+			VehicleIn->NodeFile.clear();
 			VehicleIn->TestNode = getFileName3(VehicleIn->line);
 			vFileName.push_back(VehicleIn->NodeFileString);
 
-            continue;
-        }
-        if (VehicleIn->NodeFile.is_open() && (VehicleIn->line[0] != '*'))
-        {
+			continue;
+		}
+		if (VehicleIn->NodeFile.is_open() && (VehicleIn->line[0] != '*'))
+		{
 			/*VehicleIn->testfile.open(VehicleIn->TestNode);
 			VehicleIn->testfile << VehicleIn->line << endl;
 			Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestNode);
@@ -954,250 +954,250 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->testfile.close();
 			(void)remove(VehicleIn->TestNode.c_str());*/
 			VehicleIn->NodeFile << VehicleIn->line << endl;
-        }
+		}
 
-        //材料部分最终输出文件见最下方，InputElaFile，InputPlaFile。
-        if ( "*MAT_ELASTIC"==VehicleIn->line )
+		//材料部分最终输出文件见最下方，InputElaFile，InputPlaFile。
+		if ("*MAT_ELASTIC" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->NodeFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
-            VehicleIn->line=VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->NodeFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
+			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->ElaFileString = getFileName(VehicleIn->line);
 			VehicleIn->ElaFile.open(getFileName(VehicleIn->line));
 			VehicleIn->ElaFile.clear();
 			VehicleIn->TestEla = getFileName3(VehicleIn->line);
 			vFileName.push_back(VehicleIn->ElaFileString);
 
-            continue;
-        }
-        if (VehicleIn->ElaFile.is_open() && (VehicleIn->line[0] != '*') && (' ' == VehicleIn->line[0])/*&&(isdigit(VehicleIn->line.at(10)))*/)
-        {
-                VehicleIn->line = VehicleIn->line.insert(10, " ");
-				VehicleIn->line = VehicleIn->line.insert(21, " ");
-				VehicleIn->testfile.open(VehicleIn->TestEla);
-				//getdigit2(VehicleIn->testfile, VehicleIn->line);
-				VehicleIn->testfile << VehicleIn->line << endl;
-				Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestEla);
-				if (Test.cols() != 4)
-				{
-					cerr << VehicleIn->TestEla << "ERRO" << endl;
-					VehicleIn->testfile.close();
-					(void)DeleteProcessFile(VehicleIn->TestEla);
-					exit(1);
-				}
+			continue;
+		}
+		if (VehicleIn->ElaFile.is_open() && (VehicleIn->line[0] != '*') && (' ' == VehicleIn->line[0])/*&&(isdigit(VehicleIn->line.at(10)))*/)
+		{
+			VehicleIn->line = VehicleIn->line.insert(10, " ");
+			VehicleIn->line = VehicleIn->line.insert(21, " ");
+			VehicleIn->testfile.open(VehicleIn->TestEla);
+			//getdigit2(VehicleIn->testfile, VehicleIn->line);
+			VehicleIn->testfile << VehicleIn->line << endl;
+			Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestEla);
+			if (Test.cols() != 4)
+			{
+				cerr << VehicleIn->TestEla << "ERRO" << endl;
 				VehicleIn->testfile.close();
-				(void)DeleteProcessFile(VehicleIn->TestEla);
-				VehicleIn->ElaFile << VehicleIn->line << endl;
-        }
-        if ( "*MAT_PLASTIC_KINEMATIC"==VehicleIn->line )
+				DeleteProcessFile(VehicleIn->TestEla);
+				exit(1);
+			}
+			VehicleIn->testfile.close();
+			DeleteProcessFile(VehicleIn->TestEla);
+			VehicleIn->ElaFile << VehicleIn->line << endl;
+		}
+		if ("*MAT_PLASTIC_KINEMATIC" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->NodeFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->NodeFile.close();
 			VehicleIn->ElaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->PlaFileString = getFileName(VehicleIn->line);
-            VehicleIn->PlaFile.open(getFileName(VehicleIn->line));
-            VehicleIn->PlaFile.clear();
+			VehicleIn->PlaFile.open(getFileName(VehicleIn->line));
+			VehicleIn->PlaFile.clear();
 			VehicleIn->TestPla = getFileName3(VehicleIn->line);
 			vFileName.push_back(VehicleIn->PlaFileString);
 
-            continue;
-        }
-        if (VehicleIn->PlaFile.is_open() && (VehicleIn->line[0] != '*') /*&& (isdigit(VehicleIn->line.at(10)))*/)
-        {
-                VehicleIn->line = VehicleIn->line.insert(10, " ");
-				VehicleIn->testfile.open(VehicleIn->TestPla);
-				VehicleIn->testfile << VehicleIn->line << endl;
-				Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestPla);
-				if (Test.cols() < 7)
-				{
-					cerr << VehicleIn->TestPla << "ERRO" << endl;
-					VehicleIn->testfile.close();
-						(void)DeleteProcessFile(VehicleIn->TestPla);
-					
-					exit(1);
-				}
+			continue;
+		}
+		if (VehicleIn->PlaFile.is_open() && (VehicleIn->line[0] != '*') /*&& (isdigit(VehicleIn->line.at(10)))*/)
+		{
+			VehicleIn->line = VehicleIn->line.insert(10, " ");
+			VehicleIn->testfile.open(VehicleIn->TestPla);
+			VehicleIn->testfile << VehicleIn->line << endl;
+			Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestPla);
+			if (Test.cols() < 7)
+			{
+				cerr << VehicleIn->TestPla << "ERRO" << endl;
 				VehicleIn->testfile.close();
-				(void)DeleteProcessFile(VehicleIn->TestPla);
-				VehicleIn->PlaFile << VehicleIn->line << endl;
-        }
+				DeleteProcessFile(VehicleIn->TestPla);
 
-        //Part
-        if ( "*PART"==VehicleIn->line )
+				exit(1);
+			}
+			VehicleIn->testfile.close();
+			DeleteProcessFile(VehicleIn->TestPla);
+			VehicleIn->PlaFile << VehicleIn->line << endl;
+		}
+
+		//Part
+		if ("*PART" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->NodeFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->NodeFile.close();
 			VehicleIn->ElaFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->PartFileString = getFileName(VehicleIn->line);
-            VehicleIn->PartFile.open(getFileName(VehicleIn->line));
+			VehicleIn->PartFile.open(getFileName(VehicleIn->line));
 			VehicleIn->TestPart = getFileName3(VehicleIn->line);
 			vFileName.push_back(VehicleIn->PartFileString);
 
-            continue;
-        }
-        if (VehicleIn->PartFile.is_open()&&(' ' == VehicleIn->line[0]))
-        {
-				VehicleIn->line = VehicleIn->line.erase(49, 2);
-				VehicleIn->testfile.open(VehicleIn->TestPart);
-				VehicleIn->testfile << VehicleIn->line << endl;
-				Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestPart);
-				if (Test.cols() != 3)
-				{
-					cerr << VehicleIn->TestPart << "ERRO" << endl;
-					VehicleIn->testfile.close();
-						(void)DeleteProcessFile(VehicleIn->TestPart);
-					exit(1);
-				}
+			continue;
+		}
+		if (VehicleIn->PartFile.is_open() && (' ' == VehicleIn->line[0]))
+		{
+			VehicleIn->line = VehicleIn->line.erase(49, 2);
+			VehicleIn->testfile.open(VehicleIn->TestPart);
+			VehicleIn->testfile << VehicleIn->line << endl;
+			Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestPart);
+			if (Test.cols() != 3)
+			{
+				cerr << VehicleIn->TestPart << "ERRO" << endl;
 				VehicleIn->testfile.close();
-				(void)DeleteProcessFile(VehicleIn->TestPart);
-				VehicleIn->PartFile << VehicleIn->line << endl;
-        };
+				DeleteProcessFile(VehicleIn->TestPart);
+				exit(1);
+			}
+			VehicleIn->testfile.close();
+			DeleteProcessFile(VehicleIn->TestPart);
+			VehicleIn->PartFile << VehicleIn->line << endl;
+		};
 
-        //沙漏
-        if ( "*HOURGLASS"==VehicleIn->line )
+		//沙漏
+		if ("*HOURGLASS" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->NodeFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->NodeFile.close();
 			VehicleIn->ElaFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->HourglassFileString = getFileName(VehicleIn->line);
-            VehicleIn->HourglassFile.open(getFileName(VehicleIn->line));
+			VehicleIn->HourglassFile.open(getFileName(VehicleIn->line));
 			vFileName.push_back(VehicleIn->HourglassFileString);
 
-            continue;
-        }
-        if (VehicleIn->HourglassFile.is_open() && (VehicleIn->line[0] != '*'))
-        {
+			continue;
+		}
+		if (VehicleIn->HourglassFile.is_open() && (VehicleIn->line[0] != '*'))
+		{
 			VehicleIn->HourglassFile << VehicleIn->line << endl;
-        }
+		}
 
-        //初始速度*INITIAL_VELOCITY_GENERATION
-        if ( "*INITIAL_VELOCITY_GENERATION"== VehicleIn->line)
+		//初始速度*INITIAL_VELOCITY_GENERATION
+		if ("*INITIAL_VELOCITY_GENERATION" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeFile.close();
 			VehicleIn->ElaFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->NodeVelocityFileString = getFileName(VehicleIn->line);
-            VehicleIn->NodeVelocityFile.open(getFileName(VehicleIn->line));
+			VehicleIn->NodeVelocityFile.open(getFileName(VehicleIn->line));
 			VehicleIn->NodeVelocityFile.clear();
 			VehicleIn->TestNodeVelocity = getFileName3(VehicleIn->line);
 			vFileName.push_back(VehicleIn->NodeVelocityFileString);
 			continue;
-        }
-        if (VehicleIn->NodeVelocityFile.is_open() && (VehicleIn->line[0] != '*'))
-        {
+		}
+		if (VehicleIn->NodeVelocityFile.is_open() && (VehicleIn->line[0] != '*'))
+		{
 			VehicleIn->testfile.open(VehicleIn->TestNodeVelocity);
 			VehicleIn->testfile << VehicleIn->line << endl;
 			Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestNodeVelocity);
@@ -1205,53 +1205,53 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			{
 				cerr << VehicleIn->TestNodeVelocity << "ERRO" << endl;
 				VehicleIn->testfile.close();
-					(void)DeleteProcessFile(VehicleIn->TestNodeVelocity);
+				DeleteProcessFile(VehicleIn->TestNodeVelocity);
 				exit(1);
 			}
 			VehicleIn->testfile.close();
-			(void)DeleteProcessFile(VehicleIn->TestNodeVelocity);
+			DeleteProcessFile(VehicleIn->TestNodeVelocity);
 			VehicleIn->NodeVelocityFile << VehicleIn->line << endl;
-        }
+		}
 
-        //*BOUNDARY_SPC_SET
-        if ( "*BOUNDARY_SPC_SET"==VehicleIn->line )
+		//*BOUNDARY_SPC_SET
+		if ("*BOUNDARY_SPC_SET" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->NodeFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->NodeFile.close();
 			VehicleIn->ElaFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->BoundarySetFileString = getFileName(VehicleIn->line);
-            VehicleIn->BoundarySetFile.open(getFileName(VehicleIn->line));
+			VehicleIn->BoundarySetFile.open(getFileName(VehicleIn->line));
 			vFileName.push_back(VehicleIn->BoundarySetFileString);
 
-            continue;
-        }
-        if (VehicleIn->BoundarySetFile.is_open() && (VehicleIn->line[0] != '*'))
-        {
+			continue;
+		}
+		if (VehicleIn->BoundarySetFile.is_open() && (VehicleIn->line[0] != '*'))
+		{
 			VehicleIn->BoundarySetFile << VehicleIn->line << endl;
-        }
+		}
 
-        if ( "*SET_SEGMENT"==VehicleIn->line )
+		if ("*SET_SEGMENT" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
@@ -1270,7 +1270,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->MasterNodeFile.close();
 			VehicleIn->ContactFile.close();
 			VehicleIn->EleSoFile.close();
-			VehicleIn-> SlaveNodeFile.close();
+			VehicleIn->SlaveNodeFile.close();
 			VehicleIn->BoundaryFile.close();
 			VehicleIn->EleBFile.close();
 			VehicleIn->EleShFile.close();
@@ -1279,92 +1279,92 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->SetFile.close();
 			VehicleIn->LoadNodeFile.close();
 			VehicleIn->DefineCurveFile.close();
-        }
+		}
 
-        //接触
-        if ( "*CONTACT_AUTOMATIC_NODES_TO_SURFACE_ID"==VehicleIn->line  ||  "*CONTACT_NODES_TO_SURFACE_ID"==VehicleIn->line )
+		//接触
+		if ("*CONTACT_AUTOMATIC_NODES_TO_SURFACE_ID" == VehicleIn->line || "*CONTACT_NODES_TO_SURFACE_ID" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->NodeFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->NodeFile.close();
 			VehicleIn->ElaFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->ContactFileString = "Contact.txt";
 			VehicleIn->ContactFileString2 = "ContactTemp.txt";
-            VehicleIn->ContactFile.open(VehicleIn->ContactFileString2);
-            VehicleIn->ContactFile.clear();
-            VehicleIn->ContactFile << endl;
+			VehicleIn->ContactFile.open(VehicleIn->ContactFileString2);
+			VehicleIn->ContactFile.clear();
+			VehicleIn->ContactFile << endl;
 			VehicleIn->TestContact = getFileName3(VehicleIn->line);
 			vFileName.push_back(VehicleIn->ContactFileString);
 			vFileName.push_back(VehicleIn->ContactFileString2);
 
-            continue;
-        }
-        if (VehicleIn->ContactFile.is_open() && (VehicleIn->line[0] != '*'))
-        {
-                VehicleIn->ContactFile << VehicleIn->line << " ";
-        }
+			continue;
+		}
+		if (VehicleIn->ContactFile.is_open() && (VehicleIn->line[0] != '*'))
+		{
+			VehicleIn->ContactFile << VehicleIn->line << " ";
+		}
 
-        //实体单元   
-        if ( "*ELEMENT_SOLID"==VehicleIn->line )
+		//实体单元   
+		if ("*ELEMENT_SOLID" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->NodeFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->NodeFile.close();
 			VehicleIn->ElaFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->EleSoFileString = getFileName(VehicleIn->line);
-            VehicleIn->EleSoFile.open(getFileName(VehicleIn->line));
+			VehicleIn->EleSoFile.open(getFileName(VehicleIn->line));
 			VehicleIn->EleSoFile.clear();
 			VehicleIn->TestEleSo = getFileName3(VehicleIn->line);
 			vFileName.push_back(VehicleIn->EleSoFileString);
 
-            continue;
-        }
-        if (VehicleIn->EleSoFile.is_open() && (VehicleIn->line[0] != '*'))
-        {
+			continue;
+		}
+		if (VehicleIn->EleSoFile.is_open() && (VehicleIn->line[0] != '*'))
+		{
 			/*VehicleIn->testfile.open(VehicleIn->TestEleSo);
 			VehicleIn->testfile << VehicleIn->line << endl;
 			Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestEleSo);
@@ -1379,201 +1379,201 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			(void)remove(VehicleIn->TestEleSo.c_str());*/
 
 			VehicleIn->EleSoFile << VehicleIn->line << endl;
-        }
+		}
 
-        //从面节点
-        if ( "*SET_NODE_LIST"== VehicleIn->line)
+		//从面节点
+		if ("*SET_NODE_LIST" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->NodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->NodeFile.close();
 			VehicleIn->ElaFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
-        }
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
+		}
 
-        //边界条件
-        if (  "*BOUNDARY_SPC_NODE"==VehicleIn->line)
+		//边界条件
+		if ("*BOUNDARY_SPC_NODE" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->NodeFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->NodeFile.close();
 			VehicleIn->ElaFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->BoundaryFileString = getFileName(VehicleIn->line);
-            VehicleIn->BoundaryFile.open(getFileName(VehicleIn->line));
+			VehicleIn->BoundaryFile.open(getFileName(VehicleIn->line));
 			vFileName.push_back(VehicleIn->BoundaryFileString);
-            continue;
-        }
-        if (VehicleIn->BoundaryFile.is_open() && (VehicleIn->line[0] != '*'))
-        {
+			continue;
+		}
+		if (VehicleIn->BoundaryFile.is_open() && (VehicleIn->line[0] != '*'))
+		{
 			VehicleIn->BoundaryFile << VehicleIn->line << endl;
-        }
+		}
 
-        //刚性墙
-        if ( "*RIGIDWALL_PLANAR_FINITE_ID"== VehicleIn->line)
+		//刚性墙
+		if ("*RIGIDWALL_PLANAR_FINITE_ID" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->NodeFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->NodeFile.close();
 			VehicleIn->ElaFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->RigidWallFileString2 = getFileName2(VehicleIn->line, VehicleIn->AdditionalDigit);
 			VehicleIn->RigidWallFileString = getFileName(VehicleIn->line);
-            VehicleIn->RigidWallFile.open(VehicleIn->RigidWallFileString2);
-            VehicleIn->RigidWallFile.clear();
-            VehicleIn->RigidWallFile << endl;
+			VehicleIn->RigidWallFile.open(VehicleIn->RigidWallFileString2);
+			VehicleIn->RigidWallFile.clear();
+			VehicleIn->RigidWallFile << endl;
 			VehicleIn->TestRigidWall = getFileName3(VehicleIn->line);
 			vFileName.push_back(VehicleIn->RigidWallFileString2);
 			vFileName.push_back(VehicleIn->RigidWallFileString);
 
 			continue;
-        }
-        if (VehicleIn->RigidWallFile.is_open() && (VehicleIn->line[0] != '*'))
-        {
-                VehicleIn->line = VehicleIn->line.insert((unsigned long long)20, " ");
-                VehicleIn->line = VehicleIn->line.insert((unsigned long long)51, " ");
-                VehicleIn->RigidWallFile << VehicleIn->line << " ";
-        }
+		}
+		if (VehicleIn->RigidWallFile.is_open() && (VehicleIn->line[0] != '*'))
+		{
+			VehicleIn->line = VehicleIn->line.insert((unsigned long long)20, " ");
+			VehicleIn->line = VehicleIn->line.insert((unsigned long long)51, " ");
+			VehicleIn->RigidWallFile << VehicleIn->line << " ";
+		}
 
-        //梁单元
-        if ("*ELEMENT_BEAM" == VehicleIn->line)
+		//梁单元
+		if ("*ELEMENT_BEAM" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->NodeFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->NodeFile.close();
 			VehicleIn->ElaFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->EleBFileString = getFileName(VehicleIn->line);
-            VehicleIn->EleBFile.open(getFileName(VehicleIn->line));
+			VehicleIn->EleBFile.open(getFileName(VehicleIn->line));
 			vFileName.push_back(VehicleIn->EleBFileString);
 
-            continue;
-        }
-        if (VehicleIn->EleBFile.is_open() && (VehicleIn->line[0] != '*'))
-        {
+			continue;
+		}
+		if (VehicleIn->EleBFile.is_open() && (VehicleIn->line[0] != '*'))
+		{
 			VehicleIn->EleBFile << VehicleIn->line << endl;
-        }
+		}
 
-        //壳单元
-        if ( "*ELEMENT_SHELL"==VehicleIn->line )
+		//壳单元
+		if ("*ELEMENT_SHELL" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->NodeFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->NodeFile.close();
 			VehicleIn->ElaFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->EleShFileString = getFileName(VehicleIn->line);
-            VehicleIn->EleShFile.open(getFileName(VehicleIn->line));
-            VehicleIn->EleShFile.clear();
+			VehicleIn->EleShFile.open(getFileName(VehicleIn->line));
+			VehicleIn->EleShFile.clear();
 			VehicleIn->TestEleSh = getFileName3(VehicleIn->line);
 			vFileName.push_back(VehicleIn->EleShFileString);
 
-            continue;
-        }
-        if (VehicleIn->EleShFile.is_open() && (VehicleIn->line[0] != '*'))
-        {
+			continue;
+		}
+		if (VehicleIn->EleShFile.is_open() && (VehicleIn->line[0] != '*'))
+		{
 			VehicleIn->testfile.open(VehicleIn->TestEleSh);
 			VehicleIn->testfile << VehicleIn->line << endl;
 			Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestEleSh);
@@ -1581,52 +1581,52 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			{
 				cerr << VehicleIn->TestEleSh << "ERRO" << endl;
 				VehicleIn->testfile.close();
-					(void)DeleteProcessFile(VehicleIn->TestEleSh);
+				DeleteProcessFile(VehicleIn->TestEleSh);
 				exit(1);
 			}
 			VehicleIn->testfile.close();
-			(void)DeleteProcessFile(VehicleIn->TestEleSh);
+			DeleteProcessFile(VehicleIn->TestEleSh);
 			VehicleIn->EleShFile << VehicleIn->line << endl;
-        }
-        //SECTION梁
-        if ( "*SECTION_BEAM"==VehicleIn->line )
+		}
+		//SECTION梁
+		if ("*SECTION_BEAM" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->NodeFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->NodeFile.close();
 			VehicleIn->ElaFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->SecBeamFileString = getFileName(VehicleIn->line);
-            VehicleIn->SecBeamFile.open(getFileName(VehicleIn->line));
+			VehicleIn->SecBeamFile.open(getFileName(VehicleIn->line));
 			VehicleIn->TestSecBeam = getFileName3(VehicleIn->line);
 			vFileName.push_back(VehicleIn->SecBeamFileString);
 
-            continue;
-        }
-        if (VehicleIn->SecBeamFile.is_open() && (VehicleIn->line[0] != '*'))
-        {
-                VehicleIn->line = VehicleIn->line.insert(0, VehicleIn->AdditionalDigit);
+			continue;
+		}
+		if (VehicleIn->SecBeamFile.is_open() && (VehicleIn->line[0] != '*'))
+		{
+			VehicleIn->line = VehicleIn->line.insert(0, VehicleIn->AdditionalDigit);
 			/*	ofstream testfile;
 				testfile.open(VehicleIn->TestSecBeam);
 				testfile << VehicleIn->line << endl;
@@ -1638,134 +1638,134 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 					(void)remove(VehicleIn->TestSecBeam.c_str());
 					exit(1);
 				}*/
-                VehicleIn->SecBeamFile << VehicleIn->line << " ";
-        }
+			VehicleIn->SecBeamFile << VehicleIn->line << " ";
+		}
 
-        //SECTION壳
-        if ( "*SECTION_SHELL"==VehicleIn->line )
+		//SECTION壳
+		if ("*SECTION_SHELL" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->NodeFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->NodeFile.close();
 			VehicleIn->ElaFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->SecShellFileString = getFileName(VehicleIn->line);
 			VehicleIn->SecShellFileString2 = getFileName2(VehicleIn->line, VehicleIn->AdditionalDigit);
-            VehicleIn->SecShellFile.open(VehicleIn->SecShellFileString2);
-            VehicleIn->SecShellFile.clear();
-            VehicleIn->SecShellFile << endl;
+			VehicleIn->SecShellFile.open(VehicleIn->SecShellFileString2);
+			VehicleIn->SecShellFile.clear();
+			VehicleIn->SecShellFile << endl;
 			VehicleIn->TestSecShell = getFileName3(VehicleIn->line);
 			vFileName.push_back(VehicleIn->SecShellFileString);
 			vFileName.push_back(VehicleIn->SecShellFileString2);
 
-            continue;
-        }
-        if (VehicleIn->SecShellFile.is_open() && (VehicleIn->line[0] != '*'))
-        {
-                VehicleIn->SecShellFile << VehicleIn->line << " ";
-        }
+			continue;
+		}
+		if (VehicleIn->SecShellFile.is_open() && (VehicleIn->line[0] != '*'))
+		{
+			VehicleIn->SecShellFile << VehicleIn->line << " ";
+		}
 
-        //SECTION实体
-        if ( "*SECTION_SOLID"==VehicleIn->line )
+		//SECTION实体
+		if ("*SECTION_SOLID" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->NodeFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->NodeFile.close();
 			VehicleIn->ElaFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
 			VehicleIn->line = VehicleIn->line.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->SecSolidFileString = getFileName(VehicleIn->line);
-            VehicleIn->SecSolidFile.open(getFileName(VehicleIn->line));
+			VehicleIn->SecSolidFile.open(getFileName(VehicleIn->line));
 			vFileName.push_back(VehicleIn->SecSolidFileString);
 
-            continue;
-        }
-        if (VehicleIn->SecSolidFile.is_open() && (VehicleIn->line[0] != '*'))
-        {
+			continue;
+		}
+		if (VehicleIn->SecSolidFile.is_open() && (VehicleIn->line[0] != '*'))
+		{
 			VehicleIn->SecSolidFile << VehicleIn->line << endl;
-        };
-        if ( "*END"==VehicleIn->line )
+		};
+		if ("*END" == VehicleIn->line)
 		{
 			VehicleIn->LoadBodyYFile.close();
 			VehicleIn->LoadBodyZFile.close();
-            VehicleIn->WallSlaveNodeFile.close();
-            VehicleIn->BoundarySetFile.close();
-            VehicleIn->HourglassFile.close();
-            VehicleIn->RigidWallFile.close();
-            VehicleIn->ComputingTimeFile.close();
-            VehicleIn->TimeIncrementFile.close();
-            VehicleIn->NodeVelocityFile.close();
-            VehicleIn->NodeFile.close();
+			VehicleIn->WallSlaveNodeFile.close();
+			VehicleIn->BoundarySetFile.close();
+			VehicleIn->HourglassFile.close();
+			VehicleIn->RigidWallFile.close();
+			VehicleIn->ComputingTimeFile.close();
+			VehicleIn->TimeIncrementFile.close();
+			VehicleIn->NodeVelocityFile.close();
+			VehicleIn->NodeFile.close();
 			VehicleIn->ElaFile.close();
-            VehicleIn->PlaFile.close();
-            VehicleIn->PartFile.close();
-            VehicleIn->SecSolidFile.close();
-            VehicleIn->MasterNodeFile.close();
-            VehicleIn->ContactFile.close();
-            VehicleIn->EleSoFile.close();
-            VehicleIn-> SlaveNodeFile.close();
-            VehicleIn->BoundaryFile.close();
-            VehicleIn->EleBFile.close();
-            VehicleIn->EleShFile.close();
-            VehicleIn->SecBeamFile.close();
-            VehicleIn->SecShellFile.close();
-            VehicleIn->SetFile.close();
-            VehicleIn->LoadNodeFile.close();
-            VehicleIn->DefineCurveFile.close();
-        }
-    }
+			VehicleIn->PlaFile.close();
+			VehicleIn->PartFile.close();
+			VehicleIn->SecSolidFile.close();
+			VehicleIn->MasterNodeFile.close();
+			VehicleIn->ContactFile.close();
+			VehicleIn->EleSoFile.close();
+			VehicleIn->SlaveNodeFile.close();
+			VehicleIn->BoundaryFile.close();
+			VehicleIn->EleBFile.close();
+			VehicleIn->EleShFile.close();
+			VehicleIn->SecBeamFile.close();
+			VehicleIn->SecShellFile.close();
+			VehicleIn->SetFile.close();
+			VehicleIn->LoadNodeFile.close();
+			VehicleIn->DefineCurveFile.close();
+		}
+	}
 	VehicleIn->In.close();
 
-     //SecShell文件
+	//SecShell文件
 	VehicleIn->InSecShell.open(VehicleIn->SecShellFileString2);
 	VehicleIn->SecShellFile2.open(VehicleIn->SecShellFileString);
-    while (getline(VehicleIn->InSecShell, VehicleIn->LineSecShell))
-    {
-        if (VehicleIn->SecShellFile2.is_open())
-        {
-            if ( ' '== VehicleIn->LineSecShell[0] )
-            {
+	while (getline(VehicleIn->InSecShell, VehicleIn->LineSecShell))
+	{
+		if (VehicleIn->SecShellFile2.is_open())
+		{
+			if (' ' == VehicleIn->LineSecShell[0])
+			{
 				VehicleIn->testfile.open(VehicleIn->TestSecShell);
 				VehicleIn->testfile << VehicleIn->LineSecShell << endl;
 				Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestSecShell);
@@ -1773,55 +1773,55 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				{
 					cerr << VehicleIn->TestSecShell << "ERRO" << endl;
 					VehicleIn->testfile.close();
-						(void)DeleteProcessFile(VehicleIn->TestSecShell);
+					DeleteProcessFile(VehicleIn->TestSecShell);
 					exit(1);
 				}
 				VehicleIn->testfile.close();
-				(void)DeleteProcessFile(VehicleIn->TestSecShell);
+				DeleteProcessFile(VehicleIn->TestSecShell);
 				VehicleIn->SecShellFile2 << VehicleIn->LineSecShell << endl;
-            }
-        }
+			}
+		}
 
-    }
+	}
 	VehicleIn->SecShellFile2.close();
 	VehicleIn->InSecShell.close();
 
-    //Contact 文件
+	//Contact 文件
 	VehicleIn->InContact.open(VehicleIn->ContactFileString2);
 	VehicleIn->ContactFile2.open(VehicleIn->ContactFileString);
-    while (getline(VehicleIn->InContact, VehicleIn->LineContact))
-    {
-        if (VehicleIn->ContactFile2.is_open())
-        {
-            if (  ' '== VehicleIn->LineContact[0])
-            {
+	while (getline(VehicleIn->InContact, VehicleIn->LineContact))
+	{
+		if (VehicleIn->ContactFile2.is_open())
+		{
+			if (' ' == VehicleIn->LineContact[0])
+			{
 				VehicleIn->testfile.open(VehicleIn->TestContact);
 				VehicleIn->testfile << VehicleIn->LineContact << endl;
 				Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestContact);
-				if (Test.cols() <7)
+				if (Test.cols() < 7)
 				{
 					cerr << VehicleIn->TestContact << "ERRO" << endl;
 					VehicleIn->testfile.close();
-						(void)DeleteProcessFile(VehicleIn->TestContact);
+					DeleteProcessFile(VehicleIn->TestContact);
 					exit(1);
 				}
 				VehicleIn->testfile.close();
-				(void)DeleteProcessFile(VehicleIn->TestContact);
+				DeleteProcessFile(VehicleIn->TestContact);
 				VehicleIn->ContactFile2 << VehicleIn->LineContact << endl;
-            }
-        }
-    }
+			}
+		}
+	}
 	VehicleIn->ContactFile2.close();
 	VehicleIn->InContact.close();
 
-    //RIGIDWALL_PLANAR_FINITE_ID
+	//RIGIDWALL_PLANAR_FINITE_ID
 	VehicleIn->InRigidwall.open(VehicleIn->RigidWallFileString2);
 	VehicleIn->RigidWallFile2.open(VehicleIn->RigidWallFileString);
 	while (getline(VehicleIn->InRigidwall, VehicleIn->LineRigidwall))
 	{
 		if (VehicleIn->RigidWallFile2.is_open())
 		{
-			if ( ' '== VehicleIn->LineRigidwall[0] )
+			if (' ' == VehicleIn->LineRigidwall[0])
 			{
 				VehicleIn->testfile.open(VehicleIn->TestRigidWall);
 				VehicleIn->testfile << VehicleIn->LineRigidwall << endl;
@@ -1830,11 +1830,11 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				{
 					cerr << VehicleIn->TestRigidWall << "ERRO" << endl;
 					VehicleIn->testfile.close();
-						(void)DeleteProcessFile(VehicleIn->TestRigidWall);
+					DeleteProcessFile(VehicleIn->TestRigidWall);
 					exit(1);
 				}
 				VehicleIn->testfile.close();
-				(void)DeleteProcessFile(VehicleIn->TestRigidWall);
+				DeleteProcessFile(VehicleIn->TestRigidWall);
 				VehicleIn->RigidWallFile2 << VehicleIn->LineRigidwall << endl;
 			}
 		}
@@ -1843,7 +1843,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	VehicleIn->RigidWallFile2.close();
 	VehicleIn->InRigidwall.close();
 
-    //SegmentSet test
+	//SegmentSet test
 	lsmap* ls = new lsmap;
 	SetSegmentNode* pSegment = new SetSegmentNode;
 	VehicleIn->InSegmentSet.open(fileToOpen);
@@ -1944,7 +1944,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	vFileName.push_back(VehicleIn->SetNodeFile2String);
 
 	string LineSetNode2;
-	int panduanneirong=0;
+	int panduanneirong = 0;
 	while (getline(InSetNode2, LineSetNode2))
 	{
 		ofstream SetNodeFile2(VehicleIn->SetNodeFile2String);
@@ -1967,7 +1967,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	delete pSetNode;
 	pSetNode = nullptr;
 	//cout << ls->AllSetNode[4].SetNodeID << endl;
-	
+
 	//FORCE
 	VehicleIn->InForce.open(fileToOpen);
 	while (getline(VehicleIn->InForce, VehicleIn->LineForce))
@@ -1976,7 +1976,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 		{
 			VehicleIn->PanduanForce = 1;
 		}
-		if (("*BOUNDARY_FORCE_SET" == VehicleIn->LineForce)&&(VehicleIn->PanduanForce == 1))
+		if (("*BOUNDARY_FORCE_SET" == VehicleIn->LineForce) && (VehicleIn->PanduanForce == 1))
 		{
 			VehicleIn->LineForce = VehicleIn->LineForce.erase((unsigned long long)0, (unsigned long long) 1);
 			VehicleIn->ForceBOUNDARYFileString = getFileName(VehicleIn->LineForce);
@@ -2026,84 +2026,84 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			VehicleIn->ForceFile.close();
 			VehicleIn->PanduanForce = 0;
 		}
-		
+
 	}
 	VehicleIn->InForce.close();
-    
-    //LoadBodyZ信息
-	if (1 ==isFileExists(VehicleIn->LoadBodyZFileString) )
+
+	//LoadBodyZ信息
+	if (1 == isFileExists(VehicleIn->LoadBodyZFileString))
 	{
 		Matrix<int, Dynamic, Dynamic>LoadBodyZ1 = LinearMSTMMSolver::openDataInt(VehicleIn->LoadBodyZFileString);
 		Matrix<double, Dynamic, Dynamic>LoadBodyZ2 = LinearMSTMMSolver::openData(VehicleIn->LoadBodyZFileString);
-        LoadBodyZ* pLoadBodyZ = new LoadBodyZ;
-        pLoadBodyZ->LoadBodyZCurveID = LoadBodyZ1(0, 0);
+		LoadBodyZ* pLoadBodyZ = new LoadBodyZ;
+		pLoadBodyZ->LoadBodyZCurveID = LoadBodyZ1(0, 0);
 		pLoadBodyZ->LoadCurveScaleFactor = LoadBodyZ2(0, 1);
 		(void)ls->AllLoadBodyZ.insert(make_pair(pLoadBodyZ->LoadBodyZCurveID, (*pLoadBodyZ)));
-        delete pLoadBodyZ;
-        pLoadBodyZ = nullptr;
+		delete pLoadBodyZ;
+		pLoadBodyZ = nullptr;
 	};
 
 	//LoadBodyY信息
-	if (1 ==isFileExists(VehicleIn->LoadBodyYFileString) )
+	if (1 == isFileExists(VehicleIn->LoadBodyYFileString))
 	{
 		Matrix<int, Dynamic, Dynamic>LoadBodyY1 = LinearMSTMMSolver::openDataInt(VehicleIn->LoadBodyYFileString);
 		Matrix<double, Dynamic, Dynamic>LoadBodyY2 = LinearMSTMMSolver::openData(VehicleIn->LoadBodyYFileString);
 		LoadBodyY* pLoadBodyY = new LoadBodyY;
-        pLoadBodyY->LoadBodyYCurveID = LoadBodyY1(0, 0);
-        pLoadBodyY->LoadCurveScaleFactor = LoadBodyY2(0, 1);
+		pLoadBodyY->LoadBodyYCurveID = LoadBodyY1(0, 0);
+		pLoadBodyY->LoadCurveScaleFactor = LoadBodyY2(0, 1);
 		(void)ls->AllLoadBodyY.insert(make_pair(pLoadBodyY->LoadBodyYCurveID, (*pLoadBodyY)));
 		delete pLoadBodyY;
-        pLoadBodyY = nullptr;
+		pLoadBodyY = nullptr;
 
 	};
 
-    //Part 信息
-    if ( 1==isFileExists(VehicleIn->PartFileString) )
-    {
-        Matrix<int, Dynamic, Dynamic>PartImformation = LinearMSTMMSolver::openDataInt(VehicleIn->PartFileString);
+	//Part 信息
+	if (1 == isFileExists(VehicleIn->PartFileString))
+	{
+		Matrix<int, Dynamic, Dynamic>PartImformation = LinearMSTMMSolver::openDataInt(VehicleIn->PartFileString);
 		KFilePart* IP = new KFilePart;
-        for (int i = 0; i < PartImformation.rows(); i++)
-        {
+		for (int i = 0; i < PartImformation.rows(); i++)
+		{
 			IP->Pid = PartImformation(i, 0);
 			IP->SectionID = PartImformation(i, 1);
 			IP->Mid = PartImformation(i, 2);
 			(void)ls->AllPart.insert(make_pair(IP->Pid, (*IP)));
-        };
-        delete IP;
-        IP = nullptr;
+		};
+		delete IP;
+		IP = nullptr;
 
-    }
+	}
 
-    //Sec_Beam信息
-    if ( 1==isFileExists(VehicleIn->SecBeamFileString) )
-    {
-        Matrix<int, Dynamic, Dynamic>SecBImformation1 = LinearMSTMMSolver::openDataInt(VehicleIn->SecBeamFileString);
-        Matrix<double, Dynamic, Dynamic>SecBImformation2 = LinearMSTMMSolver::openData(VehicleIn->SecBeamFileString);
-        //cout << SecBImformation2 << endl;
-        sectionbeam* ISB = new sectionbeam;
-        /*lsmap* ls = new lsmap;*/
-        for (int i = 0; i < SecBImformation2.rows(); i++)
-        {
-            ISB->secidbeam = SecBImformation1(i, 1);
-            ISB->TS = SecBImformation2(i, 5);
-            ISB->TT = SecBImformation2(i, 6);
+	//Sec_Beam信息
+	if (1 == isFileExists(VehicleIn->SecBeamFileString))
+	{
+		Matrix<int, Dynamic, Dynamic>SecBImformation1 = LinearMSTMMSolver::openDataInt(VehicleIn->SecBeamFileString);
+		Matrix<double, Dynamic, Dynamic>SecBImformation2 = LinearMSTMMSolver::openData(VehicleIn->SecBeamFileString);
+		//cout << SecBImformation2 << endl;
+		sectionbeam* ISB = new sectionbeam;
+		/*lsmap* ls = new lsmap;*/
+		for (int i = 0; i < SecBImformation2.rows(); i++)
+		{
+			ISB->secidbeam = SecBImformation1(i, 1);
+			ISB->TS = SecBImformation2(i, 5);
+			ISB->TT = SecBImformation2(i, 6);
 			(void)ls->AllSectionbeam.insert(make_pair(ISB->secidbeam, (*ISB)));
-        }
-        delete ISB;
-        ISB = nullptr;
-    };
+		}
+		delete ISB;
+		ISB = nullptr;
+	};
 
 
-    //Sec_Shell信息
-    if ( 1==isFileExists(VehicleIn->SecShellFileString) )
-    {
-        Matrix<int, Dynamic, Dynamic>SecSHImformation1 = LinearMSTMMSolver::openDataInt(VehicleIn->SecShellFileString);
-        Matrix<double, Dynamic, Dynamic>SecSHImformation2 = LinearMSTMMSolver::openData(VehicleIn->SecShellFileString);
-        sectionshell* ISSH = new sectionshell;
-        //cout << SecSHImformation1;
-        /*lsmap* ls = new lsmap;*/
-        if (SecSHImformation2.cols() == 5)
-        {
+	//Sec_Shell信息
+	if (1 == isFileExists(VehicleIn->SecShellFileString))
+	{
+		Matrix<int, Dynamic, Dynamic>SecSHImformation1 = LinearMSTMMSolver::openDataInt(VehicleIn->SecShellFileString);
+		Matrix<double, Dynamic, Dynamic>SecSHImformation2 = LinearMSTMMSolver::openData(VehicleIn->SecShellFileString);
+		sectionshell* ISSH = new sectionshell;
+		//cout << SecSHImformation1;
+		/*lsmap* ls = new lsmap;*/
+		if (SecSHImformation2.cols() == 5)
+		{
 			for (int i = 0; i < SecSHImformation2.rows(); i++)
 			{
 				ISSH->secidshell = SecSHImformation1(i, 0);
@@ -2114,9 +2114,9 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				(void)ls->AllSectionshell.insert(make_pair(ISSH->secidshell, (*ISSH)));
 
 			};
-        }
-        else
-        {
+		}
+		else
+		{
 			for (int i = 0; i < SecSHImformation2.rows(); i++)
 			{
 				ISSH->secidshell = SecSHImformation1(i, 0);
@@ -2127,195 +2127,195 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				(void)ls->AllSectionshell.insert(make_pair(ISSH->secidshell, (*ISSH)));
 
 			};
-        }
-        delete ISSH;
-        ISSH = nullptr;
+		}
+		delete ISSH;
+		ISSH = nullptr;
 
-    }
+	}
 
-    //Velocity 初速度信息
-    if ( 1==isFileExists(VehicleIn->NodeVelocityFileString) )
-    {
-        Matrix<int, Dynamic, Dynamic>NodeVelocityFileImformation1 = LinearMSTMMSolver::openDataInt(VehicleIn->NodeVelocityFileString);
-        Matrix<double, Dynamic, Dynamic>NodeVelocityFileImformation2 = LinearMSTMMSolver::openData(VehicleIn->NodeVelocityFileString);
-        Velocity* IVelocity = new Velocity;
-        for (int i = 0; i < NodeVelocityFileImformation1.rows(); i++)
-        {
-            IVelocity->SetNodeid = NodeVelocityFileImformation1(i, 0);
-            IVelocity->SetType = NodeVelocityFileImformation1(i, 1);
-            IVelocity->XVelocity = NodeVelocityFileImformation2(i, 2);
-            IVelocity->YVelocity = NodeVelocityFileImformation2(i, 3);
-            IVelocity->ZVelocity = NodeVelocityFileImformation2(i, 4);
+	//Velocity 初速度信息
+	if (1 == isFileExists(VehicleIn->NodeVelocityFileString))
+	{
+		Matrix<int, Dynamic, Dynamic>NodeVelocityFileImformation1 = LinearMSTMMSolver::openDataInt(VehicleIn->NodeVelocityFileString);
+		Matrix<double, Dynamic, Dynamic>NodeVelocityFileImformation2 = LinearMSTMMSolver::openData(VehicleIn->NodeVelocityFileString);
+		Velocity* IVelocity = new Velocity;
+		for (int i = 0; i < NodeVelocityFileImformation1.rows(); i++)
+		{
+			IVelocity->SetNodeid = NodeVelocityFileImformation1(i, 0);
+			IVelocity->SetType = NodeVelocityFileImformation1(i, 1);
+			IVelocity->XVelocity = NodeVelocityFileImformation2(i, 2);
+			IVelocity->YVelocity = NodeVelocityFileImformation2(i, 3);
+			IVelocity->ZVelocity = NodeVelocityFileImformation2(i, 4);
 			(void)ls->AllVelocity.insert(make_pair(IVelocity->SetNodeid, (*IVelocity)));
-        }
-        delete IVelocity;
-        IVelocity = nullptr;
+		}
+		delete IVelocity;
+		IVelocity = nullptr;
 
-    }
-    //cout << (*ls).AllVelocity[2].XVelocity << endl;
+	}
+	//cout << (*ls).AllVelocity[2].XVelocity << endl;
 
-    ////开始写入inputdate.h//////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////
-    InputAllDate* IAD = new InputAllDate;
+	////开始写入inputdate.h//////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
+	InputAllDate* IAD = new InputAllDate;
 
-    //节点信息
-    if ( 1==isFileExists(VehicleIn->NodeFileString) )
-    {
-        Matrix<double, Dynamic, Dynamic>NodeImformation1 = LinearMSTMMSolver::openData(VehicleIn->NodeFileString);
-        Matrix<int, Dynamic, Dynamic>NodeImformation2 = LinearMSTMMSolver::openDataInt(VehicleIn->NodeFileString);
-        InputNode* INN = new InputNode;
-        for (int i = 0; i < NodeImformation1.rows(); i++)
-        {
-            INN->NodeID = NodeImformation2(i, 0);
-            INN->NodeCoordinates = NodeImformation1.row((long long)i).rightCols(3).adjoint();
+	//节点信息
+	if (1 == isFileExists(VehicleIn->NodeFileString))
+	{
+		Matrix<double, Dynamic, Dynamic>NodeImformation1 = LinearMSTMMSolver::openData(VehicleIn->NodeFileString);
+		Matrix<int, Dynamic, Dynamic>NodeImformation2 = LinearMSTMMSolver::openDataInt(VehicleIn->NodeFileString);
+		InputNode* INN = new InputNode;
+		for (int i = 0; i < NodeImformation1.rows(); i++)
+		{
+			INN->NodeID = NodeImformation2(i, 0);
+			INN->NodeCoordinates = NodeImformation1.row((long long)i).rightCols(3).adjoint();
 			(void)IAD->InputAllNode.insert(make_pair(INN->NodeID, (*INN)));
-        };
-        //cout << (*IAD).InputAllNode[5].NodeCoordinates;
-        delete INN;
-        INN = nullptr;
+		};
+		//cout << (*IAD).InputAllNode[5].NodeCoordinates;
+		delete INN;
+		INN = nullptr;
 
-    }
+	}
 
-    //实体单元信息
-    if (1 ==isFileExists(VehicleIn->EleSoFileString) )
-    {
-        Matrix<int, Dynamic, Dynamic>EleSoImformation = LinearMSTMMSolver::openDataInt(VehicleIn->EleSoFileString);
-        /* cout << EleSoImformation;*/
-        InputElement* InESo = new InputElement;
-        /*  InputAllDate* IAD = new InputAllDate;*/
-        //cout<< EleSoImformation.row(1).rightCols(8).adjoint();
-        for (int i = 0; i < EleSoImformation.rows(); i++)
-        {
-            (*InESo).ElementID = EleSoImformation(i, 0);      /* cout << (*INE_SO).ElementID << endl;*/
-            (*InESo).ElementTypeID = 0;
-            (*InESo).MaterialID = (*ls).AllPart[EleSoImformation(i, 1)].Mid;
-            (*InESo).ElementNodeID.resize((long long)8, (long long)1);
-            (*InESo).ElementNodeID = EleSoImformation.row((long long)i).rightCols(8).adjoint();
-            (*InESo).ElementNodeCoordinates.resize((long long)8, (long long)3);
-            for (int J = 0; J < 8; J++)
-            {
-                (*InESo).ElementNodeCoordinates.row((long long)J) = (*IAD).InputAllNode[(*InESo).ElementNodeID(J, 0)].NodeCoordinates.adjoint();
-            }
-            /* cout << (*InESo).ElementNodeCoordinates<<endl ;*/
+	//实体单元信息
+	if (1 == isFileExists(VehicleIn->EleSoFileString))
+	{
+		Matrix<int, Dynamic, Dynamic>EleSoImformation = LinearMSTMMSolver::openDataInt(VehicleIn->EleSoFileString);
+		/* cout << EleSoImformation;*/
+		InputElement* InESo = new InputElement;
+		/*  InputAllDate* IAD = new InputAllDate;*/
+		//cout<< EleSoImformation.row(1).rightCols(8).adjoint();
+		for (int i = 0; i < EleSoImformation.rows(); i++)
+		{
+			(*InESo).ElementID = EleSoImformation(i, 0);      /* cout << (*INE_SO).ElementID << endl;*/
+			(*InESo).ElementTypeID = 0;
+			(*InESo).MaterialID = (*ls).AllPart[EleSoImformation(i, 1)].Mid;
+			(*InESo).ElementNodeID.resize((long long)8, (long long)1);
+			(*InESo).ElementNodeID = EleSoImformation.row((long long)i).rightCols(8).adjoint();
+			(*InESo).ElementNodeCoordinates.resize((long long)8, (long long)3);
+			for (int J = 0; J < 8; J++)
+			{
+				(*InESo).ElementNodeCoordinates.row((long long)J) = (*IAD).InputAllNode[(*InESo).ElementNodeID(J, 0)].NodeCoordinates.adjoint();
+			}
+			/* cout << (*InESo).ElementNodeCoordinates<<endl ;*/
 
 			(void)IAD->InputAllElement.insert(make_pair((*InESo).ElementID, (*InESo)));
-        }
-        delete InESo;
-        InESo = nullptr;
+		}
+		delete InESo;
+		InESo = nullptr;
 
-    };
+	};
 
-    // 壳单元信息
-    if ( 1==isFileExists(VehicleIn->EleShFileString) )
-    {
-        Matrix<int, Dynamic, Dynamic>EleShImformation = LinearMSTMMSolver::openDataInt(VehicleIn->EleShFileString);
-        InputElement* InESh = new InputElement;
-        /*  InputAllDate* IAD = new InputAllDate;*/
-        for (int i = 0; i < EleShImformation.rows(); i++)
-        {
-            (*InESh).ElementID = EleShImformation(i, 0);
-            (*InESh).ElementTypeID = 1;
-            (*InESh).MaterialID = (*ls).AllPart[EleShImformation(i, 1)].Mid;
-            (*InESh).ElementNodeID.resize((long long)4, (long long)1);
-            (*InESh).ElementNodeID = EleShImformation.row((long long)i).rightCols(4).adjoint();
-            (*InESh).ElementNodeCoordinates.resize((long long)4, (long long)3);
-			for (int A = {0}; A < 4; A++)
-            {
-                (*InESh).ElementNodeCoordinates.row((long long)A) = (*IAD).InputAllNode[(*InESh).ElementNodeID(A, 0)].NodeCoordinates.adjoint();
-            }
-            (*InESh).ShellGeometricParameter(0, 0) = (*ls).AllSectionshell[(*ls).AllPart[EleShImformation(i, 1)].SectionID].T1;
-            (*InESh).ShellGeometricParameter(1, 0) = (*ls).AllSectionshell[(*ls).AllPart[EleShImformation(i, 1)].SectionID].T2;
-            (*InESh).ShellGeometricParameter(2, 0) = (*ls).AllSectionshell[(*ls).AllPart[EleShImformation(i, 1)].SectionID].T3;
-            (*InESh).ShellGeometricParameter(3, 0) = (*ls).AllSectionshell[(*ls).AllPart[EleShImformation(i, 1)].SectionID].T4;
+	// 壳单元信息
+	if (1 == isFileExists(VehicleIn->EleShFileString))
+	{
+		Matrix<int, Dynamic, Dynamic>EleShImformation = LinearMSTMMSolver::openDataInt(VehicleIn->EleShFileString);
+		InputElement* InESh = new InputElement;
+		/*  InputAllDate* IAD = new InputAllDate;*/
+		for (int i = 0; i < EleShImformation.rows(); i++)
+		{
+			(*InESh).ElementID = EleShImformation(i, 0);
+			(*InESh).ElementTypeID = 1;
+			(*InESh).MaterialID = (*ls).AllPart[EleShImformation(i, 1)].Mid;
+			(*InESh).ElementNodeID.resize((long long)4, (long long)1);
+			(*InESh).ElementNodeID = EleShImformation.row((long long)i).rightCols(4).adjoint();
+			(*InESh).ElementNodeCoordinates.resize((long long)4, (long long)3);
+			for (int A = { 0 }; A < 4; A++)
+			{
+				(*InESh).ElementNodeCoordinates.row((long long)A) = (*IAD).InputAllNode[(*InESh).ElementNodeID(A, 0)].NodeCoordinates.adjoint();
+			}
+			(*InESh).ShellGeometricParameter(0, 0) = (*ls).AllSectionshell[(*ls).AllPart[EleShImformation(i, 1)].SectionID].T1;
+			(*InESh).ShellGeometricParameter(1, 0) = (*ls).AllSectionshell[(*ls).AllPart[EleShImformation(i, 1)].SectionID].T2;
+			(*InESh).ShellGeometricParameter(2, 0) = (*ls).AllSectionshell[(*ls).AllPart[EleShImformation(i, 1)].SectionID].T3;
+			(*InESh).ShellGeometricParameter(3, 0) = (*ls).AllSectionshell[(*ls).AllPart[EleShImformation(i, 1)].SectionID].T4;
 
 			(void)(*IAD).InputAllElement.insert(make_pair((*InESh).ElementID, (*InESh)));
-        }
-        //cout << (*IAD).InputAllElement[95475].ShellGeometricParameter << endl;
-        delete InESh;
-        InESh = nullptr;
+		}
+		//cout << (*IAD).InputAllElement[95475].ShellGeometricParameter << endl;
+		delete InESh;
+		InESh = nullptr;
 
-    };
+	};
 
-    // 梁单元信息
-    if ( 1==isFileExists(VehicleIn->EleBFileString) )
-    {
-        Matrix<int, Dynamic, Dynamic>EleBImformation = LinearMSTMMSolver::openDataInt(VehicleIn->EleBFileString);
-        InputElement* InEB = new InputElement;
-        /*  InputAllDate* IAD = new InputAllDate;*/
-        for (int i = 0; i < EleBImformation.rows(); i++)
-        {
-            (*InEB).ElementID = EleBImformation(i, 0);      /* cout << (*INE).ElementID << endl;*/
-            (*InEB).ElementTypeID = 2;
-            (*InEB).MaterialID = (*ls).AllPart[EleBImformation(i, 1)].Mid;
-            (*InEB).ElementNodeID.resize((long long)2, (long long)1);
-            (*InEB).ElementNodeID(0, 0) = EleBImformation(i, 2);
-            (*InEB).ElementNodeID(1, 0) = EleBImformation(i, 3);
-            (*InEB).ReferencePoint = (*IAD).InputAllNode[EleBImformation(i, 4)].NodeCoordinates.adjoint();
-            (*InEB).ElementNodeCoordinates.resize((long long)2, (long long)3);
-            for (int j = 0; j < 2; j++)
-            {
-                (*InEB).ElementNodeCoordinates.row((long long)j) = (*IAD).InputAllNode[(*InEB).ElementNodeID(j, 0)].NodeCoordinates.adjoint();
-            }
-            (*InEB).ElementGeometricParameter(0, 0) = (*ls).AllSectionbeam[(*ls).AllPart[EleBImformation(i, 1)].SectionID].TS;   //只有宽和高目前，SECTION文件里， ts1和ts2是宽  
-            (*InEB).ElementGeometricParameter(1, 0) = (*ls).AllSectionbeam[(*ls).AllPart[EleBImformation(i, 1)].SectionID].TT;
-            /* cout << (*InEB).ElementGeometricParameter<<endl;*/
+	// 梁单元信息
+	if (1 == isFileExists(VehicleIn->EleBFileString))
+	{
+		Matrix<int, Dynamic, Dynamic>EleBImformation = LinearMSTMMSolver::openDataInt(VehicleIn->EleBFileString);
+		InputElement* InEB = new InputElement;
+		/*  InputAllDate* IAD = new InputAllDate;*/
+		for (int i = 0; i < EleBImformation.rows(); i++)
+		{
+			(*InEB).ElementID = EleBImformation(i, 0);      /* cout << (*INE).ElementID << endl;*/
+			(*InEB).ElementTypeID = 2;
+			(*InEB).MaterialID = (*ls).AllPart[EleBImformation(i, 1)].Mid;
+			(*InEB).ElementNodeID.resize((long long)2, (long long)1);
+			(*InEB).ElementNodeID(0, 0) = EleBImformation(i, 2);
+			(*InEB).ElementNodeID(1, 0) = EleBImformation(i, 3);
+			(*InEB).ReferencePoint = (*IAD).InputAllNode[EleBImformation(i, 4)].NodeCoordinates.adjoint();
+			(*InEB).ElementNodeCoordinates.resize((long long)2, (long long)3);
+			for (int j = 0; j < 2; j++)
+			{
+				(*InEB).ElementNodeCoordinates.row((long long)j) = (*IAD).InputAllNode[(*InEB).ElementNodeID(j, 0)].NodeCoordinates.adjoint();
+			}
+			(*InEB).ElementGeometricParameter(0, 0) = (*ls).AllSectionbeam[(*ls).AllPart[EleBImformation(i, 1)].SectionID].TS;   //只有宽和高目前，SECTION文件里， ts1和ts2是宽  
+			(*InEB).ElementGeometricParameter(1, 0) = (*ls).AllSectionbeam[(*ls).AllPart[EleBImformation(i, 1)].SectionID].TT;
+			/* cout << (*InEB).ElementGeometricParameter<<endl;*/
 			(void)(*IAD).InputAllElement.insert(make_pair((*InEB).ElementID, (*InEB)));
-        }
-        delete InEB;
-        InEB = nullptr;
+		}
+		delete InEB;
+		InEB = nullptr;
 
-    };
+	};
 
-    //设置初始速度，节点集
-    map<int, int> NodeNumber;
+	//设置初始速度，节点集
+	map<int, int> NodeNumber;
 	for (auto& IEDN : IAD->InputAllElement)
 	{
-        if ( 0==IEDN.second.ElementTypeID )
-        {
-            Matrix<int, 8, 1> NID = IEDN.second.ElementNodeID;
-            for (int i = 0; i < 8; i++)
-            {
-                map<int, int>::iterator NoPo = NodeNumber.find(NID(i));
-                if (NoPo == NodeNumber.end())
-                {
+		if (0 == IEDN.second.ElementTypeID)
+		{
+			Matrix<int, 8, 1> NID = IEDN.second.ElementNodeID;
+			for (int i = 0; i < 8; i++)
+			{
+				map<int, int>::iterator NoPo = NodeNumber.find(NID(i));
+				if (NoPo == NodeNumber.end())
+				{
 					(void)NodeNumber.insert(make_pair(NID(i), 3));
-                };
-            };
-        };
-        if ( 2==IEDN.second.ElementTypeID )
-        {
-            Matrix<int, 2, 1> NID = IEDN.second.ElementNodeID;
-            for (int i = 0; i < 2; i++)
-            {
-                NodeNumber[NID(i)] = 6;
-            };
-        };
-        if ( 1==IEDN.second.ElementTypeID )
-        {
-            Matrix<int, 4, 1> NID = IEDN.second.ElementNodeID;
-            for (int i = 0; i < 4; i++)
-            {
-                NodeNumber[NID(i)] = 6;
-            };
-        };
-    };
-    for (auto& IEDN : IAD->InputAllElement)
-    {
-        Matrix<int, Dynamic, 1> NodeIDq = IEDN.second.ElementNodeID;
-        int Row = NodeIDq.rows();
-        (void)IEDN.second.ElementBodyForce.setZero((long long)3, (long long)1);
-        for (int NId = 0; NId < Row; NId++)
-        {
+				};
+			};
+		};
+		if (2 == IEDN.second.ElementTypeID)
+		{
+			Matrix<int, 2, 1> NID = IEDN.second.ElementNodeID;
+			for (int i = 0; i < 2; i++)
+			{
+				NodeNumber[NID(i)] = 6;
+			};
+		};
+		if (1 == IEDN.second.ElementTypeID)
+		{
+			Matrix<int, 4, 1> NID = IEDN.second.ElementNodeID;
+			for (int i = 0; i < 4; i++)
+			{
+				NodeNumber[NID(i)] = 6;
+			};
+		};
+	};
+	for (auto& IEDN : IAD->InputAllElement)
+	{
+		Matrix<int, Dynamic, 1> NodeIDq = IEDN.second.ElementNodeID;
+		int Row = NodeIDq.rows();
+		(void)IEDN.second.ElementBodyForce.setZero((long long)3, (long long)1);
+		for (int NId = 0; NId < Row; NId++)
+		{
 			(void)IAD->InputAllNode[NodeIDq(NId, 0)].NodeAcceleration.setZero((long long)NodeNumber[NodeIDq(NId, 0)], (long long)1);
 			(void)IAD->InputAllNode[NodeIDq(NId, 0)].NodeVelocity.setZero((long long)NodeNumber[NodeIDq(NId, 0)], (long long)1);
 			(void)IAD->InputAllNode[NodeIDq(NId, 0)].NodeDisplacement.setZero((long long)NodeNumber[NodeIDq(NId, 0)], (long long)1);
-        };
-    };
-     //赋速度
-    if ( 1==isFileExists(VehicleIn->NodeVelocityFileString) )
-    {
-        for (auto& itVelocity : ls->AllVelocity)
-        {
+		};
+	};
+	//赋速度
+	if (1 == isFileExists(VehicleIn->NodeVelocityFileString))
+	{
+		for (auto& itVelocity : ls->AllVelocity)
+		{
 			const int setrow = ls->AllSetNode[itVelocity.first].SetNodeID.rows();
 			const int setcol = ls->AllSetNode[itVelocity.first].SetNodeID.cols();
 			// cout << setrow;
@@ -2325,1151 +2325,1151 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				{
 					if (IAD->InputAllNode[ls->AllSetNode[itVelocity.second.SetNodeid].SetNodeID(i, j)].NodeVelocity.rows() != 0)
 					{
-					IAD->InputAllNode[ls->AllSetNode[itVelocity.second.SetNodeid].SetNodeID(i, j)].NodeVelocity(0, 0) = itVelocity.second.XVelocity;
-					IAD->InputAllNode[ls->AllSetNode[itVelocity.second.SetNodeid].SetNodeID(i, j)].NodeVelocity(1, 0) = itVelocity.second.YVelocity;
-					IAD->InputAllNode[ls->AllSetNode[itVelocity.second.SetNodeid].SetNodeID(i, j)].NodeVelocity(2, 0) = itVelocity.second.ZVelocity;
+						IAD->InputAllNode[ls->AllSetNode[itVelocity.second.SetNodeid].SetNodeID(i, j)].NodeVelocity(0, 0) = itVelocity.second.XVelocity;
+						IAD->InputAllNode[ls->AllSetNode[itVelocity.second.SetNodeid].SetNodeID(i, j)].NodeVelocity(1, 0) = itVelocity.second.YVelocity;
+						IAD->InputAllNode[ls->AllSetNode[itVelocity.second.SetNodeid].SetNodeID(i, j)].NodeVelocity(2, 0) = itVelocity.second.ZVelocity;
 					};
 				}
 			}
-        }
-        //cout << IAD->InputAllNode[190].NodeVelocity;
-    }	
-    //赋加速度
-	if (1 ==isFileExists(VehicleIn->LoadBodyZFileString) )
+		}
+		//cout << IAD->InputAllNode[190].NodeVelocity;
+	}
+	//赋加速度
+	if (1 == isFileExists(VehicleIn->LoadBodyZFileString))
 	{
 		for (auto& itLoad : ls->AllLoadBodyZ)
 		{
-			for (auto &itElement : IAD->InputAllElement)
+			for (auto& itElement : IAD->InputAllElement)
 			{
-				itElement.second.ElementBodyForce(2, 0)=itLoad.second.LoadCurveScaleFactor;
-			} 
-            							
+				itElement.second.ElementBodyForce(2, 0) = itLoad.second.LoadCurveScaleFactor;
+			}
+
 		}
 		//cout << IAD->InputAllNode[108552].NodeVelocity;
 	}
-	if (1 ==isFileExists(VehicleIn->LoadBodyYFileString) )
+	if (1 == isFileExists(VehicleIn->LoadBodyYFileString))
 	{
 		for (auto& itLoad : ls->AllLoadBodyY)
 		{
 			for (auto& itAllElement : IAD->InputAllElement)
-		    {
+			{
 				itAllElement.second.ElementBodyForce(1, 0) = itLoad.second.LoadCurveScaleFactor;
-		    }		
+			}
 		}
-        //cout << IAD->InputAllElement[2].ElementBodyForce;
+		//cout << IAD->InputAllElement[2].ElementBodyForce;
 	}
 
-    //1号弹性材料信息
-    if ( 1==isFileExists(VehicleIn->ElaFileString) )
-    {
-        Matrix<double, Dynamic, Dynamic>MaEImformation1 = LinearMSTMMSolver::openData(VehicleIn->ElaFileString);
-        Matrix<int, Dynamic, Dynamic>MaEImformation2 = LinearMSTMMSolver::openDataInt(VehicleIn->ElaFileString);
-        /*cout << MaEImformation1 << endl ;*/
-        InputMaterial* InME = new InputMaterial;
-        /*  InputAllDate* IAD = new InputAllDate;*/
-        for (int i = 0; i < MaEImformation1.rows(); i++)
-        {
-            (*InME).MaterialID = MaEImformation2(i, 0);
-            (*InME).MaterialType = 1;
-            (*InME).Density = MaEImformation1(i, 1);
-            (*InME).ElasticModulu = MaEImformation1(i, 2);
-            (*InME).PoissonsRatio = MaEImformation1(i, 3);
+	//1号弹性材料信息
+	if (1 == isFileExists(VehicleIn->ElaFileString))
+	{
+		Matrix<double, Dynamic, Dynamic>MaEImformation1 = LinearMSTMMSolver::openData(VehicleIn->ElaFileString);
+		Matrix<int, Dynamic, Dynamic>MaEImformation2 = LinearMSTMMSolver::openDataInt(VehicleIn->ElaFileString);
+		/*cout << MaEImformation1 << endl ;*/
+		InputMaterial* InME = new InputMaterial;
+		/*  InputAllDate* IAD = new InputAllDate;*/
+		for (int i = 0; i < MaEImformation1.rows(); i++)
+		{
+			(*InME).MaterialID = MaEImformation2(i, 0);
+			(*InME).MaterialType = 1;
+			(*InME).Density = MaEImformation1(i, 1);
+			(*InME).ElasticModulu = MaEImformation1(i, 2);
+			(*InME).PoissonsRatio = MaEImformation1(i, 3);
 
 			(void)(*IAD).InputAllMaterial.insert(make_pair((*InME).MaterialID, (*InME)));
-        }
-        delete InME;
-        InME = nullptr;
+		}
+		delete InME;
+		InME = nullptr;
 
-        /* cout << (*IAD).InputAllMaterial[6].Density;*/
-    }
+		/* cout << (*IAD).InputAllMaterial[6].Density;*/
+	}
 
-    //3号塑性材料信息
-    if (1 ==isFileExists(VehicleIn->PlaFileString) )
-    {
-        Matrix<double, Dynamic, Dynamic>MaPImformation1 = LinearMSTMMSolver::openData(VehicleIn->PlaFileString);
-        Matrix<int, Dynamic, Dynamic>MaPImformation2 = LinearMSTMMSolver::openDataInt(VehicleIn->PlaFileString);
-        /* cout << MaPImformation1 << endl;*/
-         //cout << MaPImformation2 << endl;
-        InputMaterial* InMP = new InputMaterial;
-        /*  InputAllDate* IAD = new InputAllDate;*/
-        for (int i = 0; i < MaPImformation1.rows(); i++)
-        {
-            (*InMP).MaterialID = MaPImformation2(i, 0);
-            (*InMP).MaterialType = 2;   //待定
-            (*InMP).Density = MaPImformation1(i, 1);
-            (*InMP).ElasticModulu = MaPImformation1(i, 2);
-            (*InMP).PoissonsRatio = MaPImformation1(i, 3);
-            (*InMP).InitialYieldStress = MaPImformation1(i, 4);
-            (*InMP).TangentialModulus = MaPImformation1(i, 5);
-            //(*InMP).MixedHardeningParameter = MaPImformation1(i, 6);    //混合硬化参数,3号塑性材料。BETA Hardening parameter, 0-1.
-            (void)(*IAD).InputAllMaterial.insert(make_pair((*InMP).MaterialID, (*InMP)));
-        }
-        delete InMP;
-        InMP = nullptr;
-
-        //cout << (*IAD).InputAllMaterial[7].InitialYieldStress;
-    }
-
-    //contact 信息
-	if ( 1==isFileExists(VehicleIn->ContactFileString) )
+	//3号塑性材料信息
+	if (1 == isFileExists(VehicleIn->PlaFileString))
 	{
-        //Contact 关键字信息
+		Matrix<double, Dynamic, Dynamic>MaPImformation1 = LinearMSTMMSolver::openData(VehicleIn->PlaFileString);
+		Matrix<int, Dynamic, Dynamic>MaPImformation2 = LinearMSTMMSolver::openDataInt(VehicleIn->PlaFileString);
+		/* cout << MaPImformation1 << endl;*/
+		 //cout << MaPImformation2 << endl;
+		InputMaterial* InMP = new InputMaterial;
+		/*  InputAllDate* IAD = new InputAllDate;*/
+		for (int i = 0; i < MaPImformation1.rows(); i++)
+		{
+			(*InMP).MaterialID = MaPImformation2(i, 0);
+			(*InMP).MaterialType = 2;   //待定
+			(*InMP).Density = MaPImformation1(i, 1);
+			(*InMP).ElasticModulu = MaPImformation1(i, 2);
+			(*InMP).PoissonsRatio = MaPImformation1(i, 3);
+			(*InMP).InitialYieldStress = MaPImformation1(i, 4);
+			(*InMP).TangentialModulus = MaPImformation1(i, 5);
+			//(*InMP).MixedHardeningParameter = MaPImformation1(i, 6);    //混合硬化参数,3号塑性材料。BETA Hardening parameter, 0-1.
+			(void)(*IAD).InputAllMaterial.insert(make_pair((*InMP).MaterialID, (*InMP)));
+		}
+		delete InMP;
+		InMP = nullptr;
+
+		//cout << (*IAD).InputAllMaterial[7].InitialYieldStress;
+	}
+
+	//contact 信息
+	if (1 == isFileExists(VehicleIn->ContactFileString))
+	{
+		//Contact 关键字信息
 		Matrix<double, Dynamic, Dynamic>ContactImformation = LinearMSTMMSolver::openData(VehicleIn->ContactFileString);
 		Matrix<int, Dynamic, Dynamic>ContactImformation2 = LinearMSTMMSolver::openDataInt(VehicleIn->ContactFileString);
-        //cout << ContactImformation;
+		//cout << ContactImformation;
 		for (int i = 0; i < ContactImformation.rows(); i++)
 		{
-            InputContact* InCta = new InputContact;
+			InputContact* InCta = new InputContact;
 			InCta->ContactNumber = ContactImformation2(i, 0);
 			InCta->ContactType = 0;
-            if ( (ContactImformation(i, 5)<1e-5)  &&  (ContactImformation(i, 6)<1e-5) )
-            {
-                InCta->FrictionJudgment = 1;
-            }
-            else
-            {
-                InCta->FrictionJudgment = 0;
-            };
-            //节点集号
+			if ((ContactImformation(i, 5) < 1e-5) && (ContactImformation(i, 6) < 1e-5))
+			{
+				InCta->FrictionJudgment = 1;
+			}
+			else
+			{
+				InCta->FrictionJudgment = 0;
+			};
+			//节点集号
 			InCta->SlaveNodeSetId = ContactImformation2(i, 1);
 			InCta->MasterNodeSetId = ContactImformation2(i, 2);
 			InCta->SlaveNodeSetType = ContactImformation2(i, 3);
 			InCta->MasterNodeSetType = ContactImformation2(i, 4);
-            //摩擦系数
+			//摩擦系数
 			InCta->StaticFrictionCoefficient = ContactImformation(i, 5);
 			InCta->DynamicFrictionCoefficient = ContactImformation(i, 6);
 			int k = 1;
-            //主从面节点号
-            for (int j = 0; j < ((ls->AllSetSegment[InCta->MasterNodeSetId].SetSegmentNodeID.cols()-1)/4); j++)
-            {
+			//主从面节点号
+			for (int j = 0; j < ((ls->AllSetSegment[InCta->MasterNodeSetId].SetSegmentNodeID.cols() - 1) / 4); j++)
+			{
 				Matrix<int, 4, 1> SetSegmentRow = ls->AllSetSegment[InCta->MasterNodeSetId].SetSegmentNodeID.block<1, 4>((long long)0, (long long)k).adjoint();
 				(void)InCta->MasterContactNode.insert(make_pair((j + 1), SetSegmentRow));
 				k += 4;
-            };
-            for (int n = 0; n < ls->AllSetNode[InCta->SlaveNodeSetId].SetNodeID.rows(); n++)
-            {
+			};
+			for (int n = 0; n < ls->AllSetNode[InCta->SlaveNodeSetId].SetNodeID.rows(); n++)
+			{
 				(void)InCta->SlaveContactNode.insert(make_pair((n + 1), ls->AllSetNode[InCta->SlaveNodeSetId].SetNodeID.row((long long)n).adjoint()));
-            };
+			};
 			(void)IAD->InputAllContact.insert(make_pair(InCta->ContactNumber, (*InCta)));
-            delete InCta;
-            InCta = nullptr;
+			delete InCta;
+			InCta = nullptr;
 		}
-		
+
 	}
 
 	InputConstraint* InConstraint = new InputConstraint;
-    //边界约束条件信息
-    if ( 1==isFileExists(VehicleIn->BoundaryFileString) )
-    {
-        Matrix<int, Dynamic, Dynamic>BoundaryIntImformation = LinearMSTMMSolver::openDataInt(VehicleIn->BoundaryFileString);
-        //Matrix<double, Dynamic, Dynamic>BoundaryDouImformation = LinearMSTMMSolver::openData(BoundaryFileString);
-      
-        /*  InputAllDate* IAD = new InputAllDate;*/
-        if (  7==BoundaryIntImformation.cols())
-        {
-        for (int i = 0; i < BoundaryIntImformation.rows(); i++)
-        {
-            (*InConstraint).ConstraintType = 0;
-            (*InConstraint).ConstraintNodeID = BoundaryIntImformation(i, 0);
-			if ((0 == BoundaryIntImformation(i, 4) )&& (0 == BoundaryIntImformation(i, 5)) &&( 0 == BoundaryIntImformation(i, 6)))
-			{
-				if ((1 == BoundaryIntImformation(i, 1)) &&( 1== BoundaryIntImformation(i, 2) ) &&  (1== BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 2, 3;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) &&( 0== BoundaryIntImformation(i, 2) ) &&  (1== BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 3;
-					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) &&( 1== BoundaryIntImformation(i, 2) ) &&  (0== BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 2;
-					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) &&( 0== BoundaryIntImformation(i, 2) ) &&  (0== BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1;
-					(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) &&( 1== BoundaryIntImformation(i, 2) ) &&  (1== BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 2, 3;
-					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) &&( 0== BoundaryIntImformation(i, 2) ) &&  (1== BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 3;
-					(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) &&( 1== BoundaryIntImformation(i, 2) ) &&  (0== BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 2;
-					(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0;
-				}
-				/* if (BoundaryIntImformation(i, 1) == 0 && BoundaryIntImformation(i, 2) == 0 && BoundaryIntImformation(i, 3) == 0)
-				 {
-					 (*InConstraint).ConstraintNodeDofID <<0;
-				 }*/
-			}
-			if ((0 == BoundaryIntImformation(i, 4) )&& (1 == BoundaryIntImformation(i, 5)) &&( 0 == BoundaryIntImformation(i, 6)))
-			{
-				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 5;
-					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 3, 5;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 2, 5;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 5;
-					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 2, 3, 5;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 3, 5;
-					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 2, 5;
-					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1) )&& (0 == BoundaryIntImformation(i, 2)) &&( 0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 5;
-					(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0;
-				}
-			}
-			if ((0 == BoundaryIntImformation(i, 4) )&& (0 == BoundaryIntImformation(i, 5)) &&( 1 == BoundaryIntImformation(i, 6)))
-			{
-				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 3, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 2, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 2, 3, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 3, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 2, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0;
-				}
-			}
-			if ((0 == BoundaryIntImformation(i, 4) )&& (1 == BoundaryIntImformation(i, 5)) &&( 1 == BoundaryIntImformation(i, 6)))
-			{
-				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 3, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 2, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 2, 3, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 3, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 2, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0;
-				}
-			}
-			if ((1 == BoundaryIntImformation(i, 4) )&& (0 == BoundaryIntImformation(i, 5)) &&( 0 == BoundaryIntImformation(i, 6)))
-			{
-				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4;
-					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 3, 4;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 2, 4;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 4;
-					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 2, 3, 4;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 3, 4;
-					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 2, 4;
-					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 4;
-					(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0;
-				}
-			}
-			if ((1 == BoundaryIntImformation(i, 4) )&& (1 == BoundaryIntImformation(i, 5)) &&( 0 == BoundaryIntImformation(i, 6)))
-			{
-				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4, 5;
-					(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 3, 4, 5;
-					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 2, 4, 5;
-					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 4, 5;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 2, 3, 4, 5;
-					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 3, 4, 5;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 2, 4, 5;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 4, 5;
-					(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0;
-				}
-			}
-			if ((1 == BoundaryIntImformation(i, 4) )&& (1 == BoundaryIntImformation(i, 5)) &&( 1 == BoundaryIntImformation(i, 6)))
-			{
-				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)6, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)6, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 3, 4, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 2, 4, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 4, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 2, 3, 4, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 3, 4, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 2, 4, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 4, 5, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-			}
-			if ((1 == BoundaryIntImformation(i, 4) )&& (0 == BoundaryIntImformation(i, 5)) &&( 1 == BoundaryIntImformation(i, 6)))
-            {
-				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 3, 4, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 2, 4, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-				}
-				if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 1, 4, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 2, 3, 4, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 3, 4, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-				{
-					(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-					(*InConstraint).ConstraintNodeDofID << 2, 4, 6;
-					(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-					(*InConstraint).NodeExternalConstraint << 0, 0, 0;
-				}
-				if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
-                {
-                    (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-                    (*InConstraint).ConstraintNodeDofID << 4, 6;
-                    (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-                    (*InConstraint).NodeExternalConstraint << 0, 0;
-                }
-            }
-			(void)(*IAD).InputAllConstraint.insert(make_pair((*InConstraint).ConstraintNodeID, (*InConstraint)));
-        }
-        }
-         if( 8==BoundaryIntImformation.cols() )
-         {
-             for (int i = 0; i < BoundaryIntImformation.rows(); i++)
-             {
-                 (*InConstraint).ConstraintType = 0;
-                 (*InConstraint).ConstraintNodeID = BoundaryIntImformation(i, 0);
-				 if ((0 == BoundaryIntImformation(i, 5)) && (0 == BoundaryIntImformation(i, 6)) && (0 == BoundaryIntImformation(i, 7)))
-				 {
-					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 2, 3;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 3;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 2;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 2, 3;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 3;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 2;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0;
-					 }
-					 /* if (BoundaryIntImformation(i, 1) == 0 && BoundaryIntImformation(i, 2) == 0 && BoundaryIntImformation(i, 3) == 0)
-					  {
-						  (*InConstraint).ConstraintNodeDofID <<0;
-					  }*/
-				 }
-				 if ((0 == BoundaryIntImformation(i, 5)) && (1 == BoundaryIntImformation(i, 6)) && (0 == BoundaryIntImformation(i, 7)))
-				 {
-					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 2, 3, 5;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 3, 5;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 2, 5;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 5;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 2, 3, 5;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 3, 5;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 2, 5;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 5;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0;
-					 }
-				 }
-				 if ((0 == BoundaryIntImformation(i, 5)) && (0 == BoundaryIntImformation(i, 6)) && (1 == BoundaryIntImformation(i, 7)))
-				 {
-					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 2, 3, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 3, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 2, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 2, 3, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 3, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 2, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0;
-					 }
-				 }
-				 if ((0 == BoundaryIntImformation(i, 5)) && (1 == BoundaryIntImformation(i, 6)) && (1 == BoundaryIntImformation(i, 7)))
-				 {
-					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 2, 3, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 3, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 2, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 2, 3, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 3, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 2, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0;
-					 }
-				 }
-				 if ((1 == BoundaryIntImformation(i, 5)) && (0 == BoundaryIntImformation(i, 6)) && (0 == BoundaryIntImformation(i, 7)))
-				 {
-					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 3, 4;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 2, 4;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 4;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 2, 3, 4;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 3, 4;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 2, 4;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 4;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0;
-					 }
-				 }
-				 if ((1 == BoundaryIntImformation(i, 5)) && (1 == BoundaryIntImformation(i, 6)) && (0 == BoundaryIntImformation(i, 7)))
-				 {
-					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4, 5;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 3, 4, 5;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 2, 4, 5;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 4, 5;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 2, 3, 4, 5;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 3, 4, 5;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 2, 4, 5;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 4, 5;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0;
-					 }
-				 }
-				 if ((1 == BoundaryIntImformation(i, 5)) && (1 == BoundaryIntImformation(i, 6)) && (1 == BoundaryIntImformation(i, 7)))
-				 {
-					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)6, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)6, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 3, 4, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 2, 4, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 4, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 2, 3, 4, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 3, 4, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 2, 4, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 4, 5, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-				 }
-				 if ((1 == BoundaryIntImformation(i, 5)) && (0 == BoundaryIntImformation(i, 6)) && (1 == BoundaryIntImformation(i, 7)))
-                 {
-					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 3, 4, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 2, 4, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-					 }
-					 if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 1, 4, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 2, 3, 4, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 3, 4, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-					 {
-						 (*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
-						 (*InConstraint).ConstraintNodeDofID << 2, 4, 6;
-						 (*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
-						 (*InConstraint).NodeExternalConstraint << 0, 0, 0;
-					 }
-					 if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
-                     {
-                         (*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
-                         (*InConstraint).ConstraintNodeDofID << 4, 6;
-                         (*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-                         (*InConstraint).NodeExternalConstraint << 0, 0;
-                     }
-                 }
+	//边界约束条件信息
+	if (1 == isFileExists(VehicleIn->BoundaryFileString))
+	{
+		Matrix<int, Dynamic, Dynamic>BoundaryIntImformation = LinearMSTMMSolver::openDataInt(VehicleIn->BoundaryFileString);
+		//Matrix<double, Dynamic, Dynamic>BoundaryDouImformation = LinearMSTMMSolver::openData(BoundaryFileString);
 
-				 (void)(*IAD).InputAllConstraint.insert(make_pair((*InConstraint).ConstraintNodeID, (*InConstraint)));
-             }
-         }
+		/*  InputAllDate* IAD = new InputAllDate;*/
+		if (7 == BoundaryIntImformation.cols())
+		{
+			for (int i = 0; i < BoundaryIntImformation.rows(); i++)
+			{
+				(*InConstraint).ConstraintType = 0;
+				(*InConstraint).ConstraintNodeID = BoundaryIntImformation(i, 0);
+				if ((0 == BoundaryIntImformation(i, 4)) && (0 == BoundaryIntImformation(i, 5)) && (0 == BoundaryIntImformation(i, 6)))
+				{
+					if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 3;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 3;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1;
+						(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 3;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 3;
+						(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2;
+						(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0;
+					}
+					/* if (BoundaryIntImformation(i, 1) == 0 && BoundaryIntImformation(i, 2) == 0 && BoundaryIntImformation(i, 3) == 0)
+					 {
+						 (*InConstraint).ConstraintNodeDofID <<0;
+					 }*/
+				}
+				if ((0 == BoundaryIntImformation(i, 4)) && (1 == BoundaryIntImformation(i, 5)) && (0 == BoundaryIntImformation(i, 6)))
+				{
+					if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 3, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 3, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 3, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0;
+					}
+				}
+				if ((0 == BoundaryIntImformation(i, 4)) && (0 == BoundaryIntImformation(i, 5)) && (1 == BoundaryIntImformation(i, 6)))
+				{
+					if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 3, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 3, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 3, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0;
+					}
+				}
+				if ((0 == BoundaryIntImformation(i, 4)) && (1 == BoundaryIntImformation(i, 5)) && (1 == BoundaryIntImformation(i, 6)))
+				{
+					if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 3, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 3, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 3, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+				}
+				if ((1 == BoundaryIntImformation(i, 4)) && (0 == BoundaryIntImformation(i, 5)) && (0 == BoundaryIntImformation(i, 6)))
+				{
+					if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 3, 4;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 4;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 4;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 3, 4;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 3, 4;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 4;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 4;
+						(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0;
+					}
+				}
+				if ((1 == BoundaryIntImformation(i, 4)) && (1 == BoundaryIntImformation(i, 5)) && (0 == BoundaryIntImformation(i, 6)))
+				{
+					if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 3, 4, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 4, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 4, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 3, 4, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 3, 4, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 4, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 4, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+				}
+				if ((1 == BoundaryIntImformation(i, 4)) && (1 == BoundaryIntImformation(i, 5)) && (1 == BoundaryIntImformation(i, 6)))
+				{
+					if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)6, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)6, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 3, 4, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 4, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 4, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 3, 4, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 3, 4, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 4, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 4, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+				}
+				if ((1 == BoundaryIntImformation(i, 4)) && (0 == BoundaryIntImformation(i, 5)) && (1 == BoundaryIntImformation(i, 6)))
+				{
+					if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 3, 4, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 4, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 4, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 3, 4, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 3, 4, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 4, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 1)) && (0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 4, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+				}
+				(void)(*IAD).InputAllConstraint.insert(make_pair((*InConstraint).ConstraintNodeID, (*InConstraint)));
+			}
+		}
+		if (8 == BoundaryIntImformation.cols())
+		{
+			for (int i = 0; i < BoundaryIntImformation.rows(); i++)
+			{
+				(*InConstraint).ConstraintType = 0;
+				(*InConstraint).ConstraintNodeID = BoundaryIntImformation(i, 0);
+				if ((0 == BoundaryIntImformation(i, 5)) && (0 == BoundaryIntImformation(i, 6)) && (0 == BoundaryIntImformation(i, 7)))
+				{
+					if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 3;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 3;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1;
+						(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 3;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 3;
+						(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2;
+						(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0;
+					}
+					/* if (BoundaryIntImformation(i, 1) == 0 && BoundaryIntImformation(i, 2) == 0 && BoundaryIntImformation(i, 3) == 0)
+					 {
+						 (*InConstraint).ConstraintNodeDofID <<0;
+					 }*/
+				}
+				if ((0 == BoundaryIntImformation(i, 5)) && (1 == BoundaryIntImformation(i, 6)) && (0 == BoundaryIntImformation(i, 7)))
+				{
+					if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 3, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 3, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 3, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0;
+					}
+				}
+				if ((0 == BoundaryIntImformation(i, 5)) && (0 == BoundaryIntImformation(i, 6)) && (1 == BoundaryIntImformation(i, 7)))
+				{
+					if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 3, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 3, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 3, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0;
+					}
+				}
+				if ((0 == BoundaryIntImformation(i, 5)) && (1 == BoundaryIntImformation(i, 6)) && (1 == BoundaryIntImformation(i, 7)))
+				{
+					if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 3, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 3, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 3, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+				}
+				if ((1 == BoundaryIntImformation(i, 5)) && (0 == BoundaryIntImformation(i, 6)) && (0 == BoundaryIntImformation(i, 7)))
+				{
+					if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 3, 4;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 4;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 4;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 3, 4;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 3, 4;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 4;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)1, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 4;
+						(*InConstraint).NodeExternalConstraint.resize((long long)1, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0;
+					}
+				}
+				if ((1 == BoundaryIntImformation(i, 5)) && (1 == BoundaryIntImformation(i, 6)) && (0 == BoundaryIntImformation(i, 7)))
+				{
+					if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 3, 4, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 4, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 4, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 3, 4, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 3, 4, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 4, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 4, 5;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+				}
+				if ((1 == BoundaryIntImformation(i, 5)) && (1 == BoundaryIntImformation(i, 6)) && (1 == BoundaryIntImformation(i, 7)))
+				{
+					if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)6, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)6, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 3, 4, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 4, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 4, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 3, 4, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 3, 4, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 4, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 4, 5, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+				}
+				if ((1 == BoundaryIntImformation(i, 5)) && (0 == BoundaryIntImformation(i, 6)) && (1 == BoundaryIntImformation(i, 7)))
+				{
+					if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)5, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 3, 4, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)5, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 3, 4, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 2, 4, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((1 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 1, 4, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)4, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 3, 4, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)4, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (1 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 3, 4, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (1 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)3, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 2, 4, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)3, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0, 0;
+					}
+					if ((0 == BoundaryIntImformation(i, 2)) && (0 == BoundaryIntImformation(i, 3)) && (0 == BoundaryIntImformation(i, 4)))
+					{
+						(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
+						(*InConstraint).ConstraintNodeDofID << 4, 6;
+						(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
+						(*InConstraint).NodeExternalConstraint << 0, 0;
+					}
+				}
 
-        /* auto pr = (*IAD).InputAllConstraint.find(173546);
-         if (pr != std::end((*IAD).InputAllConstraint))
-         {
-         std:cout << pr->first << " is " <<endl<< pr->second.ConstraintNodeDofID << endl;
-         }*/
-    }
+				(void)(*IAD).InputAllConstraint.insert(make_pair((*InConstraint).ConstraintNodeID, (*InConstraint)));
+			}
+		}
 
-    //刚性墙
-    if ( 1==isFileExists(VehicleIn->RigidWallFileString) )
-    {
-        Matrix<double, Dynamic, Dynamic>RigidWallImformation1 = LinearMSTMMSolver::openData(VehicleIn->RigidWallFileString);
-        Matrix<int, Dynamic, Dynamic>RigidWallImformation2 = LinearMSTMMSolver::openDataInt(VehicleIn->RigidWallFileString);
-        for (int i = 0; i < RigidWallImformation1.rows(); i++)
-        {
+		/* auto pr = (*IAD).InputAllConstraint.find(173546);
+		 if (pr != std::end((*IAD).InputAllConstraint))
+		 {
+		 std:cout << pr->first << " is " <<endl<< pr->second.ConstraintNodeDofID << endl;
+		 }*/
+	}
+
+	//刚性墙
+	if (1 == isFileExists(VehicleIn->RigidWallFileString))
+	{
+		Matrix<double, Dynamic, Dynamic>RigidWallImformation1 = LinearMSTMMSolver::openData(VehicleIn->RigidWallFileString);
+		Matrix<int, Dynamic, Dynamic>RigidWallImformation2 = LinearMSTMMSolver::openDataInt(VehicleIn->RigidWallFileString);
+		for (int i = 0; i < RigidWallImformation1.rows(); i++)
+		{
 			InputRigidWallContact* InRigidWall = new InputRigidWallContact;
-            InRigidWall->ContactNumber = RigidWallImformation2(i, 0);
-            InRigidWall->NodeSetID = RigidWallImformation2(i, 1);
-            if ( RigidWallImformation1(i, 8) <1e-5 )
-            {
-                InRigidWall->FrictionJudgment = 1;
-            }
-            else
-            {
-                InRigidWall->FrictionJudgment = 0;
-            }
-             InRigidWall->Length = RigidWallImformation1(i, 12);
-             InRigidWall->Width = RigidWallImformation1(i, 13);
-             InRigidWall->FrictionCoefficient = RigidWallImformation1(i, 8);
-             InRigidWall->RigidWallNormal(0, 0) = RigidWallImformation1(i, 5);
-             InRigidWall->RigidWallNormal(1, 0) = RigidWallImformation1(i, 6);
-             InRigidWall->RigidWallNormal(2, 0) = RigidWallImformation1(i, 7);
-             InRigidWall->RigidWallorigin(0, 0) = RigidWallImformation1(i, 2);
-             InRigidWall->RigidWallorigin(1, 0) = RigidWallImformation1(i, 3);
-             InRigidWall->RigidWallorigin(2, 0) = RigidWallImformation1(i, 4);
-             InRigidWall->RigidWallTangential(0, 0) = RigidWallImformation1(i, 9);
-             InRigidWall->RigidWallTangential(1, 0) = RigidWallImformation1(i, 10);
-             InRigidWall->RigidWallTangential(2, 0) = RigidWallImformation1(i, 11);                     
-			 (void)InRigidWall->SlaveContactNode.insert(make_pair(RigidWallImformation2(i, 1),ls->AllSetNode[RigidWallImformation2(i, 1)].SetNodeID.adjoint()));
-			 (void)IAD->InputAllRigidContact.insert(make_pair(InRigidWall->ContactNumber, (*InRigidWall)));
-            delete InRigidWall;
-            InRigidWall = nullptr;
+			InRigidWall->ContactNumber = RigidWallImformation2(i, 0);
+			InRigidWall->NodeSetID = RigidWallImformation2(i, 1);
+			if (RigidWallImformation1(i, 8) < 1e-5)
+			{
+				InRigidWall->FrictionJudgment = 1;
+			}
+			else
+			{
+				InRigidWall->FrictionJudgment = 0;
+			}
+			InRigidWall->Length = RigidWallImformation1(i, 12);
+			InRigidWall->Width = RigidWallImformation1(i, 13);
+			InRigidWall->FrictionCoefficient = RigidWallImformation1(i, 8);
+			InRigidWall->RigidWallNormal(0, 0) = RigidWallImformation1(i, 5);
+			InRigidWall->RigidWallNormal(1, 0) = RigidWallImformation1(i, 6);
+			InRigidWall->RigidWallNormal(2, 0) = RigidWallImformation1(i, 7);
+			InRigidWall->RigidWallorigin(0, 0) = RigidWallImformation1(i, 2);
+			InRigidWall->RigidWallorigin(1, 0) = RigidWallImformation1(i, 3);
+			InRigidWall->RigidWallorigin(2, 0) = RigidWallImformation1(i, 4);
+			InRigidWall->RigidWallTangential(0, 0) = RigidWallImformation1(i, 9);
+			InRigidWall->RigidWallTangential(1, 0) = RigidWallImformation1(i, 10);
+			InRigidWall->RigidWallTangential(2, 0) = RigidWallImformation1(i, 11);
+			(void)InRigidWall->SlaveContactNode.insert(make_pair(RigidWallImformation2(i, 1), ls->AllSetNode[RigidWallImformation2(i, 1)].SetNodeID.adjoint()));
+			(void)IAD->InputAllRigidContact.insert(make_pair(InRigidWall->ContactNumber, (*InRigidWall)));
+			delete InRigidWall;
+			InRigidWall = nullptr;
 
-        }
-       
-    }
-    //cout << IAD->InputAllNode[IAD->InputAllRigidContact[6].SlaveContactNode[3](0,0)].NodeID;
-    
+		}
+
+	}
+	//cout << IAD->InputAllNode[IAD->InputAllRigidContact[6].SlaveContactNode[3](0,0)].NodeID;
+
 	//定载荷约束信息
 	if (1 == isFileExists(VehicleIn->ForceBOUNDARYFileString))
 	{
@@ -3492,7 +3492,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				(*InConstraint).ConstraintNodeDofID.resize((long long)2, (long long)1);
 				(*InConstraint).ConstraintNodeDofID << 1, 3;
 				(*InConstraint).NodeExternalConstraint.resize((long long)2, (long long)1);
-				(*InConstraint).NodeExternalConstraint << ForceFileImformation(0,0), ForceFileImformation(0, 2);
+				(*InConstraint).NodeExternalConstraint << ForceFileImformation(0, 0), ForceFileImformation(0, 2);
 			}
 			if ((1 == ForceBOUNDARYImformation(0, 1)) && (1 == ForceBOUNDARYImformation(0, 2)) && (0 == ForceBOUNDARYImformation(0, 3)))
 			{
@@ -3530,24 +3530,24 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 				(*InConstraint).NodeExternalConstraint << ForceFileImformation(0, 1);
 			}
 			(void)(*IAD).InputAllConstraint.insert(make_pair((*InConstraint).ConstraintNodeID, (*InConstraint)));
-		}	
+		}
 	}
 	delete InConstraint;
 	InConstraint = nullptr;
 	delete ls;
-    ls = nullptr;
+	ls = nullptr;
 
-    //删除文件
-	for (int i = 0; i < vFileName.size(); i++)
+	//删除文件
+	for (unsigned long long i = 0; i < vFileName.size(); i++)
 	{
-		(void)DeleteProcessFile(vFileName[i]);
+		DeleteProcessFile(vFileName[i]);
 
 	}
 
 	delete VehicleIn;
 	VehicleIn = nullptr;
 
-    return IAD;
+	return IAD;
 }
 
 VehicleInformation::VehicleInformation(void)

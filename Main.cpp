@@ -17,7 +17,7 @@ int main()
 	IAD= pInputFile->inputFunction("car1127.txt");
 
 	pInputFile->inputMBFunction("BigRenTi.txt", IAD);
-
+ 
 	//for (auto& it : IAD->InputAllContact[3].MasterContactNode)
 	//{
 
@@ -29,6 +29,7 @@ int main()
 	{
 		cout << it.first << endl;
 	}*/
+
 
 	delete IAD;
 	delete pInputFile;

@@ -519,13 +519,13 @@ public:
  */
 inline void DeleteProcessFile(string& filename)
 {
-	if (filename.empty() == false)
+	if (!filename.empty())
 	{
 		char* c = new char[1000];
-		strcpy(c, filename.c_str());
-		(void)remove(c);
-		delete c;
+		(void)remove(strcpy(c, filename.c_str()));
+		delete[]c;
 		c = nullptr;
+
 	}
 }
 
