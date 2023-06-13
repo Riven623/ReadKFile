@@ -2,23 +2,23 @@
 #include "IClude.h"
 #include"InputDate.h"
 
+extern bool isParse;
+/**
+ * @file InputFile.h
+ * @brief 文件读取的头文件。
+ * @details 这个文件包含文件读取所需要的类和函数。
+ * @author ZhaoRui riven_zhao@njust.edu.cn
+ * @date 2023-03-09
+ */
 
-	 /**
-	  * @file InputFile.h
-	  * @brief 文件读取的头文件。
-	  * @details 这个文件包含文件读取所需要的类和函数。
-	  * @author ZhaoRui riven_zhao@njust.edu.cn
-	  * @date 2023-03-09
+ /**
+	  * @brief 写数据函数
+	  *
+	  * 将每一行数据判断后写入指定文件。
+	  *
+	  * @param ObjectiveFile 目标文件。
+	  * @param inputLine 数据行。
 	  */
-
-	 /**
-		  * @brief 写数据函数
-		  *
-		  * 将每一行数据判断后写入指定文件。
-		  *
-		  * @param ObjectiveFile 目标文件。
-		  * @param inputLine 数据行。
-		  */
 inline void getdigit2(ofstream& ObjectiveFile, const string inputLine)
 {
 	if (' ' == inputLine[0])
@@ -142,13 +142,13 @@ public:
 	 * @param IADate 存放信息目标。
 	 * @return 传回一个整数。
 	 */
-	int inputMBFunction(const std::string& MBfileToOpen, InputAllDate*IADate);
-	//	DynamicCalculation* setTimeParameters();
+	int inputMBFunction(const std::string& MBfileToOpen, InputAllDate* IADate);
+	//DynamicCalculation* setTimeParameters(void);
+
 	streampos fp; ///<文件指针的偏移量,用以判断文件是否为空。
 	///构造函数
 	InputFileProject(void);
 };
-
 /**
 	 * @brief 车辆模型信息类
 	 *
@@ -188,7 +188,9 @@ public:
 	ofstream DefineCurveFile;///< 曲线信息文件
 	ofstream LoadBodyZFile;///< Z方向体力文件
 	ofstream LoadBodyYFile;///< Y方向体力文件
+	ofstream RayleighFile;///< 瑞丽阻尼文件
 
+	string RayleighFileString;///< 瑞丽阻尼文件名
 	string LoadBodyYFileString;///< Y方向体力文件名
 	string LoadBodyZFileString;///< Z方向体力文件名
 	string DefineCurveFileString;///< 曲线信息文件名
@@ -289,12 +291,12 @@ public:
 	ofstream testfile;
 };
 
- /**
-	 * @brief 人体模型信息类
-	 *
-	 * @details 包含读取人体模型文件所需要的实体。
-	 *
-	 */
+/**
+	* @brief 人体模型信息类
+	*
+	* @details 包含读取人体模型文件所需要的实体。
+	*
+	*/
 class DummyInformation
 {
 public:
@@ -399,8 +401,8 @@ class SetNode
 public:
 	///构造函数
 	SetNode(void);
-	int SetType ;
-	int SetId ; ///<set 集号
+	int SetType;
+	int SetId; ///<set 集号
 	Matrix<int, Dynamic, Dynamic> SetNodeID;  ///<set 集节点号
 };
 ///K文件SetSegmentNode类
@@ -409,7 +411,7 @@ class SetSegmentNode
 public:
 	///构造函数
 	SetSegmentNode(void);
-	int SetType ;
+	int SetType;
 	int SetSegmentId; ///<SetSegment集号
 	Matrix<int, Dynamic, Dynamic> SetSegmentNodeID;  ///<SetSegment集节点号
 };
@@ -447,7 +449,7 @@ public:
 	* @details 汇总读文件时Part, Section，Velocity，SetNode，SetSegmentNode 等等临时信息。
 	*
 	*/
-class lsmap   
+class lsmap
 {
 public:
 	map<int, KFilePart > AllPart;///<所有Part信息
@@ -501,7 +503,7 @@ public:
 	* @details 汇总读文件时假人的临时信息。
 	*
 	*/
-class MBlsmap   
+class MBlsmap
 {
 public:
 	map<int, MBNode > AllMBNode;///<所有假人节点信息
@@ -519,11 +521,12 @@ public:
  */
 inline void DeleteProcessFile(string& filename)
 {
-	if (!filename.empty())
+	if (filename.empty() == false)
 	{
 		char* c = new char[1000];
-		(void)remove(strcpy(c, filename.c_str()));
-		delete[]c;
+		(void)strcpy(c, filename.c_str());
+		(void)remove(c);
+		delete []c;
 		c = nullptr;
 
 	}
