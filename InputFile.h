@@ -532,3 +532,18 @@ inline void DeleteProcessFile(string& filename)
 	}
 }
 
+inline bool hasPartialMatch(const std::string& str1, const std::string& str2) {
+	size_t found = str1.find(str2);
+	return (found != std::string::npos);
+}
+
+inline void eraseLastEnter(string& str)
+{
+	if (!str.empty())
+	{
+		if ((str[str.length() - 1] == '\n') || (str[str.length() - 1] == '\r'))
+		{
+			str.erase(str.length() - 1);
+		}
+	}
+}

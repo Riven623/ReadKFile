@@ -6,6 +6,8 @@
 #include <QApplication>
 #include <QTextCodec>
 #include <QtXml>
+//#include <locale>
+//#include <codecvt>
 /**
  * @file InputFile.cpp
  * @brief 文件读取的函数代码。
@@ -19,6 +21,7 @@
  ///@attention 模型文件路径建议使用完整路径。
 int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllDate* IADate)
 {
+	//std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 	vector<string> vFileName;
 	DummyInformation* DummyIn = new DummyInformation;
 	DummyIn->InMB.open(MBfileToOpen,(int)ios::in);
@@ -32,10 +35,23 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 	{
 		(void)DummyIn->InMB.seekg((long long)0, (int)ios::beg);
 		while (getline(DummyIn->InMB, DummyIn->LineMB))
-		{
-			//刚体
-			if (DummyIn->LineMB == "*RigidBody")
+		{	
+			size_t pos = DummyIn->LineMB.find_first_not_of(" ", (unsigned long long)0);
+			//跳过注释行和空行
+			if (DummyIn->LineMB[0] == '$')
 			{
+				continue;
+			}
+			if (pos == std::string::npos)
+			{
+				continue;
+			}
+			eraseLastEnter(DummyIn->LineMB);
+
+			//刚体
+			if (hasPartialMatch(DummyIn->LineMB, "*RigidBody"))
+			{
+				cout << "DummyIn->LineMB == *RigidBody" << endl;
 				DummyIn->ColumHingeFile.close();
 				DummyIn->MBNodeFile.close();
 				DummyIn->BallJointFile.close();
@@ -173,6 +189,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		DummyIn->MBContactFile2.open(DummyIn->MBContactFileString, (int)ios::out);
 		while (getline(DummyIn->MBInContact, DummyIn->MBLineContact))
 		{
+			eraseLastEnter(DummyIn->MBLineContact);
 			if (DummyIn->MBContactFile2.is_open())
 			{
 				if (' ' == DummyIn->MBLineContact[0])
@@ -191,6 +208,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		DummyIn->InSegmentSet.open(MBfileToOpen,(int)ios::in);
 		while (getline(DummyIn->InSegmentSet, DummyIn->LineSegmentSet))
 		{
+			eraseLastEnter(DummyIn->LineSegmentSet);
 			//主面节点
 			if ("*SET_SEGMENT" == DummyIn->LineSegmentSet)
 			{
@@ -222,6 +240,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		int panduanneirongSegmentSet = 0;
 		while (getline(InSegmentSet2, LineSegmentSet2))
 		{
+			eraseLastEnter(LineSegmentSet2);
 			ofstream SegmentSetFile2(DummyIn->SegmentSetFile2String,(int)ios::out);
 			if (' ' == LineSegmentSet2[0])
 			{
@@ -264,6 +283,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		DummyIn->InSetNode.open(MBfileToOpen, (int)ios::in);
 		while (getline(DummyIn->InSetNode, DummyIn->LineSetNode))
 		{
+			eraseLastEnter(DummyIn->LineSetNode);
 			if ("*SET_NODE_LIST" == DummyIn->LineSetNode)
 			{
 				DummyIn->LineSetNode = ("MB") + (DummyIn->LineSetNode.erase((unsigned long long)0, (unsigned long long) 1));
@@ -292,6 +312,7 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 		int panduanneirong = 0;
 		while (getline(InSetNode2, LineSetNode2))
 		{
+			eraseLastEnter(LineSetNode2);
 			ofstream SetNodeFile2(DummyIn->SetNodeFile2String, (int)ios::out);
 			if (' ' == LineSetNode2[0])
 			{
@@ -524,11 +545,13 @@ int InputFileProject::inputMBFunction(const std::string& MBfileToOpen, InputAllD
 ///@attention 模型文件路径建议使用完整路径。
 InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 {
+	InputAllDate* IAD = new InputAllDate;
 	vector<string> vFileName;
 	VehicleInformation* VehicleIn = new VehicleInformation;
 	VehicleIn->In.open(fileToOpen, (int)ios::in);
 	while (getline(VehicleIn->In, VehicleIn->line))
 	{
+
 		size_t pos = VehicleIn->line.find_first_not_of(" ",(unsigned long long)0);
 		//跳过注释行和空行
 		if (VehicleIn->line[0] == '$')
@@ -539,6 +562,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 		{
 			continue;
 		}
+		eraseLastEnter(VehicleIn->line);
 		//*Rayleigh Damping
 		if ("*Rayleigh Damping" == VehicleIn->line)
 		{
@@ -1067,13 +1091,16 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 			Matrix<double, Dynamic, Dynamic>Test = LinearMSTMMSolver::openData(VehicleIn->TestEla);
 			if (Test.cols() != 4)
 			{
+				//cout << "-----------" << endl;
+				//return IAD;
 				cerr << VehicleIn->TestEla << "ERRO" << endl;
 				VehicleIn->testfile.close();
-				DeleteProcessFile(VehicleIn->TestEla);
+				(void)DeleteProcessFile(VehicleIn->TestEla);
 				exit(1);
 			}
+			//cout << "-----=======------" << endl;
 			VehicleIn->testfile.close();
-			DeleteProcessFile(VehicleIn->TestEla);
+			(void)DeleteProcessFile(VehicleIn->TestEla);
 			VehicleIn->ElaFile << VehicleIn->line << endl;
 		}
 		if ("*MAT_PLASTIC_KINEMATIC" == VehicleIn->line)
@@ -1860,6 +1887,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	VehicleIn->SecShellFile2.open(VehicleIn->SecShellFileString, (int)ios::out);
 	while (getline(VehicleIn->InSecShell, VehicleIn->LineSecShell))
 	{
+		eraseLastEnter(VehicleIn->LineSecShell);
 		if (VehicleIn->SecShellFile2.is_open())
 		{
 			if (' ' == VehicleIn->LineSecShell[0])
@@ -1889,6 +1917,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	VehicleIn->ContactFile2.open(VehicleIn->ContactFileString,  (int)ios::out);
 	while (getline(VehicleIn->InContact, VehicleIn->LineContact))
 	{
+		eraseLastEnter(VehicleIn->LineContact);
 		if (VehicleIn->ContactFile2.is_open())
 		{
 			if (' ' == VehicleIn->LineContact[0])
@@ -1917,6 +1946,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	VehicleIn->RigidWallFile2.open(VehicleIn->RigidWallFileString, (int)ios::out);
 	while (getline(VehicleIn->InRigidwall, VehicleIn->LineRigidwall))
 	{
+		eraseLastEnter(VehicleIn->LineRigidwall);
 		if (VehicleIn->RigidWallFile2.is_open())
 		{
 			if (' ' == VehicleIn->LineRigidwall[0])
@@ -1947,6 +1977,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	VehicleIn->InSegmentSet.open(fileToOpen, (int)ios::in);
 	while (getline(VehicleIn->InSegmentSet, VehicleIn->LineSegmentSet))
 	{
+		eraseLastEnter(VehicleIn->LineSegmentSet);
 		//跳过注释行
 		if (VehicleIn->LineSegmentSet[0] == '$')
 		{
@@ -1985,6 +2016,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	int panduanneirongSegmentSet = 0;
 	while (getline(InSegmentSet2, LineSegmentSet2))
 	{
+		eraseLastEnter(LineSegmentSet2);
 		ofstream SegmentSetFile2(VehicleIn->SegmentSetFile2String, (int)ios::out);
 		if (' ' == LineSegmentSet2[0])
 		{
@@ -2010,6 +2042,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	VehicleIn->InSetNode.open(fileToOpen, (int)ios::in);
 	while (getline(VehicleIn->InSetNode, VehicleIn->LineSetNode))
 	{
+		eraseLastEnter(VehicleIn->LineSetNode);
 		//跳过注释行
 		if (VehicleIn->LineSetNode[0] == '$')
 		{
@@ -2045,6 +2078,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	int panduanneirong = 0;
 	while (getline(InSetNode2, LineSetNode2))
 	{
+		eraseLastEnter(LineSetNode2);
 		ofstream SetNodeFile2(VehicleIn->SetNodeFile2String, (int)ios::out);
 		if (' ' == LineSetNode2[0])
 		{
@@ -2068,6 +2102,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	VehicleIn->InForce.open(fileToOpen, (int)ios::in);
 	while (getline(VehicleIn->InForce, VehicleIn->LineForce))
 	{
+		eraseLastEnter(VehicleIn->LineForce);
 		if ("*END" == VehicleIn->LineForce)
 		{
 			VehicleIn->PanduanForce = 1;
@@ -2127,8 +2162,10 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	VehicleIn->InForce.close();
 
 	//LoadBodyZ信息
+	
 	if (1 == isFileExists(VehicleIn->LoadBodyZFileString))
 	{
+		cout << "LoadBodyZ信息" << endl;
 		Matrix<int, Dynamic, Dynamic>LoadBodyZ1 = LinearMSTMMSolver::openDataInt(VehicleIn->LoadBodyZFileString);
 		Matrix<double, Dynamic, Dynamic>LoadBodyZ2 = LinearMSTMMSolver::openData(VehicleIn->LoadBodyZFileString);
 		LoadBodyZ* pLoadBodyZ = new LoadBodyZ;
@@ -2252,7 +2289,7 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 
 	////开始写入inputdate.h//////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////
-	InputAllDate* IAD = new InputAllDate;
+	
 
 	//瑞丽阻尼信息
 	if (1 == isFileExists(VehicleIn->RayleighFileString))
@@ -3641,11 +3678,11 @@ InputAllDate* InputFileProject::inputFunction(const std::string& fileToOpen)
 	ls = nullptr;
 
 	//删除文件
-	for (unsigned long long i = 0; i < vFileName.size(); i++)
-	{
-		DeleteProcessFile(vFileName[i]);
+		for (unsigned long long i = 0; i < vFileName.size(); i++)
+		{
+			DeleteProcessFile(vFileName[i]);
 
-	}
+		}
 
 	delete VehicleIn;
 	VehicleIn = nullptr;
@@ -3801,3 +3838,4 @@ MBlsmap::MBlsmap(void)
 //	DC->OutIncrement = OutIncrement;
 //	return DC;
 //};
+
